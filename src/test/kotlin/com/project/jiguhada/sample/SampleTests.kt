@@ -8,6 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest
 class SampleTests {
     @Test
     fun test1() {
-        Assertions.assertThat(10).isEqualTo(100);
+        Assertions.assertThat(10).isEqualTo(10);
     }
 }
