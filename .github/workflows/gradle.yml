@@ -52,7 +52,7 @@ jobs:
     - name: make zip file
       run: zip -r -qq -j ./jiguhada-build.zip ./deploy
 
-    # S3 버킷으로 copy
+    # S3 버킷으로 zip 파일 업로드
     - name: Delivery to S3
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
