@@ -52,6 +52,10 @@ jobs:
     - name: Copy appspec
       run: cp appspec.yml ./deploy/
 
+    # deploy.sh copy
+    - name: Copy deploy.sh
+      run: cp deploy.sh ./deploy/
+
     # 압축 파일 형태로 전달
     - name: make zip file
       run: zip -r -qq -j ./jiguhada-build.zip ./deploy
