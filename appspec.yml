@@ -1,0 +1,10 @@
+# version : codeDeploy 버전
+version: 0.0
+os: linux
+files:
+  # source : codedeploy 에서 전달한 파일 중 destination 으로 이동시킬 대상 지정, 루트 경로라면 전체 파일을 의미
+  # destination : source 에서 지정한 파일을 받을 위치
+  # overwrite : 기존 파일 덮어쓰기를 허용할지 결정하는 설정
+  - source: /
+    destination: /home/ubuntu/jiguhada/deploy
+    overwrite: yes
