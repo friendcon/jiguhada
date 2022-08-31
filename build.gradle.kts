@@ -33,8 +33,10 @@ dependencies {
     runtimeOnly("com.h2database:h2")
     runtimeOnly("mysql:mysql-connector-java")
 
-    // jackson
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.3")
+    // spring doc
+    implementation("org.springdoc:springdoc-openapi-ui:1.6.9")
+    implementation("org.springdoc:springdoc-openapi-kotlin:1.6.9")
+
 
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
