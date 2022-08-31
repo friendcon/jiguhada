@@ -1,7 +1,6 @@
 package com.project.jiguhada.repository
 
-import com.project.jiguhada.domain.user.UserEntity
-import com.project.jiguhada.repository.user.UserEntityRepository
+import com.project.jiguhada.domain.UserEntity
 import com.project.jiguhada.util.SocialType
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.BeforeEach

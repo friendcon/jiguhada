@@ -1,4 +1,4 @@
-package com.project.jiguhada.domain.user
+package com.project.jiguhada.domain
 
 import com.project.jiguhada.domain.base.BaseEntity
 import com.project.jiguhada.util.SocialType

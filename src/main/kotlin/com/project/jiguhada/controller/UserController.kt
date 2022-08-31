@@ -1,6 +1,6 @@
 package com.project.jiguhada.controller
 
-import com.project.jiguhada.service.user.UserService
+import com.project.jiguhada.service.UserService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.GetMapping
