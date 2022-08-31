@@ -16,7 +16,7 @@ class UserController(
 ) {
     @GetMapping("/checkDuplicate")
     @Operation(summary = "사용자 ID 중복체크")
-    fun checkDuplicate(@RequestParam("username") username: String): Boolean {
+        fun checkDuplicate(@RequestParam("username") username: String): Boolean {
         return userService.checkUsernameDuplicate(username)
     }
 }

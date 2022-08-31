@@ -10,5 +10,4 @@ class JiguhadaApplicationTests {
     @Test
     fun contextLoads() {
     }
-
 }

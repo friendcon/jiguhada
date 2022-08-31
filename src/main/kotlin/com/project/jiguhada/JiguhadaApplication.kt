@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing
 @ConfigurationPropertiesScan
 @EnableJpaAuditing
 class JiguhadaApplication
-
 fun main(args: Array<String>) {
     runApplication<JiguhadaApplication>(*args)
 }
