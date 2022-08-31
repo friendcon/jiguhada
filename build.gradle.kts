@@ -38,8 +38,8 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-kotlin:1.6.9")
 
     // spring security
-    implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("org.springframework.security:spring-security-test")
+    // implementation("org.springframework.boot:spring-boot-starter-security")
+    // implementation("org.springframework.security:spring-security-test")
 
     // jwt
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")

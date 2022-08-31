@@ -19,8 +19,6 @@ else
 fi
 
 echo "> $JAR_PATH 배포"
-echo "> nohup.out 권한 변경"
-sudo chmod 755 nohup.out
 sudo nohup java -jar $JAR_NAME > $REPOSITORY/nohup.out 2>&1 &
 
 
