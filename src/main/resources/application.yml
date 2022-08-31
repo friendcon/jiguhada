@@ -1,0 +1,16 @@
+spring:
+  h2:
+    console:
+      enabled: true
+  profiles:
+    active: prod
+
+
+logging:
+  level:
+    me.silvernine: DEBUG
+
+jwt:
+  header: Authorication
+  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+  token-validity-in-seconds: 86400
