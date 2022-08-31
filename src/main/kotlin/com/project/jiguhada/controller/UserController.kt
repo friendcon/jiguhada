@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@Tag(name = "User API")
+@Tag(name = "User 관련 API")
 @RequestMapping("/api/v1/user")
 class UserController(
     private val userService: UserService
