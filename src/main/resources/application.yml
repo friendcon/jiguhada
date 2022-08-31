@@ -1,0 +1,29 @@
+spring:
+  h2:
+    console:
+      enabled: true
+
+  datasource:
+    url: jdbc:mysql://jiguhada-database.cm6solhgg2g0.ap-northeast-2.rds.amazonaws.com:3306/jiguhada
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: wlrn2022
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+    defer-datasource-initialization: true
+
+logging:
+  level:
+    me.silvernine: DEBUG
+
+jwt:
+  header: Authorication
+  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+  token-validity-in-seconds: 86400
