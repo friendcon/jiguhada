@@ -34,10 +34,11 @@ dependencies {
     runtimeOnly("mysql:mysql-connector-java")
 
     // spring doc
-    implementation("org.springdoc:springdoc-openapi-ui:1.6.9")
-    implementation("org.springdoc:springdoc-openapi-kotlin:1.6.9")
+    implementation("org.springdoc:springdoc-openapi-ui:1.6.11")
+    implementation("org.springdoc:springdoc-openapi-kotlin:1.6.11")
 
-
+    // aws
+    implementation("org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
