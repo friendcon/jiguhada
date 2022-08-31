@@ -1,8 +1,8 @@
-package com.project.jiguhada.service.user
+package com.project.jiguhada.service
 
 import com.project.jiguhada.controller.dto.CreateUserRequestDto
-import com.project.jiguhada.domain.user.UserEntity
-import com.project.jiguhada.repository.user.UserEntityRepository
+import com.project.jiguhada.domain.UserEntity
+import com.project.jiguhada.repository.UserEntityRepository
 import org.springframework.stereotype.Service
 
 @Service
