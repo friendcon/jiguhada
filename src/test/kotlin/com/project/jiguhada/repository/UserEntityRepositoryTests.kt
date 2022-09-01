@@ -18,8 +18,9 @@ class UserEntityRepositoryTests(
     @BeforeEach
     fun setUp() {
         val userEntity = UserEntity(
-            username = "hello",
-            password = "hello",
+            username = "hello11",
+            nickname = "dddddd",
+            password = "hello11",
             userImageUrl = "imgUrl",
             socialType = SocialType.GENERAL
         )
