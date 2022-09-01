@@ -1,13 +1,6 @@
 spring:
-  h2:
-    console:
-      enabled: true
   profiles:
     active: prod
-logging:
-  level:
-    me.silvernine: DEBUG
-    com.amazonaws.util.EC2MetadataUtils: error
 
 cloud:
   aws:
@@ -21,3 +14,9 @@ cloud:
       auto: false
     stack:
       auto: false
+
+logging:
+  level:
+    me.silvernine: DEBUG
+    com.amazonaws.util.EC2MetadataUtils: error
+
