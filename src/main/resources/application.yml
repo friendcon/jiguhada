@@ -7,6 +7,7 @@ spring:
 logging:
   level:
     me.silvernine: DEBUG
+    com.amazonaws.util.EC2MetadataUtils: error
 
 cloud:
   aws:
