@@ -1,5 +1,7 @@
 package com.project.jiguhada.controller
 
+import com.project.jiguhada.controller.dto.CreateUserRequestDto
+import com.project.jiguhada.controller.dto.CreateUserResponseDto
 import com.project.jiguhada.controller.dto.ImgUrlResponseDto
 import com.project.jiguhada.service.AwsS3Service
 import com.project.jiguhada.service.UserService
@@ -27,5 +29,10 @@ class UserController(
     @Operation(summary = "회원가입 이미지 첨부")
     fun uploadTempImg(@RequestParam("imgFile") multipartFile: MultipartFile): ResponseEntity<ImgUrlResponseDto> {
         return ResponseEntity.ok(ImgUrlResponseDto(awsS3Service.uploadImgToTemp(multipartFile)))
+    }
+    @PostMapping("/signup")
+    @Operation(summary = "회원가입")
+    fun signUp(@RequestBody reqeust: CreateUserRequestDto): ResponseEntity<CreateUserResponseDto> {
+        return ResponseEntity.ok(userService.signUp(reqeust))
     }
 }

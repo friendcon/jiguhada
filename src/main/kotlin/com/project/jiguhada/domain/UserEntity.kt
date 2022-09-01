@@ -9,6 +9,7 @@ import javax.persistence.Enumerated
 @Entity
 data class UserEntity(
     val username: String,
+    val nickname: String,
     val password: String,
     val userImageUrl: String,
     @Enumerated(EnumType.STRING)
@@ -24,6 +25,7 @@ data class UserEntity(
 
     override fun hashCode(): Int = javaClass.hashCode()
     override fun toString(): String {
-        return "UserEntity(username='$username', password='$password', userImageUrl='$userImageUrl', socialType=$socialType)"
+        return "UserEntity(username='$username', nickname='$nickname', password='$password', userImageUrl='$userImageUrl', socialType=$socialType)"
     }
+
 }
