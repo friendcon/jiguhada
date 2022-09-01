@@ -4,6 +4,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: wlrn2022!
+
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
