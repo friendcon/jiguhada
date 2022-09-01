@@ -7,7 +7,7 @@ cd $REPOSITORY
 JAR_NAME=$(ls $REPOSITORY | grep '.jar' | tail -n 1)
 JAR_PATH=$REPOSITORY/$JAR_NAME
 
-CURRENT_PID=$(pgrep -f $APP_NAME | grep jar | awk '{print $1}')
+CURRENT_PID=$(sudo lsof -t -i:8080)
 echo "> 현재 구동중인 애플리케이션 PIT : $CURRENT_PID"
 
 if [ -z $CURRENT_PID ];
