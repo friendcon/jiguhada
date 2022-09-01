@@ -3,7 +3,8 @@ spring:
     url: jdbc:mysql://jiguhada-database.cm6solhgg2g0.ap-northeast-2.rds.amazonaws.com:3306/jiguhada
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: wlrn2022
+    password: wlrn2022!
+
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:

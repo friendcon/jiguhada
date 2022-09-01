@@ -4,8 +4,19 @@ spring:
       enabled: true
   profiles:
     active: prod
-
-
 logging:
   level:
     me.silvernine: DEBUG
+
+cloud:
+  aws:
+    s3:
+      bucket: jiguhada-user-img
+    credentials:
+      access-key: AKIASXBNAYK3XXYKDMGP
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
