@@ -10,8 +10,6 @@ on:
   # master 브랜치에 push, pull_request 될 때 workflow 를 실행하겠다는 의미
   push:
     branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
 
 permissions:
   contents: read
