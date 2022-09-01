@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 REPOSITORY=/home/ubuntu/jiguhada/deploy
+APP_NAME = jiguhada
 cd $REPOSITORY
 
-APP_NAME = jiguhada
 JAR_NAME=$(ls $REPOSITORY | grep '.jar' | tail -n 1)
 JAR_PATH=$REPOSITORY/$JAR_NAME
 
