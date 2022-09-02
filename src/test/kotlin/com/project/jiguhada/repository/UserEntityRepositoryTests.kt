@@ -72,20 +72,9 @@ class UserEntityRepositoryTests(
 
     @Test
     @Transactional
-    @DisplayName("회원 권한 업데이트")
-    fun readUser() {
-        val response = userEntityRepository.findById(1).get()
-        response.updateRole(ROLE.ROLE_ADMIN)
-
-        Assertions.assertThat(response.username).isEqualTo("hello")
-        Assertions.assertThat(response.roles).containsAll(listOf(Role(ROLE.ROLE_ADMIN), Role(ROLE.ROLE_ADMIN)))
-    }
-
-    @Test
-    @Transactional
     @DisplayName("회원 정보 조회")
     fun readAllUser() {
-        val response = userEntityRepository.findById(1L).get()
+        val response = userEntityRepository.findAll()[0]
         Assertions.assertThat(response.username).isEqualTo("hello")
     }
 }

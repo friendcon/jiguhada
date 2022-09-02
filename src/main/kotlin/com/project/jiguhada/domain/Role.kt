@@ -18,7 +18,7 @@ data class Role(
         if (other == null || Hibernate.getClass(this) != Hibernate.getClass(other)) return false
         other as Role
 
-        return roleName != null && roleName == other.roleName
+        return roleName == other.roleName
     }
 
     override fun hashCode(): Int = javaClass.hashCode()
