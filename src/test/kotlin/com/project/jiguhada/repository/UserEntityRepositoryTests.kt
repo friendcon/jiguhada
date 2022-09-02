@@ -1,6 +1,8 @@
 package com.project.jiguhada.repository
 
+import com.project.jiguhada.domain.Role
 import com.project.jiguhada.domain.UserEntity
+import com.project.jiguhada.util.ROLE
 import com.project.jiguhada.util.SocialType
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -9,20 +11,29 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.transaction.annotation.Transactional
 
 @SpringBootTest
 @ActiveProfiles("dev")
 class UserEntityRepositoryTests(
-    @Autowired private val userEntityRepository: UserEntityRepository
+    @Autowired private val userEntityRepository: UserEntityRepository,
+    @Autowired private val roleRepository: RoleRepository
 ) {
     @BeforeEach
     fun setUp() {
+        val user_role = Role(roleName = ROLE.ROLE_USER)
+
+        val admin_role = Role(roleName = ROLE.ROLE_ADMIN)
+
+        roleRepository.saveAll(listOf(user_role, admin_role))
+
         val userEntity = UserEntity(
             username = "hello",
             nickname = "dddddd",
             password = "hello11",
             userImageUrl = "imgUrl",
-            socialType = SocialType.GENERAL
+            socialType = SocialType.GENERAL,
+            roles = mutableSetOf(Role(ROLE.ROLE_USER))
         )
 
         userEntityRepository.save(userEntity)
@@ -40,5 +51,41 @@ class UserEntityRepositoryTests(
     fun existsByUsernameFailTest() {
         val response = userEntityRepository.existsByUsername("wow")
         Assertions.assertThat(response).isFalse
+    }
+
+    @Test
+    @DisplayName("회원가입")
+    fun UserEntityRepositoryTests() {
+        val user = UserEntity(
+            "hozumi",
+            "hozumi",
+            "hozumi",
+            "hozumi",
+            SocialType.GENERAL,
+            roles = mutableSetOf(Role(ROLE.ROLE_USER))
+        )
+
+        userEntityRepository.save(user)
+
+        Assertions.assertThat(user.roles).contains(Role(ROLE.ROLE_USER))
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("회원 권한 업데이트")
+    fun readUser() {
+        val response = userEntityRepository.findById(1).get()
+        response.updateRole(ROLE.ROLE_ADMIN)
+
+        Assertions.assertThat(response.username).isEqualTo("hello")
+        Assertions.assertThat(response.roles).containsAll(listOf(Role(ROLE.ROLE_ADMIN), Role(ROLE.ROLE_ADMIN)))
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("회원 정보 조회")
+    fun readAllUser() {
+        val response = userEntityRepository.findById(1L).get()
+        Assertions.assertThat(response.username).isEqualTo("hello")
     }
 }

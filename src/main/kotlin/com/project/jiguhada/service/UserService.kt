@@ -2,8 +2,10 @@ package com.project.jiguhada.service
 
 import com.project.jiguhada.controller.dto.CreateUserRequestDto
 import com.project.jiguhada.controller.dto.CreateUserResponseDto
+import com.project.jiguhada.domain.Role
 import com.project.jiguhada.domain.UserEntity
 import com.project.jiguhada.repository.UserEntityRepository
+import com.project.jiguhada.util.ROLE
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -27,7 +29,8 @@ class UserService(
             nickname,
             password,
             userImageUrl,
-            socialType
+            socialType,
+            roles = mutableSetOf(Role(ROLE.ROLE_USER))
         )
     }
 
