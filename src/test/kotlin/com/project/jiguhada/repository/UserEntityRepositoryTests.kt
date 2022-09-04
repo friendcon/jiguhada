@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.transaction.annotation.Transactional
 
 @SpringBootTest
 @ActiveProfiles("dev")
@@ -70,14 +69,6 @@ class UserEntityRepositoryTests(
         userEntityRepository.save(user)
 
         Assertions.assertThat(user.roles).contains(Role(ROLE.ROLE_USER))
-    }
-
-    @Test
-    @Transactional
-    @DisplayName("회원 정보 조회")
-    fun readAllUser() {
-        val response = userEntityRepository.findAll()[0]
-        Assertions.assertThat(response.username).isEqualTo("hello")
     }
 
     @Test
