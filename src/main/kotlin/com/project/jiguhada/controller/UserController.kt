@@ -7,6 +7,7 @@ import com.project.jiguhada.service.AwsS3Service
 import com.project.jiguhada.service.UserService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
@@ -25,7 +26,7 @@ class UserController(
         return userService.checkUsernameDuplicate(username)
     }
 
-    @PostMapping("/uploadTempImg")
+    @PostMapping("/uploadTempImg", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     @Operation(summary = "회원가입 이미지 첨부")
     fun uploadTempImg(@RequestParam("imgFile") multipartFile: MultipartFile): ResponseEntity<ImgUrlResponseDto> {
         return ResponseEntity.ok(ImgUrlResponseDto(awsS3Service.uploadImgToTemp(multipartFile)))
