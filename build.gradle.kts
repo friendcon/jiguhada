@@ -52,6 +52,10 @@ dependencies {
     // to json
     implementation("com.fasterxml.jackson.core:jackson-databind:2.13.3")
 
+    // multipart file
+    implementation("commons-fileupload:commons-fileupload:1.4")
+    implementation("commons-io:commons-io:2.11.0")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
