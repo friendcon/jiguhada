@@ -6,12 +6,14 @@ import com.project.jiguhada.domain.Role
 import com.project.jiguhada.domain.UserEntity
 import com.project.jiguhada.repository.UserEntityRepository
 import com.project.jiguhada.util.ROLE
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class UserService(
-    private val userEntityRepository: UserEntityRepository
+    private val userEntityRepository: UserEntityRepository,
+    private val passwordEncoder: PasswordEncoder
 ) {
     @Transactional
     fun signUp(request: CreateUserRequestDto): CreateUserResponseDto {
@@ -27,7 +29,7 @@ class UserService(
         return UserEntity(
             username,
             nickname,
-            password,
+            passwordEncoder.encode(password),
             userImageUrl,
             socialType,
             roles = mutableSetOf(Role(ROLE.ROLE_USER))

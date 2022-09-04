@@ -37,12 +37,24 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-ui:1.6.11")
     implementation("org.springdoc:springdoc-openapi-kotlin:1.6.11")
 
+    // spring security
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    testImplementation("org.springframework.security:spring-security-test")
+
+    // jwt
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
+    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
+
     // aws
     implementation("org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE")
 
-    // commons-io
-    implementation("commons-io:commons-io:2.11.0")
+    // to json
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.3")
+
+    // multipart file
     implementation("commons-fileupload:commons-fileupload:1.4")
+    implementation("commons-io:commons-io:2.11.0")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }

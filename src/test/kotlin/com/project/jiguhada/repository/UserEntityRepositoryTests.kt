@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.transaction.annotation.Transactional
 
@@ -17,7 +18,8 @@ import org.springframework.transaction.annotation.Transactional
 @ActiveProfiles("dev")
 class UserEntityRepositoryTests(
     @Autowired private val userEntityRepository: UserEntityRepository,
-    @Autowired private val roleRepository: RoleRepository
+    @Autowired private val roleRepository: RoleRepository,
+    @Autowired private val passwordEncoder: PasswordEncoder
 ) {
     @BeforeEach
     fun setUp() {
@@ -76,5 +78,12 @@ class UserEntityRepositoryTests(
     fun readAllUser() {
         val response = userEntityRepository.findAll()[0]
         Assertions.assertThat(response.username).isEqualTo("hello")
+    }
+
+    @Test
+    @DisplayName("패스워드 비교")
+    fun passwordTest() {
+        val result = passwordEncoder.encode("project0903")
+        println(result)
     }
 }
