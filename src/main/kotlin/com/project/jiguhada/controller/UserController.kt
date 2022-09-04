@@ -1,8 +1,8 @@
 package com.project.jiguhada.controller
 
 import com.project.jiguhada.controller.dto.CreateUserRequestDto
-import com.project.jiguhada.controller.dto.CreateUserResponseDto
 import com.project.jiguhada.controller.dto.ImgUrlResponseDto
+import com.project.jiguhada.controller.dto.TokenDto
 import com.project.jiguhada.service.AwsS3Service
 import com.project.jiguhada.service.UserService
 import io.swagger.v3.oas.annotations.Operation
@@ -22,7 +22,6 @@ class UserController(
     @GetMapping("/checkDuplicate")
     @Operation(summary = "사용자 ID 중복체크")
     fun checkDuplicate(@RequestParam("username") username: String): Boolean {
-        println("컨트롤러에 들어왔는지 ")
         return userService.checkUsernameDuplicate(username)
     }
 
@@ -33,7 +32,7 @@ class UserController(
     }
     @PostMapping("/signup")
     @Operation(summary = "회원가입")
-    fun signUp(@RequestBody reqeust: CreateUserRequestDto): ResponseEntity<CreateUserResponseDto> {
+    fun signUp(@RequestBody reqeust: CreateUserRequestDto): ResponseEntity<TokenDto> {
         return ResponseEntity.ok(userService.signUp(reqeust))
     }
 }

@@ -2,6 +2,7 @@ package com.project.jiguhada.jwt
 
 import com.project.jiguhada.controller.dto.TokenDto
 import com.project.jiguhada.service.JwtUserDetailsService
+import com.project.jiguhada.util.CustomUtils
 import io.jsonwebtoken.*
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
@@ -26,11 +27,14 @@ class JwtAuthenticationProvider(
     private val jwtUserDetailsService: JwtUserDetailsService
 ): InitializingBean{
     private val logger = LoggerFactory.getLogger(JwtAuthenticationProvider::class.java)
+
+    private val refreshTokenInMilliSecond: Long
     private val tokenValidityInMilliseconds: Long
     private var key: Key? = null
 
     init {
-        tokenValidityInMilliseconds = tokenValidityInSeconds * 1000
+        tokenValidityInMilliseconds = tokenValidityInSeconds * 1000 // 1시간
+        refreshTokenInMilliSecond = (60 * 60 * 24 * 30 * 1000).toLong() // 30일
     }
 
     companion object {
@@ -85,23 +89,34 @@ class JwtAuthenticationProvider(
         val jwtUserDetails = userResponse as JwtUserDetails
 
         claims[USERNAME_KEY] = username
-        // claims[USERID_KEY] = jwtUserDetails.id
-        // claims[NICKNAME_KEY] = jwtUserDetails.nickname
         claims[AUTHORITIES_KEY] = authorities
 
-        val validity = Date(Date().time + tokenValidityInMilliseconds)
+        val accessTokenValidity = Date(Date().time + tokenValidityInMilliseconds)
+        val refreshTokenValidity = Date(Date().time + refreshTokenInMilliSecond)
+
+        println(accessTokenValidity)
+        println(refreshTokenValidity)
+
+        println(Date().time)
         val jwtToken = Jwts.builder()
             .setIssuedAt(Date()) // 발급일
             .setClaims(claims) // 데이터
             .signWith(key, SignatureAlgorithm.HS512)
-            .setExpiration(validity) // 만료일
+            .setExpiration(accessTokenValidity) // 만료일
+            .compact()
+
+        val refreshToken = Jwts.builder()
+            .setIssuedAt(Date())
+            .setExpiration(refreshTokenValidity)
+            .signWith(key, SignatureAlgorithm.HS512)
             .compact()
 
         return TokenDto(
-            jwtToken,
-            userResponse.id,
-            userResponse.nickname,
-            validity
+            accessToken = jwtToken,
+            userid = userResponse.id,
+            refreshToken = refreshToken,
+            nickname = userResponse.nickname,
+            accessTokenExpiredDate = CustomUtils.changeDateFormat(accessTokenValidity)
         )
     }
 
