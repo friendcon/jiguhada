@@ -49,6 +49,9 @@ dependencies {
     // aws
     implementation("org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE")
 
+    // to json
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.3")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 

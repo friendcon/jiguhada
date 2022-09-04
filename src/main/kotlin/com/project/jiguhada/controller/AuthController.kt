@@ -28,13 +28,12 @@ class AuthController(
 
         val authenticationToken = UsernamePasswordAuthenticationToken(loginRequest.username, loginRequest.password)
 
-        println(authenticationToken.name)
         val authentication: Authentication = authenticationManagerBuilder.`object`.authenticate(authenticationToken)
         SecurityContextHolder.getContext().authentication
 
-        val jwt: String = jwtAuthenticationProvider.createToken(authentication)
+        val tokenDto = jwtAuthenticationProvider.createToken(authentication)
         val httpHeaders = HttpHeaders()
-        httpHeaders.add(JwtAuthenticationProvider.AUTHORIZATION_HEADER, "Bearer $jwt")
-        return ResponseEntity<TokenDto>(TokenDto(jwt), httpHeaders, HttpStatus.OK)
+        httpHeaders.add(JwtAuthenticationProvider.AUTHORIZATION_HEADER, "Bearer ${tokenDto.token}")
+        return ResponseEntity<TokenDto>(tokenDto, httpHeaders, HttpStatus.OK)
     }
 }

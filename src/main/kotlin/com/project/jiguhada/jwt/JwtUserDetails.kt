@@ -56,6 +56,6 @@ class JwtUserDetails(
      * false : 비활성화
      */
     override fun isEnabled(): Boolean {
-        return false
+        return true
     }
 }

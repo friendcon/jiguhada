@@ -15,7 +15,6 @@ class JwtUserDetailsService(
 
     @Transactional
     override fun loadUserByUsername(username: String?): UserDetails {
-        println("$username")
         return getJwtUserDetails(username)
     }
 

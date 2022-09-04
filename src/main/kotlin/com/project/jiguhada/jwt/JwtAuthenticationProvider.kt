@@ -1,5 +1,6 @@
 package com.project.jiguhada.jwt
 
+import com.project.jiguhada.controller.dto.TokenDto
 import com.project.jiguhada.service.JwtUserDetailsService
 import io.jsonwebtoken.*
 import io.jsonwebtoken.io.Decoders
@@ -23,7 +24,7 @@ class JwtAuthenticationProvider(
     @Value("\${jwt.token-validity-in-seconds}")
     val tokenValidityInSeconds: Long,
     private val jwtUserDetailsService: JwtUserDetailsService
-): InitializingBean {
+): InitializingBean{
     private val logger = LoggerFactory.getLogger(JwtAuthenticationProvider::class.java)
     private val tokenValidityInMilliseconds: Long
     private var key: Key? = null
@@ -33,7 +34,7 @@ class JwtAuthenticationProvider(
     }
 
     companion object {
-        const val AUTHORITIES_KEY = "auth"
+        const val AUTHORITIES_KEY = "Authorization"
         const val USERNAME_KEY = "username"
         const val USERID_KEY = "userid"
         const val NICKNAME_KEY = "nickname"
@@ -71,7 +72,7 @@ class JwtAuthenticationProvider(
         return UsernamePasswordAuthenticationToken(principal, jwt, authorities)
     }
 
-    fun createToken(authentication: Authentication): String {
+    fun createToken(authentication: Authentication): TokenDto {
         val claims = Jwts.claims()
 
         val authorities = authentication.authorities.map {
@@ -84,18 +85,24 @@ class JwtAuthenticationProvider(
         val jwtUserDetails = userResponse as JwtUserDetails
 
         claims[USERNAME_KEY] = username
-        claims[USERID_KEY] = jwtUserDetails.id
-        claims[NICKNAME_KEY] = jwtUserDetails.nickname
+        // claims[USERID_KEY] = jwtUserDetails.id
+        // claims[NICKNAME_KEY] = jwtUserDetails.nickname
         claims[AUTHORITIES_KEY] = authorities
 
         val validity = Date(Date().time + tokenValidityInMilliseconds)
-
-        return Jwts.builder()
+        val jwtToken = Jwts.builder()
             .setIssuedAt(Date()) // 발급일
             .setClaims(claims) // 데이터
             .signWith(key, SignatureAlgorithm.HS512)
             .setExpiration(validity) // 만료일
             .compact()
+
+        return TokenDto(
+            jwtToken,
+            userResponse.id,
+            userResponse.nickname,
+            validity
+        )
     }
 
     // 사용자가 요청한 토큰의 유효성 검사 : 서버가 생성한 토큰이 맞는지?
