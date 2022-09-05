@@ -33,6 +33,10 @@ class UserService(
         return userEntityRepository.existsByUsername(username)
     }
 
+    fun checkNicknameDuplicate(nickname: String): Boolean {
+        return userEntityRepository.existsByNickname(nickname)
+    }
+
     fun CreateUserRequestDto.toEntity(): UserEntity {
         return UserEntity(
             username,

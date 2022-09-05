@@ -6,6 +6,6 @@ import java.util.Optional
 
 interface UserEntityRepository: JpaRepository<UserEntity, Long> {
     fun existsByUsername(username: String): Boolean
-
+    fun existsByNickname(nickname: String): Boolean
     fun findByUsername(username: String?): Optional<UserEntity>
 }

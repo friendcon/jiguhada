@@ -114,7 +114,6 @@ class JwtAuthenticationProvider(
         return TokenDto(
             accessToken = "Bearer $jwtToken",
             userid = userResponse.id,
-            refreshToken = "Bearer $refreshToken",
             nickname = userResponse.nickname,
             accessTokenExpiredDate = CustomUtils.changeDateFormat(accessTokenValidity)
         )
