@@ -14,5 +14,4 @@ object SecurityUtil {
             }
             return authentication.name
         }
-
 }
