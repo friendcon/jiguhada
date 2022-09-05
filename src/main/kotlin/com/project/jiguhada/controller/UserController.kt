@@ -5,6 +5,7 @@ import com.project.jiguhada.service.AwsS3Service
 import com.project.jiguhada.service.UserService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -43,16 +44,13 @@ class UserController(
 
     @GetMapping("/info/{id}")
     @Operation(summary = "회원정보조회")
-    fun readUserInfo(@PathVariable("id") id: Long, @RequestHeader("Authorization") accessToken: String): ResponseEntity<Any> {
-        val response = userService.readUserInfo(accessToken, id) ?: return ResponseEntity.badRequest().body(CommonResponseDto(
-            400,
-            "조회할 권한이 없습니다"
-        ))
+    fun readUserInfo(@PathVariable("id") id: Long, @RequestHeader("Authorization") accessToken: String): ResponseEntity<ReadUserInfoResponseDto> {
+        val response = userService.readUserInfo(accessToken, id) ?: return ResponseEntity(HttpStatus.BAD_REQUEST)
         return ResponseEntity.ok().body(response)
     }
     @PostMapping("/updateNickname")
     @Operation(summary = "닉네임 수정")
-    fun updateNickname(@RequestBody request: UserNicknameRequestDto, httprequest: HttpServletRequest): ResponseEntity<Any> {
+    fun updateNickname(@RequestBody request: UserNicknameRequestDto, httprequest: HttpServletRequest): ResponseEntity<CommonResponseDto> {
         val response = userService.updateNickname(request.nickname, httprequest.getHeader("Authorization"))
         if(response.code == 200L) {
             return ResponseEntity.ok().body(response)
@@ -62,7 +60,7 @@ class UserController(
     }
     @PostMapping("/updatePassword")
     @Operation(summary = "비밀번호 변경")
-    fun updatePassword(@RequestBody request: UserPasswordRequestDto, httprequest: HttpServletRequest): ResponseEntity<Any> {
+    fun updatePassword(@RequestBody request: UserPasswordRequestDto, httprequest: HttpServletRequest): ResponseEntity<CommonResponseDto> {
         val response = userService.updatePassword(request, httprequest.getHeader("Authorization"))
         if(response.code == 200L) {
             return ResponseEntity.ok().body(response)
