@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.lang.Exception
+import org.springframework.util.StringUtils
 
 @Service
 class UserService(
@@ -32,15 +32,30 @@ class UserService(
     }
 
     @Transactional
-    fun updateNickname(request: UserNicknameRequestDto): CommonResponseDto {
-        val idFromToken = jwtAuthenticationProvider.getIdFromTokenClaims(request.accesstoken)
-        // security Context 의 username 과 token에 있는 userId가 일치하면
-        if(SecurityUtil.currentUsername.equals(idFromToken)) {
-            if(userEntityRepository.existsByNickname(request.nickname)) {
-                return CommonResponseDto(401, "이미 존재하는 닉네임입니다.")
+    fun readUserInfo(accesstoken: String, userid: Long): ReadUserInfoResponseDto? {
+
+        val usernameFromToken = jwtAuthenticationProvider.getIdFromTokenClaims(resolveToken(accesstoken)!!)
+
+        if(SecurityUtil.currentUsername.equals(usernameFromToken)) {
+            val userresponse = userEntityRepository.findByUsername(usernameFromToken).get()
+            if(userid != userresponse.id) {
+                return null
             }
-            val response = userEntityRepository.findById(request.userid).get()
-            response.updateNickname(request.nickname)
+            return userEntityRepository.findByUsername(usernameFromToken).get().toReadUserInfoResponse()
+        }
+        return null
+    }
+
+    @Transactional
+    fun updateNickname(nickname: String, token: String): CommonResponseDto {
+        val usernameFromToken = jwtAuthenticationProvider.getIdFromTokenClaims(resolveToken(token)!!)
+
+        if(SecurityUtil.currentUsername.equals(usernameFromToken)) {
+            if(userEntityRepository.existsByNickname(nickname)) {
+                return CommonResponseDto(400, "이미 존재하는 닉네임입니다.")
+            }
+            val response = userEntityRepository.findByUsername(usernameFromToken).get()
+            response.updateNickname(nickname)
             return CommonResponseDto(
                 200,
                 "닉네임 변경에 성공했습니다"
@@ -50,13 +65,13 @@ class UserService(
     }
 
     @Transactional
-    fun updatePassword(request: UserPasswordRequestDto): CommonResponseDto {
-        val idFromToken = jwtAuthenticationProvider.getIdFromTokenClaims(request.accesstoken)
+    fun updatePassword(request: UserPasswordRequestDto, accesstoken: String): CommonResponseDto {
+        val usernameFromToken = jwtAuthenticationProvider.getIdFromTokenClaims(resolveToken(accesstoken)!!)
 
-        if(SecurityUtil.currentUsername.equals(idFromToken)) {
-            val response = userEntityRepository.findById(request.userid).get()
+        if(SecurityUtil.currentUsername.equals(usernameFromToken)) {
+            val response = userEntityRepository.findByUsername(usernameFromToken).get()
             if(passwordEncoder.matches(request.nowpassword, response.password)) {
-                response.updatePassword(request.newpassword)
+                response.updatePassword(passwordEncoder.encode(request.newpassword))
                 return CommonResponseDto(
                     200,
                     "패스워드 변경에 성공했습니다"
@@ -64,11 +79,17 @@ class UserService(
             } else {
                 return CommonResponseDto(
                     400,
-                    "패스워드가 일치하지 않습니다"
+                    "입력한 패스워드가 일치하지 않습니다"
                 )
             }
         }
         throw UsernameNotFoundException("해당 사용자가 존재하지 않습니다")
+    }
+
+    fun resolveToken(token: String): String? {
+        return if(StringUtils.hasText(token) && token.startsWith("Bearer ")) {
+            token.substring(7)
+        } else null
     }
     fun checkUsernameDuplicate(username: String): Boolean {
         return userEntityRepository.existsByUsername(username)

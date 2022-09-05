@@ -1,8 +1,6 @@
 package com.project.jiguhada.controller
 
-import com.project.jiguhada.controller.dto.CreateUserRequestDto
-import com.project.jiguhada.controller.dto.ImgUrlResponseDto
-import com.project.jiguhada.controller.dto.TokenDto
+import com.project.jiguhada.controller.dto.*
 import com.project.jiguhada.service.AwsS3Service
 import com.project.jiguhada.service.UserService
 import io.swagger.v3.oas.annotations.Operation
@@ -11,6 +9,7 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
+import javax.servlet.http.HttpServletRequest
 
 @RestController
 @Tag(name = "User API")
@@ -40,5 +39,35 @@ class UserController(
     @Operation(summary = "회원가입")
     fun signUp(@RequestBody reqeust: CreateUserRequestDto): ResponseEntity<TokenDto> {
         return ResponseEntity.ok(userService.signUp(reqeust))
+    }
+
+    @GetMapping("/info/{id}")
+    @Operation(summary = "회원정보조회")
+    fun readUserInfo(@PathVariable("id") id: Long, @RequestHeader("Authorization") accessToken: String): ResponseEntity<Any> {
+        val response = userService.readUserInfo(accessToken, id) ?: return ResponseEntity.badRequest().body(CommonResponseDto(
+            400,
+            "조회할 권한이 없습니다"
+        ))
+        return ResponseEntity.ok().body(response)
+    }
+    @PostMapping("/updateNickname")
+    @Operation(summary = "닉네임 수정")
+    fun updateNickname(@RequestBody nickname: String, httprequest: HttpServletRequest): ResponseEntity<Any> {
+        val response = userService.updateNickname(nickname, httprequest.getHeader("Authorization"))
+        if(response.code == 200L) {
+            return ResponseEntity.ok().body(response)
+        } else {
+            return ResponseEntity.badRequest().body(response)
+        }
+    }
+    @PostMapping("/updatePassword")
+    @Operation(summary = "비밀번호 변경")
+    fun updatePassword(@RequestBody request: UserPasswordRequestDto, httprequest: HttpServletRequest): ResponseEntity<Any> {
+        val response = userService.updatePassword(request, httprequest.getHeader("Authorization"))
+        if(response.code == 200L) {
+            return ResponseEntity.ok().body(response)
+        } else {
+            return ResponseEntity.badRequest().body(response)
+        }
     }
 }

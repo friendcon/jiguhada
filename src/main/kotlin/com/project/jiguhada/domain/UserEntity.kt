@@ -1,5 +1,6 @@
 package com.project.jiguhada.domain
 
+import com.project.jiguhada.controller.dto.ReadUserInfoResponseDto
 import com.project.jiguhada.util.ROLE
 import com.project.jiguhada.util.SocialType
 import org.hibernate.Hibernate
@@ -21,6 +22,15 @@ data class UserEntity(
     )
     var roles: MutableSet<Role> = mutableSetOf()
 ): BaseEntity() {
+
+    fun toReadUserInfoResponse(): ReadUserInfoResponseDto {
+        return ReadUserInfoResponseDto(
+            username = this.username,
+            nickname = this.nickname,
+            imgUrl = this.userImageUrl,
+            socialType =  this.socialType
+        )
+    }
 
     fun updateNickname(nickname: String): String {
         this.nickname = nickname
