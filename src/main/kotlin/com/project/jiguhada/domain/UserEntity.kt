@@ -8,11 +8,11 @@ import javax.persistence.*
 @Entity
 data class UserEntity(
     val username: String,
-    val nickname: String,
-    val password: String,
-    val userImageUrl: String,
+    var nickname: String,
+    var password: String,
+    var userImageUrl: String,
     @Enumerated(EnumType.STRING)
-    val socialType: SocialType,
+    var socialType: SocialType,
     @ManyToMany
     @JoinTable(
         name = "user_entity_roles",
@@ -21,6 +21,16 @@ data class UserEntity(
     )
     var roles: MutableSet<Role> = mutableSetOf()
 ): BaseEntity() {
+
+    fun updateNickname(nickname: String): String {
+        this.nickname = nickname
+        return nickname
+    }
+
+    fun updatePassword(password: String): String {
+        this.password = password
+        return password
+    }
 
     fun updateRole(role: ROLE): UserEntity {
         roles.add(Role(role))
