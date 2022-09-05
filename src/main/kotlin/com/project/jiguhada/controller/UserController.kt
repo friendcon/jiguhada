@@ -21,8 +21,14 @@ class UserController(
 ) {
     @GetMapping("/checkDuplicate")
     @Operation(summary = "사용자 ID 중복체크")
-    fun checkDuplicate(@RequestParam("username") username: String): Boolean {
+    fun checkDuplicateUsername(@RequestParam("username") username: String): Boolean {
         return userService.checkUsernameDuplicate(username)
+    }
+
+    @GetMapping("/checkDuplicateNickname")
+    @Operation(summary = "사용자 닉네임 중복체크")
+    fun checkDuplicateNickname(@RequestParam("nickname") nickname: String): Boolean {
+        return userService.checkNicknameDuplicate(nickname)
     }
 
     @PostMapping("/uploadTempImg", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
