@@ -42,6 +42,7 @@ class JwtAuthenticationProvider(
         const val USERNAME_KEY = "username"
         const val USERID_KEY = "userid"
         const val NICKNAME_KEY = "nickname"
+        const val USER_IMG_URL = "imgUrl"
         const val AUTHORIZATION_HEADER = "Authorization"
     }
 
@@ -115,6 +116,7 @@ class JwtAuthenticationProvider(
             accessToken = "Bearer $jwtToken",
             userid = userResponse.id,
             nickname = userResponse.nickname,
+            userImgUrl = userResponse.imgUrl,
             accessTokenExpiredDate = CustomUtils.changeDateFormat(accessTokenValidity)
         )
     }

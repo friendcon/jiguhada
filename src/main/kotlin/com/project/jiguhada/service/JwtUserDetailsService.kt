@@ -25,6 +25,7 @@ class JwtUserDetailsService(
             response.username,
             response.nickname,
             response.password,
+            response.userImageUrl,
             response.roles.map {
                 SimpleGrantedAuthority(it.roleName.toString())
             }.toMutableList()

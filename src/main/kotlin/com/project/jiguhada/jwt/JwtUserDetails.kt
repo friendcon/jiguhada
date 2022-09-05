@@ -8,6 +8,7 @@ class JwtUserDetails(
     val userName: String,
     val nickname: String,
     val passWord: String,
+    val imgUrl: String,
     val roles: MutableList<GrantedAuthority> = mutableListOf<GrantedAuthority>()
 ): UserDetails {
 
