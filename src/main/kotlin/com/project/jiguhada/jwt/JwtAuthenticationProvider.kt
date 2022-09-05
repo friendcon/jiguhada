@@ -139,4 +139,14 @@ class JwtAuthenticationProvider(
         }
         return false
     }
+
+    fun getIdFromTokenClaims(token: String): String {
+        val claims = Jwts.parserBuilder()
+            .setSigningKey(key)
+            .build()
+            .parseClaimsJws(token)
+            .body
+
+        return claims.get(USERNAME_KEY).toString()
+    }
 }
