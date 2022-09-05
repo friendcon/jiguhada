@@ -52,8 +52,8 @@ class UserController(
     }
     @PostMapping("/updateNickname")
     @Operation(summary = "닉네임 수정")
-    fun updateNickname(@RequestBody nickname: String, httprequest: HttpServletRequest): ResponseEntity<Any> {
-        val response = userService.updateNickname(nickname, httprequest.getHeader("Authorization"))
+    fun updateNickname(@RequestBody request: UserNicknameRequestDto, httprequest: HttpServletRequest): ResponseEntity<Any> {
+        val response = userService.updateNickname(request.nickname, httprequest.getHeader("Authorization"))
         if(response.code == 200L) {
             return ResponseEntity.ok().body(response)
         } else {
