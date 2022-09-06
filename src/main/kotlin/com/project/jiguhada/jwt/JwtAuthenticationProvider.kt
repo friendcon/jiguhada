@@ -6,6 +6,7 @@ import com.project.jiguhada.util.CustomUtils
 import io.jsonwebtoken.*
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
+import io.jsonwebtoken.security.SignatureException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.Value
@@ -14,6 +15,7 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.userdetails.User
 import org.springframework.stereotype.Component
 import org.springframework.util.StringUtils
+import java.lang.NullPointerException
 import java.security.Key
 import java.util.*
 import javax.servlet.http.HttpServletRequest
@@ -40,9 +42,6 @@ class JwtAuthenticationProvider(
     companion object {
         const val AUTHORITIES_KEY = "Authorization"
         const val USERNAME_KEY = "username"
-        const val USERID_KEY = "userid"
-        const val NICKNAME_KEY = "nickname"
-        const val USER_IMG_URL = "imgUrl"
         const val AUTHORIZATION_HEADER = "Authorization"
     }
 
@@ -93,23 +92,12 @@ class JwtAuthenticationProvider(
         claims[AUTHORITIES_KEY] = authorities
 
         val accessTokenValidity = Date(Date().time + tokenValidityInMilliseconds)
-        val refreshTokenValidity = Date(Date().time + refreshTokenInMilliSecond)
 
-        println(accessTokenValidity)
-        println(refreshTokenValidity)
-
-        println(Date().time)
         val jwtToken = Jwts.builder()
             .setIssuedAt(Date()) // 발급일
             .setClaims(claims) // 데이터
             .signWith(key, SignatureAlgorithm.HS512)
             .setExpiration(accessTokenValidity) // 만료일
-            .compact()
-
-        val refreshToken = Jwts.builder()
-            .setIssuedAt(Date())
-            .setExpiration(refreshTokenValidity)
-            .signWith(key, SignatureAlgorithm.HS512)
             .compact()
 
         return TokenDto(
@@ -136,6 +124,8 @@ class JwtAuthenticationProvider(
             logger.info("지원되지 않는 JWT 토큰입니다.")
         } catch (e: IllegalArgumentException) {
             logger.info("JWT 토큰이 잘못되었습니다.")
+        } catch (e: SignatureException) {
+            logger.info("잘못된 JWT 서명입니다.")
         }
         return false
     }
@@ -148,5 +138,9 @@ class JwtAuthenticationProvider(
             .body
 
         return claims.get(USERNAME_KEY).toString()
+    }
+
+    fun getTokenFromHeader(httprequest: HttpServletRequest): String {
+        return httprequest.getHeader("Authorization")?: throw NullPointerException("인증정보가 없습니다.")
     }
 }
