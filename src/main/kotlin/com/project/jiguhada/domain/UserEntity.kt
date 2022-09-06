@@ -32,6 +32,11 @@ data class UserEntity(
         )
     }
 
+    fun updateUserImageUrl(imgUrl: String): String{
+        this.userImageUrl = imgUrl
+        return imgUrl
+    }
+
     fun updateNickname(nickname: String): String {
         this.nickname = nickname
         return nickname

@@ -3,10 +3,7 @@ package com.project.jiguhada.service
 import com.project.jiguhada.controller.dto.*
 import com.project.jiguhada.domain.Role
 import com.project.jiguhada.domain.UserEntity
-import com.project.jiguhada.exception.UnauthorizedRequestException
-import com.project.jiguhada.exception.UserIdDuplicateException
-import com.project.jiguhada.exception.UserNicknameDuplicateException
-import com.project.jiguhada.exception.UserNowPasswordNotMatchException
+import com.project.jiguhada.exception.*
 import com.project.jiguhada.jwt.JwtAuthenticationProvider
 import com.project.jiguhada.repository.UserEntityRepository
 import com.project.jiguhada.util.ROLE
@@ -16,14 +13,19 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.util.StringUtils
+import org.springframework.web.multipart.MultipartFile
 
 @Service
 class UserService(
     private val userEntityRepository: UserEntityRepository,
     private val passwordEncoder: PasswordEncoder,
     private val authService: AuthService,
+    private val awsS3Service: AwsS3Service,
     private val jwtAuthenticationProvider: JwtAuthenticationProvider
 ) {
+    companion object {
+        const val PROFILE_DIR_NAME = "profile-img"
+    }
     @Transactional
     fun signUp(request: CreateUserRequestDto): TokenDto {
         if(checkUsernameDuplicate(request.username)) {
@@ -50,7 +52,20 @@ class UserService(
     }
 
     @Transactional
-    fun updateNickname(nickname: String, token: String): CommonResponseDto {
+    fun updateUserImgUrl(multipartFile: MultipartFile, token: String): ImgUrlResponseDto? {
+        val usernameFromToken = jwtAuthenticationProvider.getIdFromTokenClaims(resolveToken(token)!!)
+
+        if(SecurityUtil.currentUsername.equals(usernameFromToken)) {
+            val url = awsS3Service.uploadImgToDir(multipartFile, PROFILE_DIR_NAME)
+            val userResponse = userEntityRepository.findByUsername(usernameFromToken).get()
+            userResponse.updateUserImageUrl(url)
+            return ImgUrlResponseDto(url)
+        }
+        return throw FailToUploadImgException("이미지 수정에 실패했습니다.")
+    }
+
+    @Transactional
+    fun updateUserNickname(nickname: String, token: String): CommonResponseDto {
         val usernameFromToken = jwtAuthenticationProvider.getIdFromTokenClaims(resolveToken(token)!!)
 
         if(SecurityUtil.currentUsername.equals(usernameFromToken)) {
@@ -68,7 +83,7 @@ class UserService(
     }
 
     @Transactional
-    fun updatePassword(request: UserPasswordRequestDto, accesstoken: String): CommonResponseDto {
+    fun updateUserPassword(request: UserPasswordRequestDto, accesstoken: String): CommonResponseDto {
         val usernameFromToken = jwtAuthenticationProvider.getIdFromTokenClaims(resolveToken(accesstoken)!!)
 
         if(SecurityUtil.currentUsername.equals(usernameFromToken)) {
