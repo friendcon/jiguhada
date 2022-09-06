@@ -3,6 +3,9 @@ package com.project.jiguhada.service
 import com.project.jiguhada.controller.dto.*
 import com.project.jiguhada.domain.Role
 import com.project.jiguhada.domain.UserEntity
+import com.project.jiguhada.exception.UnauthorizedRequestException
+import com.project.jiguhada.exception.UserInfoDuplicateException
+import com.project.jiguhada.exception.UserNowPasswordNotMatchException
 import com.project.jiguhada.jwt.JwtAuthenticationProvider
 import com.project.jiguhada.repository.UserEntityRepository
 import com.project.jiguhada.util.ROLE
@@ -23,12 +26,11 @@ class UserService(
     @Transactional
     fun signUp(request: CreateUserRequestDto): TokenDto {
         if(checkUsernameDuplicate(request.username)) {
-            throw Exception("중복된 아이디입니다")
+            throw UserInfoDuplicateException("중복된 아이디입니다")
         }
         userEntityRepository.save(request.toEntity())
         val tokenDto = authService.login(LoginRequestDto(request.username, request.password))
-        println("token valid : ${tokenDto.accessTokenExpiredDate}")
-        return tokenDto
+        return tokenDto!!
     }
 
     @Transactional
@@ -39,7 +41,7 @@ class UserService(
         if(SecurityUtil.currentUsername.equals(usernameFromToken)) {
             val userresponse = userEntityRepository.findByUsername(usernameFromToken).get()
             if(userid != userresponse.id) {
-                return null
+                throw UnauthorizedRequestException("권한이 없는 요청입니다.")
             }
             return userEntityRepository.findByUsername(usernameFromToken).get().toReadUserInfoResponse()
         }
@@ -52,7 +54,7 @@ class UserService(
 
         if(SecurityUtil.currentUsername.equals(usernameFromToken)) {
             if(userEntityRepository.existsByNickname(nickname)) {
-                return CommonResponseDto(400, "이미 존재하는 닉네임입니다.")
+                throw UserInfoDuplicateException("중복된 닉네임입니다")
             }
             val response = userEntityRepository.findByUsername(usernameFromToken).get()
             response.updateNickname(nickname)
@@ -70,16 +72,14 @@ class UserService(
 
         if(SecurityUtil.currentUsername.equals(usernameFromToken)) {
             val response = userEntityRepository.findByUsername(usernameFromToken).get()
+            if(!passwordEncoder.matches(request.nowpassword, response.password)) {
+                throw UserNowPasswordNotMatchException("현재 패스워드가 일치하지 않습니다.")
+            }
             if(passwordEncoder.matches(request.nowpassword, response.password)) {
                 response.updatePassword(passwordEncoder.encode(request.newpassword))
                 return CommonResponseDto(
                     200,
                     "패스워드 변경에 성공했습니다"
-                )
-            } else {
-                return CommonResponseDto(
-                    400,
-                    "입력한 패스워드가 일치하지 않습니다"
                 )
             }
         }
