@@ -93,11 +93,19 @@ class UserService(
         } else null
     }
     fun checkUsernameDuplicate(username: String): Boolean {
-        return userEntityRepository.existsByUsername(username)
+        val isDuplicated = userEntityRepository.existsByUsername(username)
+        if(isDuplicated){
+            throw UserIdDuplicateException("중복된 아이디입니다.")
+        }
+        return isDuplicated
     }
 
     fun checkNicknameDuplicate(nickname: String): Boolean {
-        return userEntityRepository.existsByNickname(nickname)
+        val isDuplicated = userEntityRepository.existsByUsername(nickname)
+        if(isDuplicated){
+            throw UserNicknameDuplicateException("중복된 닉네임입니다.")
+        }
+        return isDuplicated
     }
 
     fun CreateUserRequestDto.toEntity(): UserEntity {

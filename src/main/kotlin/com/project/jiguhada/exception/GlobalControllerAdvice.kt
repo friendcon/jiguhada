@@ -2,6 +2,7 @@ package com.project.jiguhada.exception
 
 import com.project.jiguhada.util.ERRORCODE
 import io.jsonwebtoken.ExpiredJwtException
+import io.jsonwebtoken.UnsupportedJwtException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.BadCredentialsException
@@ -55,4 +56,8 @@ class GlobalControllerAdv0ice {
         return ResponseEntity(ErrorResponseDto(ERRORCODE.UNAUTHORIZED_REQUEST, e.message), HttpStatus.UNAUTHORIZED)
     }
 
+    @ExceptionHandler(UnsupportedJwtException::class)
+    fun unSupportedJwtException(e: UnsupportedJwtException): ResponseEntity<ErrorResponseDto> {
+        return ResponseEntity(ErrorResponseDto(ERRORCODE.NOT_SUPPORTED_TOKEN, e.message), HttpStatus.BAD_REQUEST)
+    }
 }
