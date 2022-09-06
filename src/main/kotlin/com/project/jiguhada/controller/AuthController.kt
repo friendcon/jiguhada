@@ -7,7 +7,6 @@ import com.project.jiguhada.service.AuthService
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -20,7 +19,10 @@ class AuthController(
 ) {
     @PostMapping("/login")
     fun authorize(@RequestBody loginRequest: LoginRequestDto): ResponseEntity<TokenDto> {
-        val tokenDto = authService.login(loginRequest)
+        var tokenDto: TokenDto? = authService.login(loginRequest)
+        if(tokenDto == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(tokenDto)
+        }
         val httpHeaders = HttpHeaders()
         httpHeaders.add(JwtAuthenticationProvider.AUTHORIZATION_HEADER, "Bearer ${tokenDto.accessToken}")
         return ResponseEntity<TokenDto>(tokenDto, httpHeaders, HttpStatus.OK)

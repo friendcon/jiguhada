@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import javax.servlet.http.HttpServletRequest
+import javax.validation.Valid
+
 
 @RestController
 @Tag(name = "User API")
@@ -38,7 +40,7 @@ class UserController(
     }
     @PostMapping("/signup")
     @Operation(summary = "회원가입")
-    fun signUp(@RequestBody reqeust: CreateUserRequestDto): ResponseEntity<TokenDto> {
+    fun signUp(@RequestBody @Valid reqeust: CreateUserRequestDto): ResponseEntity<TokenDto> {
         return ResponseEntity.ok(userService.signUp(reqeust))
     }
 
@@ -52,20 +54,12 @@ class UserController(
     @Operation(summary = "닉네임 수정")
     fun updateNickname(@RequestBody request: UserNicknameRequestDto, httprequest: HttpServletRequest): ResponseEntity<CommonResponseDto> {
         val response = userService.updateNickname(request.nickname, httprequest.getHeader("Authorization"))
-        if(response.code == 200L) {
-            return ResponseEntity.ok().body(response)
-        } else {
-            return ResponseEntity.badRequest().body(response)
-        }
+        return ResponseEntity.ok().body(response)
     }
     @PostMapping("/updatePassword")
     @Operation(summary = "비밀번호 변경")
     fun updatePassword(@RequestBody request: UserPasswordRequestDto, httprequest: HttpServletRequest): ResponseEntity<CommonResponseDto> {
         val response = userService.updatePassword(request, httprequest.getHeader("Authorization"))
-        if(response.code == 200L) {
-            return ResponseEntity.ok().body(response)
-        } else {
-            return ResponseEntity.badRequest().body(response)
-        }
+        return ResponseEntity.ok().body(response)
     }
 }
