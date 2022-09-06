@@ -11,14 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 
 // restcontroller 에서 발생하는 exception 여기서 처리
 @RestControllerAdvice
-class GlobalControllerAdvice {
-
-/*    @ExceptionHandler(RuntimeException::class)
-    fun exception(e: RuntimeException): ResponseEntity<ErrorResponseDto> {
-        println(e.stackTraceToString())
-        return ResponseEntity(ErrorResponseDto(ERRORCODE.ID_PASSWORD_NOTMATCH, e.message!!), HttpStatus.BAD_REQUEST)
-    }*/
-
+class GlobalControllerAdv0ice {
     @ExceptionHandler(BadCredentialsException::class)
     fun badCredentialException(e: BadCredentialsException): ResponseEntity<ErrorResponseDto>{
         return ResponseEntity(ErrorResponseDto(ERRORCODE.ID_PASSWORD_NOTMATCH, "인증정보가 일치하지 않습니다"), HttpStatus.BAD_REQUEST)
@@ -34,11 +27,14 @@ class GlobalControllerAdvice {
         return ResponseEntity(ErrorResponseDto(ERRORCODE.INSUFFICIENT_REQUEST, e.message), HttpStatus.BAD_REQUEST)
     }
 
-    @ExceptionHandler(UserInfoDuplicateException::class)
-    fun userInfoDuplicateException(e: UserInfoDuplicateException): ResponseEntity<ErrorResponseDto> {
+    @ExceptionHandler(UserNicknameDuplicateException::class)
+    fun userNicknameDuplicateException(e: UserNicknameDuplicateException): ResponseEntity<ErrorResponseDto> {
         return ResponseEntity(ErrorResponseDto(ERRORCODE.DUPLICATE_NICKNAME, e.message), HttpStatus.BAD_REQUEST)
     }
-
+    @ExceptionHandler(UserIdDuplicateException::class)
+    fun userIdDuplicateException(e: UserIdDuplicateException): ResponseEntity<ErrorResponseDto> {
+        return ResponseEntity(ErrorResponseDto(ERRORCODE.DUPLICATE_ID, e.message), HttpStatus.BAD_REQUEST)
+    }
     @ExceptionHandler(CustomException::class)
     fun customException(e: CustomException): ResponseEntity<ErrorResponseDto> {
         return ResponseEntity(ErrorResponseDto(ERRORCODE.NOW_PASSWORD_NOTMATCH, e.message), HttpStatus.BAD_REQUEST)

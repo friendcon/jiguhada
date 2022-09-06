@@ -4,7 +4,8 @@ import com.project.jiguhada.controller.dto.*
 import com.project.jiguhada.domain.Role
 import com.project.jiguhada.domain.UserEntity
 import com.project.jiguhada.exception.UnauthorizedRequestException
-import com.project.jiguhada.exception.UserInfoDuplicateException
+import com.project.jiguhada.exception.UserIdDuplicateException
+import com.project.jiguhada.exception.UserNicknameDuplicateException
 import com.project.jiguhada.exception.UserNowPasswordNotMatchException
 import com.project.jiguhada.jwt.JwtAuthenticationProvider
 import com.project.jiguhada.repository.UserEntityRepository
@@ -26,7 +27,7 @@ class UserService(
     @Transactional
     fun signUp(request: CreateUserRequestDto): TokenDto {
         if(checkUsernameDuplicate(request.username)) {
-            throw UserInfoDuplicateException("중복된 아이디입니다")
+            throw UserIdDuplicateException("중복된 아이디입니다")
         }
         userEntityRepository.save(request.toEntity())
         val tokenDto = authService.login(LoginRequestDto(request.username, request.password))
@@ -54,7 +55,7 @@ class UserService(
 
         if(SecurityUtil.currentUsername.equals(usernameFromToken)) {
             if(userEntityRepository.existsByNickname(nickname)) {
-                throw UserInfoDuplicateException("중복된 닉네임입니다")
+                throw UserNicknameDuplicateException("중복된 닉네임입니다")
             }
             val response = userEntityRepository.findByUsername(usernameFromToken).get()
             response.updateNickname(nickname)
