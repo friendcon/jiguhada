@@ -67,7 +67,7 @@ class UserController(
 
     @PostMapping("/updateImg", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     @Operation(summary = "이미지 수정")
-    fun updateImgUrl(@RequestBody imgFile: MultipartFile, httprequest: HttpServletRequest): ResponseEntity<ImgUrlResponseDto> {
+    fun updateImgUrl(@RequestParam("imgFile") imgFile: MultipartFile, httprequest: HttpServletRequest): ResponseEntity<ImgUrlResponseDto> {
         jwtAuthenticationProvider.getTokenFromHeader(httprequest)
         val response = userService.updateUserImgUrl(imgFile, jwtAuthenticationProvider.getTokenFromHeader(httprequest))
         return ResponseEntity.ok().body(response)
