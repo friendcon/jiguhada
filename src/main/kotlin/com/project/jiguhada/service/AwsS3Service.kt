@@ -15,14 +15,14 @@ class AwsS3Service(
     var bucket: String,
     private val amazonS3Client: AmazonS3Client
 ) {
-    fun uploadImgToTemp(multipartFile: MultipartFile): String{
+    fun uploadImgToDir(multipartFile: MultipartFile, dirName: String): String{
         val fileName = multipartFile.name + UUID.randomUUID()
 
         val objectMetadata = ObjectMetadata()
         objectMetadata.contentLength = multipartFile.size
         objectMetadata.contentType = multipartFile.contentType
-        println("${bucket}/temp")
-        return putS3("${bucket}/temp", fileName, multipartFile.inputStream, objectMetadata)
+        println("${bucket}/${dirName}")
+        return putS3("${bucket}/${dirName}", fileName, multipartFile.inputStream, objectMetadata)
     }
 
     fun putS3(bucket: String, fileName: String, inputStream: InputStream, objectMetadata: ObjectMetadata): String {

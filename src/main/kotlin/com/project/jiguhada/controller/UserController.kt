@@ -1,6 +1,7 @@
 package com.project.jiguhada.controller
 
 import com.project.jiguhada.controller.dto.*
+import com.project.jiguhada.jwt.JwtAuthenticationProvider
 import com.project.jiguhada.service.AwsS3Service
 import com.project.jiguhada.service.UserService
 import io.swagger.v3.oas.annotations.Operation
@@ -19,7 +20,8 @@ import javax.validation.Valid
 @RequestMapping("/api/v1/user")
 class UserController(
     private val userService: UserService,
-    private val awsS3Service: AwsS3Service
+    private val awsS3Service: AwsS3Service,
+    private val jwtAuthenticationProvider: JwtAuthenticationProvider
 ) {
     @GetMapping("/checkDuplicate")
     @Operation(summary = "사용자 ID 중복체크")
@@ -36,7 +38,7 @@ class UserController(
     @PostMapping("/uploadTempImg", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     @Operation(summary = "회원가입 이미지 첨부")
     fun uploadTempImg(@RequestParam("imgFile") multipartFile: MultipartFile): ResponseEntity<ImgUrlResponseDto> {
-        return ResponseEntity.ok(ImgUrlResponseDto(awsS3Service.uploadImgToTemp(multipartFile)))
+        return ResponseEntity.ok(ImgUrlResponseDto(awsS3Service.uploadImgToDir(multipartFile, "temp")))
     }
     @PostMapping("/signup")
     @Operation(summary = "회원가입")
@@ -53,13 +55,21 @@ class UserController(
     @PostMapping("/updateNickname")
     @Operation(summary = "닉네임 수정")
     fun updateNickname(@RequestBody request: UserNicknameRequestDto, httprequest: HttpServletRequest): ResponseEntity<CommonResponseDto> {
-        val response = userService.updateNickname(request.nickname, httprequest.getHeader("Authorization"))
+        val response = userService.updateUserNickname(request.nickname, jwtAuthenticationProvider.getTokenFromHeader(httprequest))
         return ResponseEntity.ok().body(response)
     }
     @PostMapping("/updatePassword")
     @Operation(summary = "비밀번호 변경")
     fun updatePassword(@RequestBody request: UserPasswordRequestDto, httprequest: HttpServletRequest): ResponseEntity<CommonResponseDto> {
-        val response = userService.updatePassword(request, httprequest.getHeader("Authorization"))
+        val response = userService.updateUserPassword(request, jwtAuthenticationProvider.getTokenFromHeader(httprequest))
+        return ResponseEntity.ok().body(response)
+    }
+
+    @PostMapping("/updateImg")
+    @Operation(summary = "이미지 수정")
+    fun updateImgUrl(@RequestPart("imgFile") multipartFile: MultipartFile, httprequest: HttpServletRequest): ResponseEntity<ImgUrlResponseDto> {
+        jwtAuthenticationProvider.getTokenFromHeader(httprequest)
+        val response = userService.updateUserImgUrl(multipartFile, jwtAuthenticationProvider.getTokenFromHeader(httprequest))
         return ResponseEntity.ok().body(response)
     }
 }

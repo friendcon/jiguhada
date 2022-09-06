@@ -2,7 +2,9 @@ package com.project.jiguhada.exception
 
 import com.project.jiguhada.util.ERRORCODE
 import io.jsonwebtoken.ExpiredJwtException
+import io.jsonwebtoken.MalformedJwtException
 import io.jsonwebtoken.UnsupportedJwtException
+import io.jsonwebtoken.security.SignatureException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.BadCredentialsException
@@ -10,12 +12,32 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
+
 // restcontroller 에서 발생하는 exception 여기서 처리
 @RestControllerAdvice
 class GlobalControllerAdv0ice {
     @ExceptionHandler(BadCredentialsException::class)
     fun badCredentialException(e: BadCredentialsException): ResponseEntity<ErrorResponseDto>{
         return ResponseEntity(ErrorResponseDto(ERRORCODE.ID_PASSWORD_NOTMATCH, "인증정보가 일치하지 않습니다"), HttpStatus.BAD_REQUEST)
+    }
+
+    @ExceptionHandler(NullPointerException::class)
+    fun nullPointerException(e: NullPointerException): ResponseEntity<ErrorResponseDto> {
+        return ResponseEntity(ErrorResponseDto(ERRORCODE.REQUEST_NOT_INCLUDE_TOKEN, e.message), HttpStatus.BAD_REQUEST)
+    }
+    @ExceptionHandler(SecurityException::class)
+    fun securityException(e: SecurityException): ResponseEntity<ErrorResponseDto> {
+        return ResponseEntity(ErrorResponseDto(ERRORCODE.INCORRECT_JWT_SIGNATURE, "잘못된 JWT 서명입니다"), HttpStatus.UNAUTHORIZED)
+    }
+
+    @ExceptionHandler(MalformedJwtException::class)
+    fun malformedJwtException(e: MalformedJwtException): ResponseEntity<ErrorResponseDto> {
+        return ResponseEntity(ErrorResponseDto(ERRORCODE.MALFORMED_JWT_SIGNATURE, "잘못된 JWT 서명입니다"), HttpStatus.UNAUTHORIZED)
+    }
+
+    @ExceptionHandler(SignatureException::class)
+    fun signatureException(e: SignatureException): ResponseEntity<ErrorResponseDto> {
+        return ResponseEntity(ErrorResponseDto(ERRORCODE.INCORRECT_JWT_SIGNATURE, "잘못된 JWT 서명입니다"), HttpStatus.UNAUTHORIZED)
     }
 
     @ExceptionHandler(UsernameNotFoundException::class)
@@ -58,6 +80,10 @@ class GlobalControllerAdv0ice {
 
     @ExceptionHandler(UnsupportedJwtException::class)
     fun unSupportedJwtException(e: UnsupportedJwtException): ResponseEntity<ErrorResponseDto> {
-        return ResponseEntity(ErrorResponseDto(ERRORCODE.NOT_SUPPORTED_TOKEN, e.message), HttpStatus.BAD_REQUEST)
+        return ResponseEntity(ErrorResponseDto(ERRORCODE.NOT_SUPPORTED_TOKEN, "지원되지 않은 JWT 토큰입니다"), HttpStatus.BAD_REQUEST)
+    }
+    @ExceptionHandler(FailToUploadImgException::class)
+    fun failToUploadImgException(e: FailToUploadImgException): ResponseEntity<ErrorResponseDto> {
+        return ResponseEntity(ErrorResponseDto(ERRORCODE.FAIL_TO_UPLOAD_IMG, e.message), HttpStatus.BAD_REQUEST)
     }
 }
