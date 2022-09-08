@@ -1,6 +1,13 @@
 package com.project.jiguhada.repository
 
-import com.project.jiguhada.domain.*
+import com.project.jiguhada.domain.board.Board
+import com.project.jiguhada.domain.board.BoardCategory
+import com.project.jiguhada.domain.board.BoardComment
+import com.project.jiguhada.domain.user.Role
+import com.project.jiguhada.domain.user.UserEntity
+import com.project.jiguhada.repository.board.BoardCommentRepository
+import com.project.jiguhada.repository.board.BoardRepository
+import com.project.jiguhada.repository.user.UserEntityRepository
 import com.project.jiguhada.util.BOARD_CATEGORY
 import com.project.jiguhada.util.ROLE
 import com.project.jiguhada.util.SocialType

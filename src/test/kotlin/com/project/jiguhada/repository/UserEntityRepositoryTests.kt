@@ -1,7 +1,9 @@
 package com.project.jiguhada.repository
 
-import com.project.jiguhada.domain.Role
-import com.project.jiguhada.domain.UserEntity
+import com.project.jiguhada.domain.user.Role
+import com.project.jiguhada.domain.user.UserEntity
+import com.project.jiguhada.repository.user.RoleRepository
+import com.project.jiguhada.repository.user.UserEntityRepository
 import com.project.jiguhada.util.ROLE
 import com.project.jiguhada.util.SocialType
 import org.assertj.core.api.Assertions

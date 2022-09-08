@@ -3,8 +3,8 @@ package com.project.jiguhada.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.project.jiguhada.controller.dto.user.CreateUserRequestDto
 import com.project.jiguhada.controller.dto.user.LoginRequestDto
-import com.project.jiguhada.domain.Role
-import com.project.jiguhada.repository.RoleRepository
+import com.project.jiguhada.domain.user.Role
+import com.project.jiguhada.repository.user.RoleRepository
 import com.project.jiguhada.service.UserService
 import com.project.jiguhada.util.ROLE
 import com.project.jiguhada.util.SocialType

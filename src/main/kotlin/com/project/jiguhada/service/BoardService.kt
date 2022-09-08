@@ -2,12 +2,12 @@ package com.project.jiguhada.service
 
 import com.project.jiguhada.controller.dto.board.BoardRequestDto
 import com.project.jiguhada.controller.dto.board.BoardResponseDto
-import com.project.jiguhada.domain.Board
-import com.project.jiguhada.domain.BoardImg
+import com.project.jiguhada.domain.board.Board
+import com.project.jiguhada.domain.board.BoardImg
 import com.project.jiguhada.jwt.JwtAuthenticationProvider
-import com.project.jiguhada.repository.BoardCategoryRepository
-import com.project.jiguhada.repository.BoardRepository
-import com.project.jiguhada.repository.UserEntityRepository
+import com.project.jiguhada.repository.board.BoardCategoryRepository
+import com.project.jiguhada.repository.board.BoardRepository
+import com.project.jiguhada.repository.user.UserEntityRepository
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

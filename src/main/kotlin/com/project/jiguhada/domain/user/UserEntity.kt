@@ -1,6 +1,7 @@
-package com.project.jiguhada.domain
+package com.project.jiguhada.domain.user
 
 import com.project.jiguhada.controller.dto.user.ReadUserInfoResponseDto
+import com.project.jiguhada.domain.BaseEntity
 import com.project.jiguhada.util.ROLE
 import com.project.jiguhada.util.SocialType
 import org.hibernate.Hibernate

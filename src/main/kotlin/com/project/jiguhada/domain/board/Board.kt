@@ -1,6 +1,8 @@
-package com.project.jiguhada.domain
+package com.project.jiguhada.domain.board
 
 import com.project.jiguhada.controller.dto.board.BoardResponseDto
+import com.project.jiguhada.domain.BaseEntity
+import com.project.jiguhada.domain.user.UserEntity
 import org.hibernate.Hibernate
 import org.hibernate.annotations.ColumnDefault
 import javax.persistence.CascadeType

@@ -4,7 +4,7 @@ import com.project.jiguhada.controller.dto.TokenDto
 import com.project.jiguhada.controller.dto.user.LoginRequestDto
 import com.project.jiguhada.exception.UsernameNotFoundException
 import com.project.jiguhada.jwt.JwtAuthenticationProvider
-import com.project.jiguhada.repository.UserEntityRepository
+import com.project.jiguhada.repository.user.UserEntityRepository
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.core.Authentication

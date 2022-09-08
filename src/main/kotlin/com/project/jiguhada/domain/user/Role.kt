@@ -1,27 +1,29 @@
-package com.project.jiguhada.domain
+package com.project.jiguhada.domain.user
 
-import com.project.jiguhada.util.BOARD_CATEGORY
+import com.project.jiguhada.util.ROLE
 import org.hibernate.Hibernate
 import javax.persistence.Entity
 import javax.persistence.EnumType
 import javax.persistence.Enumerated
+import javax.persistence.Id
 
 @Entity
-data class BoardCategory(
+data class Role(
+    @Id
     @Enumerated(EnumType.STRING)
-    val categoryName: BOARD_CATEGORY,
-): BaseEntity() {
-    override fun toString(): String {
-        return "BoardCategory(categoryName='$categoryName')"
-    }
-
+    val roleName: ROLE
+) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other == null || Hibernate.getClass(this) != Hibernate.getClass(other)) return false
-        other as BoardCategory
+        other as Role
 
-        return id != null && id == other.id
+        return roleName == other.roleName
     }
 
     override fun hashCode(): Int = javaClass.hashCode()
+
+    override fun toString(): String {
+        return "Role(roleName=$roleName)"
+    }
 }

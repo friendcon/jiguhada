@@ -3,11 +3,11 @@ package com.project.jiguhada.service
 import com.project.jiguhada.controller.dto.*
 import com.project.jiguhada.controller.dto.CommonResponseDto
 import com.project.jiguhada.controller.dto.user.*
-import com.project.jiguhada.domain.Role
-import com.project.jiguhada.domain.UserEntity
+import com.project.jiguhada.domain.user.Role
+import com.project.jiguhada.domain.user.UserEntity
 import com.project.jiguhada.exception.*
 import com.project.jiguhada.jwt.JwtAuthenticationProvider
-import com.project.jiguhada.repository.UserEntityRepository
+import com.project.jiguhada.repository.user.UserEntityRepository
 import com.project.jiguhada.util.ROLE
 import com.project.jiguhada.util.SecurityUtil
 import org.springframework.security.core.userdetails.UsernameNotFoundException

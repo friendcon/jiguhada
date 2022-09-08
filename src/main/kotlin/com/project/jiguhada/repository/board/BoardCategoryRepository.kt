@@ -1,6 +1,6 @@
-package com.project.jiguhada.repository
+package com.project.jiguhada.repository.board
 
-import com.project.jiguhada.domain.BoardCategory
+import com.project.jiguhada.domain.board.BoardCategory
 import com.project.jiguhada.util.BOARD_CATEGORY
 import org.springframework.data.jpa.repository.JpaRepository
 

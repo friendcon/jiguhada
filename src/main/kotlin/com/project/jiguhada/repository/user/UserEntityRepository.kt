@@ -1,6 +1,6 @@
-package com.project.jiguhada.repository
+package com.project.jiguhada.repository.user
 
-import com.project.jiguhada.domain.UserEntity
+import com.project.jiguhada.domain.user.UserEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import java.util.Optional
 

@@ -1,7 +1,7 @@
 package com.project.jiguhada.service
 
 import com.project.jiguhada.jwt.JwtUserDetails
-import com.project.jiguhada.repository.UserEntityRepository
+import com.project.jiguhada.repository.user.UserEntityRepository
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService

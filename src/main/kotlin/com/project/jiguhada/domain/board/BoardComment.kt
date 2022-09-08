@@ -1,38 +1,40 @@
-package com.project.jiguhada.domain
+package com.project.jiguhada.domain.board
 
-import com.project.jiguhada.controller.dto.board.BoardLikeResponseDto
+import com.project.jiguhada.controller.dto.board.CommentResponseDto
+import com.project.jiguhada.domain.BaseEntity
+import com.project.jiguhada.domain.user.UserEntity
 import org.hibernate.Hibernate
 import javax.persistence.Entity
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 
 @Entity
-data class BoardLike(
-    val isLike: Boolean,
+data class BoardComment(
     @ManyToOne
     @JoinColumn(name = "board_id")
     val board: Board,
     @ManyToOne
     @JoinColumn(name = "user_entity_id")
-    val userEntity: UserEntity
+    val userEntity: UserEntity,
+    val content: String,
 ): BaseEntity() {
-
-    fun toResponse(): BoardLikeResponseDto {
-        return BoardLikeResponseDto(
-            likeId = id!!,
+    fun toResponse(): CommentResponseDto {
+        return CommentResponseDto(
+            commentId = id!!,
             username = userEntity.username,
-            nickname = userEntity.nickname
+            nickname = userEntity.nickname,
+            content = content
         )
     }
 
     override fun toString(): String {
-        return "BoardLike(isLike=$isLike, board=$board, userEntity=$userEntity)"
+        return "BoardComment(board=$board, userEntity=$userEntity, content='$content')"
     }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other == null || Hibernate.getClass(this) != Hibernate.getClass(other)) return false
-        other as BoardLike
+        other as BoardComment
 
         return id != null && id == other.id
     }
