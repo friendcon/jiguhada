@@ -1,7 +1,6 @@
 package com.project.jiguhada.repository
 
 import com.project.jiguhada.domain.*
-import com.project.jiguhada.service.BoardService
 import com.project.jiguhada.util.BOARD_CATEGORY
 import com.project.jiguhada.util.ROLE
 import com.project.jiguhada.util.SocialType
