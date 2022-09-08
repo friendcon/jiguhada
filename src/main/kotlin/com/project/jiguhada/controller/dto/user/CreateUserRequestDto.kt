@@ -1,4 +1,4 @@
-package com.project.jiguhada.controller.dto
+package com.project.jiguhada.controller.dto.user
 
 import com.project.jiguhada.util.SocialType
 import javax.validation.constraints.NotBlank
