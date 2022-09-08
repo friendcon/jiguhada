@@ -8,6 +8,12 @@ enum class ROLE {
     ROLE_USER, ROLE_ADMIN
 }
 
+enum class BOARD_CATEGORY{
+    RECRUIT,
+    SHARE,
+    FREE
+}
+
 enum class ERRORCODE {
     ID_PASSWORD_NOTMATCH,
     NOT_EXITS_ID,
