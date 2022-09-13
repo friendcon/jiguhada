@@ -14,6 +14,11 @@ enum class BOARD_CATEGORY{
     FREE
 }
 
+enum class BOARD_ORDER_TYPE {
+    RECENT,
+    POPULAR
+}
+
 enum class ERRORCODE {
     ID_PASSWORD_NOTMATCH,
     NOT_EXITS_ID,
