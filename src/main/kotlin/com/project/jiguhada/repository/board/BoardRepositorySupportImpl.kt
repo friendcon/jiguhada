@@ -39,8 +39,7 @@ class BoardRepositorySupportImpl(
                 isSameCategory(boardCategory)
             )
             .orderBy(
-                getOrderSpecifier(orderType),
-                OrderSpecifier(Order.DESC, board.id)
+                getOrderSpecifier(orderType)
             )
             .offset(page.offset)
             .limit(page.pageSize.toLong())
@@ -56,7 +55,13 @@ class BoardRepositorySupportImpl(
     }
 
     private fun isSameCategory(boardCategory: BOARD_CATEGORY?): BooleanExpression? {
-        return board.boardCategory.categoryName.eq(boardCategory)
+        println(boardCategory.toString())
+        return when(boardCategory) {
+            BOARD_CATEGORY.FREE -> board.boardCategory.categoryName.eq(boardCategory)
+            BOARD_CATEGORY.RECRUIT -> board.boardCategory.categoryName.eq(boardCategory)
+            BOARD_CATEGORY.SHARE -> board.boardCategory.categoryName.eq(boardCategory)
+            else -> null
+        }
     }
 
     private fun getOrderSpecifier(orderType: BOARD_ORDER_TYPE?): OrderSpecifier<*> {
