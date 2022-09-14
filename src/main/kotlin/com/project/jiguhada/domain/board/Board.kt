@@ -19,7 +19,7 @@ data class Board(
     @ColumnDefault("0")
     val view_count: Long,
 
-    @ManyToOne
+    @ManyToOne(cascade = [CascadeType.PERSIST])
     @JoinColumn(name = "board_category_id")
     val boardCategory: BoardCategory,
 
@@ -30,7 +30,7 @@ data class Board(
     @OneToMany(mappedBy = "board", orphanRemoval = true)
     val boardCommentsList: MutableSet<BoardComment> = mutableSetOf(),
 
-    @OneToMany(mappedBy = "board", orphanRemoval = true)
+    @OneToMany(mappedBy = "board", orphanRemoval = true, cascade = [CascadeType.PERSIST])
     val boardLikes: MutableSet<BoardLike> = mutableSetOf(),
 
 

@@ -1,6 +1,6 @@
 package com.project.jiguhada.controller
 
-import com.project.jiguhada.controller.dto.board.BoardRequestDto
+import com.project.jiguhada.controller.dto.board.BoardCreateRequestDto
 import com.project.jiguhada.controller.dto.board.BoardResponseDto
 import com.project.jiguhada.jwt.JwtAuthenticationProvider
 import com.project.jiguhada.service.BoardService
@@ -21,8 +21,8 @@ class BoardController(
     private val jwtAuthenticationProvider: JwtAuthenticationProvider
 ) {
     @PostMapping("/create")
-    fun createBoard(@RequestBody boardRequestDto: BoardRequestDto, httprequest: HttpServletRequest): ResponseEntity<BoardResponseDto> {
-        val response = boardService.createBoard(boardRequestDto, jwtAuthenticationProvider.getTokenFromHeader(httprequest))
+    fun createBoard(@RequestBody boardCreateRequestDto: BoardCreateRequestDto, httprequest: HttpServletRequest): ResponseEntity<BoardResponseDto> {
+        val response = boardService.createBoard(boardCreateRequestDto, jwtAuthenticationProvider.getTokenFromHeader(httprequest))
         return ResponseEntity(response, HttpStatus.OK)
     }
 }
