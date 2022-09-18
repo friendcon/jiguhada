@@ -86,4 +86,14 @@ class GlobalControllerAdv0ice {
     fun failToUploadImgException(e: FailToUploadImgException): ResponseEntity<ErrorResponseDto> {
         return ResponseEntity(ErrorResponseDto(ERRORCODE.FAIL_TO_UPLOAD_IMG, e.message), HttpStatus.BAD_REQUEST)
     }
+
+    @ExceptionHandler(RequestBoardIdNotMatched::class)
+    fun requestBoardIdNotMatched(e: RequestBoardIdNotMatched): ResponseEntity<ErrorResponseDto> {
+        return ResponseEntity(ErrorResponseDto(ERRORCODE.REQUEST_BOARDID_NOT_MATCHED, e.message), HttpStatus.UNAUTHORIZED)
+    }
+
+    @ExceptionHandler(IllegalArgumentException::class)
+    fun illegalArgumentException(e: IllegalArgumentException): ResponseEntity<ErrorResponseDto> {
+        return ResponseEntity(ErrorResponseDto(ERRORCODE.KEY_NOT_EXIST, "Key 요청이 올바르지 않습니다"), HttpStatus.BAD_REQUEST)
+    }
 }

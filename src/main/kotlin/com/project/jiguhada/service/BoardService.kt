@@ -1,10 +1,12 @@
 package com.project.jiguhada.service
 
+import com.project.jiguhada.controller.dto.CommonResponseDto
 import com.project.jiguhada.controller.dto.board.BoardCreateRequestDto
 import com.project.jiguhada.controller.dto.board.BoardListItemResponse
 import com.project.jiguhada.controller.dto.board.BoardResponseDto
 import com.project.jiguhada.domain.board.Board
 import com.project.jiguhada.domain.board.BoardImg
+import com.project.jiguhada.exception.RequestBoardIdNotMatched
 import com.project.jiguhada.jwt.JwtAuthenticationProvider
 import com.project.jiguhada.repository.board.BoardCategoryRepository
 import com.project.jiguhada.repository.board.BoardRepository
@@ -43,6 +45,18 @@ class BoardService(
     fun readBoardList(query: String?, orderType: BOARD_ORDER_TYPE?,
                       category: BOARD_CATEGORY?, page: Pageable): List<BoardListItemResponse> {
         return boardRepository.findBoardList(query, orderType, category, page)
+    }
+
+    fun removeBoard(boardId: Long, token: String): CommonResponseDto {
+        // token 에서 id 가져오기
+        val usernameFromToken = jwtAuthenticationProvider.getIdFromTokenClaims(resolveToken(token)!!)
+        val board = boardRepository.findById(boardId).get()
+        if(board.userEntity.username.equals(usernameFromToken)) {
+            boardRepository.delete(board)
+            return CommonResponseDto(200, "게시글 삭제 성공")
+        } else {
+            throw RequestBoardIdNotMatched("권한이 없는 요청입니다")
+        }
     }
 
     fun resolveToken(token: String): String? {

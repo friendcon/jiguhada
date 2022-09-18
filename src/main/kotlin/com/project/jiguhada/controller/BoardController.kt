@@ -1,5 +1,6 @@
 package com.project.jiguhada.controller
 
+import com.project.jiguhada.controller.dto.CommonResponseDto
 import com.project.jiguhada.controller.dto.board.BoardCreateRequestDto
 import com.project.jiguhada.controller.dto.board.BoardListItemResponse
 import com.project.jiguhada.controller.dto.board.BoardResponseDto
@@ -39,5 +40,13 @@ class BoardController(
             else -> Math.abs(page) - 1
         }
         return ResponseEntity(boardService.readBoardList(query, order, category, PageRequest.of(pageNum, 10)), HttpStatus.OK)
+    }
+
+    @DeleteMapping("/delete/{id}")
+    fun deleteBoard(
+        @PathVariable("id") boardId: Long, httprequest: HttpServletRequest
+    ): ResponseEntity<CommonResponseDto> {
+        val response = boardService.removeBoard(boardId, jwtAuthenticationProvider.getTokenFromHeader(httprequest))
+        return ResponseEntity(response, HttpStatus.OK)
     }
 }

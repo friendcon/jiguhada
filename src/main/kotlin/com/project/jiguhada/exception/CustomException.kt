@@ -7,3 +7,5 @@ class CustomException(override val message: String): RuntimeException()
 class UserNowPasswordNotMatchException(override val message: String): RuntimeException()
 class UnauthorizedRequestException(override val message: String): RuntimeException()
 class FailToUploadImgException(override val message: String): RuntimeException()
+
+class RequestBoardIdNotMatched(override val message: String): RuntimeException()
