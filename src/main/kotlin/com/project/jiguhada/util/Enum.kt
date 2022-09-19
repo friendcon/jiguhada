@@ -9,8 +9,8 @@ enum class ROLE {
 }
 
 enum class BOARD_CATEGORY{
-    FREE,
     ENVIRONMENT,
+    FREE,
     VEGAN,
     QUESTION
 }

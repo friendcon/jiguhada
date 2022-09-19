@@ -60,8 +60,8 @@ class BoardRepositorySupportImpl(
         return when(boardCategory) {
             BOARD_CATEGORY.FREE -> board.boardCategory.categoryName.eq(boardCategory)
             BOARD_CATEGORY.ENVIRONMENT -> board.boardCategory.categoryName.eq(boardCategory)
-            BOARD_CATEGORY.VEGAN -> board.boardCategory.categoryName.eq(boardCategory)
             BOARD_CATEGORY.QUESTION -> board.boardCategory.categoryName.eq(boardCategory)
+            BOARD_CATEGORY.VEGAN -> board.boardCategory.categoryName.eq(boardCategory)
             else -> null
         }
     }
