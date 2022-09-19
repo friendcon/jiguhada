@@ -3,6 +3,7 @@ package com.project.jiguhada.controller
 import com.project.jiguhada.controller.dto.CommonResponseDto
 import com.project.jiguhada.controller.dto.board.BoardCreateRequestDto
 import com.project.jiguhada.controller.dto.board.BoardListItemResponse
+import com.project.jiguhada.controller.dto.board.BoardListResponse
 import com.project.jiguhada.controller.dto.board.BoardResponseDto
 import com.project.jiguhada.exception.LimitFileCountException
 import com.project.jiguhada.jwt.JwtAuthenticationProvider
@@ -45,12 +46,12 @@ class BoardController(
         @RequestParam(required = false, value = "page") page: Int?,
         @RequestParam(required = false, value = "order") order: BOARD_ORDER_TYPE?,
         @RequestParam(required = false, value = "category") category: BOARD_CATEGORY?
-    ): ResponseEntity<List<BoardListItemResponse>> {
+    ): ResponseEntity<BoardListResponse> {
         val pageNum = when(page) {
             0, null -> 0
             else -> Math.abs(page) - 1
         }
-        return ResponseEntity(boardService.readBoardList(query, order, category, PageRequest.of(pageNum, 10)), HttpStatus.OK)
+        return ResponseEntity(boardService.readBoardList(query, order, category, PageRequest.of(pageNum, 15)), HttpStatus.OK)
     }
 
     @DeleteMapping("/delete/{id}")

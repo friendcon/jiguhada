@@ -2,7 +2,7 @@ package com.project.jiguhada.service
 
 import com.project.jiguhada.controller.dto.CommonResponseDto
 import com.project.jiguhada.controller.dto.board.BoardCreateRequestDto
-import com.project.jiguhada.controller.dto.board.BoardListItemResponse
+import com.project.jiguhada.controller.dto.board.BoardListResponse
 import com.project.jiguhada.controller.dto.board.BoardResponseDto
 import com.project.jiguhada.domain.board.Board
 import com.project.jiguhada.domain.board.BoardImg
@@ -49,9 +49,22 @@ class BoardService(
         }
     }
 
-    fun readBoardList(query: String?, orderType: BOARD_ORDER_TYPE?,
-                      category: BOARD_CATEGORY?, page: Pageable): List<BoardListItemResponse> {
-        return boardRepository.findBoardList(query, orderType, category, page)
+    fun readBoardList(
+        query: String?, orderType: BOARD_ORDER_TYPE?,
+        category: BOARD_CATEGORY?, page: Pageable
+    ): BoardListResponse {
+        val list = boardRepository.findBoardList(query, orderType, category, page)
+        val totalCount = boardRepository.count()
+        val totalPage = when(totalCount%15) {
+            0L -> totalCount/15
+            else -> totalCount/15 + 1
+        }
+        return BoardListResponse(
+            totalBoardCount = totalCount,
+            currentPage = page.pageNumber.toLong() + 1,
+            totalPage = totalPage,
+            boardItemList = list
+        )
     }
 
     fun removeBoard(boardId: Long, token: String): CommonResponseDto {
