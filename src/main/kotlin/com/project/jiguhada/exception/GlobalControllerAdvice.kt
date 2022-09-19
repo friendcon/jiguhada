@@ -1,5 +1,6 @@
 package com.project.jiguhada.exception
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import com.project.jiguhada.util.ERRORCODE
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.MalformedJwtException
@@ -100,5 +101,10 @@ class GlobalControllerAdv0ice {
     @ExceptionHandler(LimitFileCountException::class)
     fun limitFileCountException(e: LimitFileCountException): ResponseEntity<ErrorResponseDto> {
         return ResponseEntity(ErrorResponseDto(ERRORCODE.LIMIT_FILE_COUNT, e.message), HttpStatus.BAD_REQUEST)
+    }
+
+    @ExceptionHandler(InvalidFormatException::class)
+    fun invalidFormatException(e: InvalidFormatException): ResponseEntity<ErrorResponseDto> {
+        return ResponseEntity(ErrorResponseDto(ERRORCODE.INVALID_FORMAT_REQUEST, "잘못된 요청"), HttpStatus.BAD_REQUEST)
     }
 }
