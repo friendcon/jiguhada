@@ -70,6 +70,8 @@ class BoardRepositorySupportImpl(
         return when(orderType) {
             BOARD_ORDER_TYPE.POPULAR -> OrderSpecifier(Order.DESC, board.boardLikes.size().longValue())
             BOARD_ORDER_TYPE.RECENT -> OrderSpecifier(Order.DESC, board.id)
+            BOARD_ORDER_TYPE.VIEW -> OrderSpecifier(Order.DESC, board.id)
+            BOARD_ORDER_TYPE.COMMENT_COUNT -> OrderSpecifier(Order.DESC, board.id)
             null -> OrderSpecifier(Order.DESC, board.id)
         }
     }

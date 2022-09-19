@@ -17,7 +17,9 @@ enum class BOARD_CATEGORY{
 
 enum class BOARD_ORDER_TYPE {
     RECENT,
-    POPULAR
+    POPULAR,
+    VIEW,
+    COMMENT_COUNT
 }
 
 enum class ERRORCODE {
