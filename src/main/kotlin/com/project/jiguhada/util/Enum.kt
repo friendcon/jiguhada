@@ -9,9 +9,10 @@ enum class ROLE {
 }
 
 enum class BOARD_CATEGORY{
-    RECRUIT,
-    SHARE,
-    FREE
+    FREE,
+    ENVIRONMENT,
+    VEGAN,
+    QUESTION
 }
 
 enum class BOARD_ORDER_TYPE {
