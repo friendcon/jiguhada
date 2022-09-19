@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.util.StringUtils
+import org.springframework.web.multipart.MultipartFile
 
 @Service
 class BoardService(
@@ -33,13 +34,19 @@ class BoardService(
 
         val board = boardRequest.toEntity(usernameFromToken)
         val commentToEntity = boardRequest.imgList.map {
-            toBoardImgEntity(board, it.image_url)
+            toBoardImgEntity(board, it)
         }
 
         board.boardImgs = commentToEntity.toMutableSet()
         return board.toResponse()
 
         throw UsernameNotFoundException("해당 사용자가 존재하지 않습니다.")
+    }
+
+    fun uploadBoardImg(multipartFiles: List<MultipartFile>): List<String> {
+        return multipartFiles.map {
+            awsS3Service.uploadImgToDir(it, "board-img")
+        }
     }
 
     fun readBoardList(query: String?, orderType: BOARD_ORDER_TYPE?,
@@ -82,7 +89,7 @@ class BoardService(
     fun toBoardImgEntity(board: Board, imgUrl: String): BoardImg {
         return BoardImg(
             board = board,
-            boardImgUrl = imgUrl,
+            imgUrl = imgUrl,
             isDeleted = false
         )
     }

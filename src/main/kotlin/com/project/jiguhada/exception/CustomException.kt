@@ -9,3 +9,5 @@ class UnauthorizedRequestException(override val message: String): RuntimeExcepti
 class FailToUploadImgException(override val message: String): RuntimeException()
 
 class RequestBoardIdNotMatched(override val message: String): RuntimeException()
+
+class LimitFileCountException(override val message: String): RuntimeException()

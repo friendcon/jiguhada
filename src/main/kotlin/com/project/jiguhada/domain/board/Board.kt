@@ -49,7 +49,7 @@ data class Board(
             nickname = userEntity.nickname,
             commentList = boardCommentsList.map{it.toResponse()},
             likeList = boardLikes.map { it.toResponse() },
-            imgList = boardImgs.map { it.boardImgUrl }
+            imgList = boardImgs.map { it.imgUrl }
         )
     }
     override fun toString(): String {

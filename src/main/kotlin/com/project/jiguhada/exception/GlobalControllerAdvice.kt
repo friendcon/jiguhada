@@ -96,4 +96,9 @@ class GlobalControllerAdv0ice {
     fun illegalArgumentException(e: IllegalArgumentException): ResponseEntity<ErrorResponseDto> {
         return ResponseEntity(ErrorResponseDto(ERRORCODE.KEY_NOT_EXIST, "Key 요청이 올바르지 않습니다"), HttpStatus.BAD_REQUEST)
     }
+
+    @ExceptionHandler(LimitFileCountException::class)
+    fun limitFileCountException(e: LimitFileCountException): ResponseEntity<ErrorResponseDto> {
+        return ResponseEntity(ErrorResponseDto(ERRORCODE.LIMIT_FILE_COUNT, e.message), HttpStatus.BAD_REQUEST)
+    }
 }
