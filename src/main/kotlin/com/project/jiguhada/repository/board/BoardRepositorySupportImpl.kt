@@ -31,7 +31,8 @@ class BoardRepositorySupportImpl(
             board.userEntity.nickname,
             board.createdDate,
             board.view_count,
-            board.boardLikes.size().longValue()
+            board.boardLikes.size().longValue(),
+            board.boardCommentsList.size().longValue()
         ))
             .from(board)
             .where(

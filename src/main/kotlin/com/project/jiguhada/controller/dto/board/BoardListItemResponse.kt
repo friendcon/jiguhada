@@ -11,5 +11,6 @@ data class BoardListItemResponse @QueryProjection constructor(
     val writer: String,
     val createDate: LocalDateTime,
     val viewCount: Long,
-    val likeCount: Long
+    val likeCount: Long,
+    val commentCount: Long
 )
