@@ -4,6 +4,7 @@ import com.project.jiguhada.controller.dto.CommonResponseDto
 import com.project.jiguhada.controller.dto.board.BoardCreateRequestDto
 import com.project.jiguhada.controller.dto.board.BoardListResponse
 import com.project.jiguhada.controller.dto.board.BoardResponseDto
+import com.project.jiguhada.controller.dto.board.BoardUpdateResponseDto
 import com.project.jiguhada.domain.board.Board
 import com.project.jiguhada.domain.board.BoardImg
 import com.project.jiguhada.exception.RequestBoardIdNotMatched
@@ -38,7 +39,7 @@ class BoardService(
         }
 
         board.boardImgs = imgToEntity.toMutableSet()
-        return board.toResponse()
+        return board.toBoardResponse()
 
         throw UsernameNotFoundException("해당 사용자가 존재하지 않습니다.")
     }
@@ -46,6 +47,16 @@ class BoardService(
     fun uploadBoardImg(multipartFiles: List<MultipartFile>): List<String> {
         return multipartFiles.map {
             awsS3Service.uploadImgToDir(it, "board-img")
+        }
+    }
+
+    fun getUpdateBoard(boardId: Long, token: String): BoardUpdateResponseDto {
+        val usernameFromToken = jwtAuthenticationProvider.getIdFromTokenClaims(resolveToken(token)!!)
+        val board = boardRepository.findById(boardId).get()
+        if(board.userEntity.username.equals(usernameFromToken)) {
+            return board.toBoardUpdateResponse()
+        } else {
+            throw RequestBoardIdNotMatched("권한이 없는 요청입니다")
         }
     }
 

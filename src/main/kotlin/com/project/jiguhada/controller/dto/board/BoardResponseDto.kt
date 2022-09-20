@@ -10,7 +10,7 @@ data class BoardResponseDto(
     val nickname: String,
     val commentList: List<CommentResponseDto>,
     val likeList: List<BoardLikeResponseDto>,
-    val imgList: List<String>
+    val imgList: List<BoardImgResponseDto>
 ) {
 
 }

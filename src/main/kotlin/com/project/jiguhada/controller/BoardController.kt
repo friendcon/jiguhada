@@ -1,10 +1,8 @@
 package com.project.jiguhada.controller
 
+import com.amazonaws.Response
 import com.project.jiguhada.controller.dto.CommonResponseDto
-import com.project.jiguhada.controller.dto.board.BoardCreateRequestDto
-import com.project.jiguhada.controller.dto.board.BoardListItemResponse
-import com.project.jiguhada.controller.dto.board.BoardListResponse
-import com.project.jiguhada.controller.dto.board.BoardResponseDto
+import com.project.jiguhada.controller.dto.board.*
 import com.project.jiguhada.exception.LimitFileCountException
 import com.project.jiguhada.jwt.JwtAuthenticationProvider
 import com.project.jiguhada.service.BoardService
@@ -52,6 +50,15 @@ class BoardController(
             else -> Math.abs(page) - 1
         }
         return ResponseEntity(boardService.readBoardList(query, order, category, PageRequest.of(pageNum, 15)), HttpStatus.OK)
+    }
+
+    @GetMapping("/update/{id}")
+    fun updateBoard(
+        @PathVariable("id") boardId: Long,
+        httprequest: HttpServletRequest
+    ): ResponseEntity<BoardUpdateResponseDto> {
+        val response = boardService.getUpdateBoard(boardId, jwtAuthenticationProvider.getTokenFromHeader(httprequest))
+        return ResponseEntity(response, HttpStatus.OK)
     }
 
     @DeleteMapping("/delete/{id}")

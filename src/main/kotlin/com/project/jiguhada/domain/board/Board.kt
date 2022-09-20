@@ -1,6 +1,7 @@
 package com.project.jiguhada.domain.board
 
 import com.project.jiguhada.controller.dto.board.BoardResponseDto
+import com.project.jiguhada.controller.dto.board.BoardUpdateResponseDto
 import com.project.jiguhada.domain.BaseEntity
 import com.project.jiguhada.domain.user.UserEntity
 import org.hibernate.Hibernate
@@ -38,7 +39,7 @@ data class Board(
     var boardImgs: MutableSet<BoardImg> = mutableSetOf()
 ): BaseEntity() {
 
-    fun toResponse(): BoardResponseDto {
+    fun toBoardResponse(): BoardResponseDto {
         return BoardResponseDto(
             boardId = id!!,
             title = title,
@@ -49,7 +50,17 @@ data class Board(
             nickname = userEntity.nickname,
             commentList = boardCommentsList.map{it.toResponse()},
             likeList = boardLikes.map { it.toResponse() },
-            imgList = boardImgs.map { it.imgUrl }
+            imgList = boardImgs.map { it.toResponse() }
+        )
+    }
+
+    fun toBoardUpdateResponse(): BoardUpdateResponseDto {
+        return BoardUpdateResponseDto(
+            title = title,
+            content = content,
+            boardCategory = boardCategory.categoryName.toString(),
+            nickname = userEntity.nickname,
+            imgList = boardImgs.map { it.toResponse() }
         )
     }
     override fun toString(): String {

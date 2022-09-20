@@ -23,7 +23,8 @@ data class BoardComment(
             commentId = id!!,
             username = userEntity.username,
             nickname = userEntity.nickname,
-            content = content
+            content = content,
+            createdDate = createdDate
         )
     }
 
