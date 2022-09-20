@@ -40,3 +40,9 @@ enum class ERRORCODE {
     KEY_NOT_EXIST,
     LIMIT_FILE_COUNT
 }
+
+enum class BOARD_SEARCH_TYPE {
+    WRITER,
+    CONTENT,
+    TITLE
+}

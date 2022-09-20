@@ -11,6 +11,7 @@ import com.project.jiguhada.jwt.JwtAuthenticationProvider
 import com.project.jiguhada.repository.board.BoardCategoryRepository
 import com.project.jiguhada.repository.board.BoardRepository
 import com.project.jiguhada.repository.user.UserEntityRepository
+import com.project.jiguhada.util.BOARD_SEARCH_TYPE
 import com.project.jiguhada.util.BOARD_CATEGORY
 import com.project.jiguhada.util.BOARD_ORDER_TYPE
 import org.springframework.data.domain.Pageable
@@ -51,9 +52,10 @@ class BoardService(
 
     fun readBoardList(
         query: String?, orderType: BOARD_ORDER_TYPE?,
-        category: BOARD_CATEGORY?, page: Pageable
+        category: BOARD_CATEGORY?, page: Pageable,
+        searchType: BOARD_SEARCH_TYPE?
     ): BoardListResponse {
-        val list = boardRepository.findBoardList(query, orderType, category, page)
+        val list = boardRepository.findBoardList(query, orderType, category, page, searchType)
         val totalCount = boardRepository.count()
         val totalPage = when(totalCount%15) {
             0L -> totalCount/15
