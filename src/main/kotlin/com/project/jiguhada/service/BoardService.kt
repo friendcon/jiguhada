@@ -4,6 +4,7 @@ import com.project.jiguhada.controller.dto.CommonResponseDto
 import com.project.jiguhada.controller.dto.board.BoardCreateRequestDto
 import com.project.jiguhada.controller.dto.board.BoardListResponse
 import com.project.jiguhada.controller.dto.board.BoardResponseDto
+import com.project.jiguhada.controller.dto.board.BoardUpdateResponseDto
 import com.project.jiguhada.controller.dto.user.ImgUrlResponseDto
 import com.project.jiguhada.domain.board.Board
 import com.project.jiguhada.domain.board.BoardImg
@@ -80,6 +81,19 @@ class BoardService(
             totalPage = totalPage,
             boardItemList = list
         )
+    }
+
+    // 업데이트할 게시글 가져옴
+    @Transactional
+    fun getUpdateBoard(boardId: Long, token: String): BoardUpdateResponseDto {
+        val usernameFromToken = jwtAuthenticationProvider.getIdFromTokenClaims(resolveToken(token)!!)
+        val board = boardRepository.findById(boardId).get()
+        if(board.userEntity.username.equals(usernameFromToken)) {
+            boardRepository.findById(boardId)
+            return board.toBoardUpdateResponse()
+        } else {
+            throw RequestBoardIdNotMatched("권한이 없는 요청입니다")
+        }
     }
 
     fun removeBoard(boardId: Long, token: String): CommonResponseDto {

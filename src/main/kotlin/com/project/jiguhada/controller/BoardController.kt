@@ -4,6 +4,7 @@ import com.project.jiguhada.controller.dto.CommonResponseDto
 import com.project.jiguhada.controller.dto.board.BoardCreateRequestDto
 import com.project.jiguhada.controller.dto.board.BoardListResponse
 import com.project.jiguhada.controller.dto.board.BoardResponseDto
+import com.project.jiguhada.controller.dto.board.BoardUpdateResponseDto
 import com.project.jiguhada.controller.dto.user.ImgUrlResponseDto
 import com.project.jiguhada.jwt.JwtAuthenticationProvider
 import com.project.jiguhada.service.BoardService
@@ -42,6 +43,15 @@ class BoardController(
         @PathVariable("id") boardId: Long
     ): ResponseEntity<BoardResponseDto> {
         val response = boardService.readBoard(boardId)
+        return ResponseEntity(response, HttpStatus.OK)
+    }
+
+    @GetMapping("/update/{id}")
+    fun getUpdateBoard(
+        @PathVariable("id") boardId: Long,
+        httprequest: HttpServletRequest
+    ): ResponseEntity<BoardUpdateResponseDto> {
+        val response = boardService.getUpdateBoard(boardId, jwtAuthenticationProvider.getTokenFromHeader(httprequest))
         return ResponseEntity(response, HttpStatus.OK)
     }
 

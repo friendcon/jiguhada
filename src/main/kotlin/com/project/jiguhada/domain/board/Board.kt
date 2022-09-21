@@ -64,7 +64,7 @@ data class Board(
             content = content,
             boardCategory = boardCategory.categoryName.toString(),
             nickname = userEntity.nickname,
-            imgList = boardImgs.map { it.toResponse() }
+            imgList = boardImgs.filter { !it.isDeleted }.map { it.toResponse() }
         )
     }
     override fun toString(): String {
