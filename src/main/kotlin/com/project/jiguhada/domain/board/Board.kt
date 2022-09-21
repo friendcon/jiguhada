@@ -1,6 +1,9 @@
 package com.project.jiguhada.domain.board
 
+import com.project.jiguhada.controller.dto.board.BoardImgRequestDto
 import com.project.jiguhada.controller.dto.board.BoardResponseDto
+import com.project.jiguhada.controller.dto.board.BoardUpdateRequestDto
+import com.project.jiguhada.controller.dto.board.BoardUpdateResponseDto
 import com.project.jiguhada.domain.BaseEntity
 import com.project.jiguhada.domain.user.UserEntity
 import org.hibernate.Hibernate
@@ -14,31 +17,38 @@ import javax.persistence.OneToMany
 @Entity
 data class Board(
 
-    val title: String,
-    val content: String,
+    var title: String,
+    var content: String,
     @ColumnDefault("0")
-    val view_count: Long,
+    var view_count: Long,
 
     @ManyToOne(cascade = [CascadeType.PERSIST])
     @JoinColumn(name = "board_category_id")
-    val boardCategory: BoardCategory,
+    var boardCategory: BoardCategory,
 
     @ManyToOne
     @JoinColumn(name = "user_entity_id")
     val userEntity: UserEntity,
 
     @OneToMany(mappedBy = "board", orphanRemoval = true)
-    val boardCommentsList: MutableSet<BoardComment> = mutableSetOf(),
+    val boardCommentsList: MutableList<BoardComment> = mutableListOf(),
 
     @OneToMany(mappedBy = "board", orphanRemoval = true, cascade = [CascadeType.PERSIST])
-    val boardLikes: MutableSet<BoardLike> = mutableSetOf(),
+    val boardLikes: MutableList<BoardLike> = mutableListOf(),
 
 
     @OneToMany(mappedBy = "board", orphanRemoval = true, cascade = [CascadeType.PERSIST])
-    var boardImgs: MutableSet<BoardImg> = mutableSetOf()
+    var boardImgs: MutableList<BoardImg> = mutableListOf()
 ): BaseEntity() {
 
-    fun toResponse(): BoardResponseDto {
+    fun updateBoard(boardUpdateRequestDto: BoardUpdateRequestDto): Board {
+        title = boardUpdateRequestDto.title
+        content = boardUpdateRequestDto.content
+        boardCategory = BoardCategory(boardUpdateRequestDto.boardCategory)
+        return this
+    }
+
+    fun toBoardResponse(): BoardResponseDto {
         return BoardResponseDto(
             boardId = id!!,
             title = title,
@@ -49,7 +59,17 @@ data class Board(
             nickname = userEntity.nickname,
             commentList = boardCommentsList.map{it.toResponse()},
             likeList = boardLikes.map { it.toResponse() },
-            imgList = boardImgs.map { it.imgUrl }
+            imgList = boardImgs.map { it.toResponse() }
+        )
+    }
+
+    fun toBoardUpdateResponse(): BoardUpdateResponseDto {
+        return BoardUpdateResponseDto(
+            title = title,
+            content = content,
+            boardCategory = boardCategory.categoryName.toString(),
+            nickname = userEntity.nickname,
+            imgList = boardImgs.map { it.toResponse() }
         )
     }
     override fun toString(): String {
