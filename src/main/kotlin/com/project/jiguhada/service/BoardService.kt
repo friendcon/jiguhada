@@ -11,9 +11,9 @@ import com.project.jiguhada.jwt.JwtAuthenticationProvider
 import com.project.jiguhada.repository.board.BoardCategoryRepository
 import com.project.jiguhada.repository.board.BoardRepository
 import com.project.jiguhada.repository.user.UserEntityRepository
-import com.project.jiguhada.util.BOARD_SEARCH_TYPE
 import com.project.jiguhada.util.BOARD_CATEGORY
 import com.project.jiguhada.util.BOARD_ORDER_TYPE
+import com.project.jiguhada.util.BOARD_SEARCH_TYPE
 import org.springframework.data.domain.Pageable
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
@@ -57,6 +57,12 @@ class BoardService(
     ): BoardListResponse {
         val list = boardRepository.findBoardList(query, orderType, category, page, searchType)
         val totalCount = boardRepository.count()
+
+        val totalBoardCount = when (category) {
+            null -> boardRepository.count()
+            else -> boardRepository.countBoardByBoardCategory(boardCategoryRepository.findByCategoryName(category))
+        }
+
         val totalPage = when(totalCount%15) {
             0L -> totalCount/15
             else -> totalCount/15 + 1
