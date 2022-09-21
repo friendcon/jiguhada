@@ -4,6 +4,7 @@ import com.project.jiguhada.controller.dto.CommonResponseDto
 import com.project.jiguhada.controller.dto.board.BoardCreateRequestDto
 import com.project.jiguhada.controller.dto.board.BoardListResponse
 import com.project.jiguhada.controller.dto.board.BoardResponseDto
+import com.project.jiguhada.controller.dto.user.ImgUrlResponseDto
 import com.project.jiguhada.domain.board.Board
 import com.project.jiguhada.domain.board.BoardImg
 import com.project.jiguhada.exception.RequestBoardIdNotMatched
@@ -44,10 +45,10 @@ class BoardService(
         throw UsernameNotFoundException("해당 사용자가 존재하지 않습니다.")
     }
 
-    fun uploadBoardImg(multipartFiles: List<MultipartFile>): List<String> {
-        return multipartFiles.map {
-            awsS3Service.uploadImgToDir(it, "board-img")
-        }
+    fun uploadBoardImg(multipartFile: MultipartFile): ImgUrlResponseDto {
+        return ImgUrlResponseDto(
+            imgUrl = awsS3Service.uploadImgToDir(multipartFile, "board-img")
+        )
     }
 
     fun readBoardList(

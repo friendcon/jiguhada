@@ -4,12 +4,12 @@ import com.project.jiguhada.controller.dto.CommonResponseDto
 import com.project.jiguhada.controller.dto.board.BoardCreateRequestDto
 import com.project.jiguhada.controller.dto.board.BoardListResponse
 import com.project.jiguhada.controller.dto.board.BoardResponseDto
-import com.project.jiguhada.exception.LimitFileCountException
+import com.project.jiguhada.controller.dto.user.ImgUrlResponseDto
 import com.project.jiguhada.jwt.JwtAuthenticationProvider
 import com.project.jiguhada.service.BoardService
-import com.project.jiguhada.util.BOARD_SEARCH_TYPE
 import com.project.jiguhada.util.BOARD_CATEGORY
 import com.project.jiguhada.util.BOARD_ORDER_TYPE
+import com.project.jiguhada.util.BOARD_SEARCH_TYPE
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
@@ -33,11 +33,8 @@ class BoardController(
     }
 
     @PostMapping("/uploadImg", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
-    fun uploadBoardImg(@RequestParam("imgFiles") multipartFiles: List<MultipartFile>): List<String> {
-        if(multipartFiles.size > 3) {
-            throw LimitFileCountException("업로드 할 수 있는 파일 개수를 초과하였습니다.")
-        }
-        return boardService.uploadBoardImg(multipartFiles)
+    fun uploadBoardImg(@RequestParam("imgFile") multipartFile: MultipartFile): ResponseEntity<ImgUrlResponseDto> {
+        return ResponseEntity(boardService.uploadBoardImg(multipartFile), HttpStatus.OK)
     }
 
     @GetMapping("/list")
