@@ -39,8 +39,8 @@ class BoardService(
             toBoardImgEntity(board, it)
         }
 
-        board.boardImgs = commentToEntity.toMutableSet()
-        return board.toResponse()
+        board.boardImgs = commentToEntity.toMutableList()
+        return board.toBoardResponse()
 
         throw UsernameNotFoundException("해당 사용자가 존재하지 않습니다.")
     }
