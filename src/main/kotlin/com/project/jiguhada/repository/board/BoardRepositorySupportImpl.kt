@@ -1,13 +1,9 @@
 package com.project.jiguhada.repository.board
 
 import com.project.jiguhada.controller.dto.board.BoardListItemResponse
-import com.project.jiguhada.controller.dto.board.BoardResponseDto
 import com.project.jiguhada.controller.dto.board.QBoardListItemResponse
-import com.project.jiguhada.controller.dto.board.QBoardResponseDto
 import com.project.jiguhada.domain.board.Board
 import com.project.jiguhada.domain.board.QBoard.board
-import com.project.jiguhada.domain.board.QBoardImg
-import com.project.jiguhada.domain.board.QBoardImg.boardImg
 import com.project.jiguhada.util.BOARD_CATEGORY
 import com.project.jiguhada.util.BOARD_ORDER_TYPE
 import com.project.jiguhada.util.BOARD_SEARCH_TYPE

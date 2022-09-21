@@ -57,19 +57,18 @@ class BoardService(
         searchType: BOARD_SEARCH_TYPE?
     ): BoardListResponse {
         val list = boardRepository.findBoardList(query, orderType, category, page, searchType)
-        val totalCount = boardRepository.count()
 
         val totalBoardCount = when (category) {
             null -> boardRepository.count()
             else -> boardRepository.countBoardByBoardCategory(boardCategoryRepository.findByCategoryName(category))
         }
 
-        val totalPage = when(totalCount%15) {
-            0L -> totalCount/15
-            else -> totalCount/15 + 1
+        val totalPage = when(totalBoardCount%15) {
+            0L -> totalBoardCount/15
+            else -> totalBoardCount/15 + 1
         }
         return BoardListResponse(
-            totalBoardCount = totalCount,
+            totalBoardCount = totalPage,
             currentPage = page.pageNumber.toLong() + 1,
             totalPage = totalPage,
             boardItemList = list
