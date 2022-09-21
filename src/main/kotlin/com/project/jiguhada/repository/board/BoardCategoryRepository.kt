@@ -4,6 +4,6 @@ import com.project.jiguhada.domain.board.BoardCategory
 import com.project.jiguhada.util.BOARD_CATEGORY
 import org.springframework.data.jpa.repository.JpaRepository
 
-interface BoardCategoryRepository: JpaRepository<BoardCategory, Long> {
+interface BoardCategoryRepository: JpaRepository<BoardCategory, BOARD_CATEGORY> {
     fun findByCategoryName(name: BOARD_CATEGORY): BoardCategory
 }

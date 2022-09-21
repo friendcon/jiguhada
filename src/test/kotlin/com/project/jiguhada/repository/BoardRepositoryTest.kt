@@ -18,7 +18,7 @@ class BoardRepositoryTest(
     @Test
     @DisplayName("")
     fun boardRepositoryTest() {
-        val category = boardCategoryRepository.findByCategoryName(BOARD_CATEGORY.FREE)
+        val category = boardCategoryRepository.findById(BOARD_CATEGORY.FREE).get()
         val result = boardRepository.countBoardByBoardCategory(category)
         println(result)
     }
