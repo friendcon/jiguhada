@@ -14,8 +14,13 @@ data class BoardImg(
     @JoinColumn(name = "board_id")
     val board: Board,
     val imgUrl: String,
-    val isDeleted: Boolean
+    var isDeleted: Boolean
 ): BaseEntity() {
+
+    fun deleteImg(): BoardImg {
+        isDeleted = true
+        return this
+    }
 
     fun toResponse(): BoardImgResponseDto {
         return BoardImgResponseDto(

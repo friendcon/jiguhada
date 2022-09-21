@@ -41,3 +41,9 @@ enum class ERRORCODE {
     LIMIT_FILE_COUNT,
     INVALID_FORMAT_REQUEST
 }
+
+enum class BOARD_SEARCH_TYPE {
+    WRITER,
+    CONTENT,
+    TITLE
+}

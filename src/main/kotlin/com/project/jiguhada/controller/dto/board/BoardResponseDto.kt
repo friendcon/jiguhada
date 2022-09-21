@@ -1,6 +1,8 @@
 package com.project.jiguhada.controller.dto.board
 
-data class BoardResponseDto(
+import com.querydsl.core.annotations.QueryProjection
+
+data class BoardResponseDto @QueryProjection constructor(
     val boardId: Long,
     val title: String,
     val content: String,

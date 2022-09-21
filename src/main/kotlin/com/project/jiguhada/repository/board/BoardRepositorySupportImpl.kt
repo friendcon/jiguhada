@@ -1,11 +1,16 @@
 package com.project.jiguhada.repository.board
 
 import com.project.jiguhada.controller.dto.board.BoardListItemResponse
+import com.project.jiguhada.controller.dto.board.BoardResponseDto
 import com.project.jiguhada.controller.dto.board.QBoardListItemResponse
+import com.project.jiguhada.controller.dto.board.QBoardResponseDto
 import com.project.jiguhada.domain.board.Board
 import com.project.jiguhada.domain.board.QBoard.board
+import com.project.jiguhada.domain.board.QBoardImg
+import com.project.jiguhada.domain.board.QBoardImg.boardImg
 import com.project.jiguhada.util.BOARD_CATEGORY
 import com.project.jiguhada.util.BOARD_ORDER_TYPE
+import com.project.jiguhada.util.BOARD_SEARCH_TYPE
 import com.querydsl.core.types.Order
 import com.querydsl.core.types.OrderSpecifier
 import com.querydsl.core.types.dsl.BooleanExpression
@@ -22,7 +27,8 @@ class BoardRepositorySupportImpl(
         query: String?,
         orderType: BOARD_ORDER_TYPE?,
         boardCategory: BOARD_CATEGORY?,
-        page: Pageable
+        page: Pageable,
+        searchType: BOARD_SEARCH_TYPE?
     ): List<BoardListItemResponse> {
         return queryFactory.select(QBoardListItemResponse(
             board.boardCategory.categoryName,
@@ -36,7 +42,7 @@ class BoardRepositorySupportImpl(
         ))
             .from(board)
             .where(
-                isTitleOrContentContainQuery(query),
+                isTitleOrContentContainQuery(query, searchType),
                 isSameCategory(boardCategory)
             )
             .orderBy(
@@ -47,11 +53,36 @@ class BoardRepositorySupportImpl(
             .fetch()
     }
 
-    private fun isTitleOrContentContainQuery(query: String?): BooleanExpression? {
-        return when(StringUtils.isNullOrEmpty(query)) {
-            true -> null
-            false -> board.title.containsIgnoreCase(query)
-                .or(board.content.containsIgnoreCase(query))
+    /*override fun getBoard(boardId: Long): BoardResponseDto? {
+        return queryFactory.select(QBoardResponseDto(
+            board.id,
+            board.title,
+            board.content,
+            board.view_count,
+            board.boardCategory.categoryName.stringValue(),
+            board.userEntity.username,
+            board.userEntity.nickname,
+            board.boardCommentsList,
+            board.boardLikes,
+            boardImg
+        ))
+            .from(board)
+            .leftJoin(board.boardImgs, boardImg)
+            .on(board.id.eq(boardImg.id))
+            .groupBy(board.id)
+            .fetchOne()
+    }*/
+
+    private fun isTitleOrContentContainQuery(query: String?, searchType: BOARD_SEARCH_TYPE?): BooleanExpression? {
+        if(StringUtils.isNullOrEmpty(query)) {
+            return null
+        }
+
+        return when(searchType) {
+            BOARD_SEARCH_TYPE.TITLE -> board.title.containsIgnoreCase(query)
+            BOARD_SEARCH_TYPE.CONTENT -> board.content.containsIgnoreCase(query)
+            BOARD_SEARCH_TYPE.WRITER -> board.userEntity.nickname.containsIgnoreCase(query)
+            null -> null
         }
     }
 

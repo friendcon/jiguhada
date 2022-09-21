@@ -1,11 +1,12 @@
 package com.project.jiguhada.controller
 
-import com.amazonaws.Response
+
 import com.project.jiguhada.controller.dto.CommonResponseDto
 import com.project.jiguhada.controller.dto.board.*
 import com.project.jiguhada.exception.LimitFileCountException
 import com.project.jiguhada.jwt.JwtAuthenticationProvider
 import com.project.jiguhada.service.BoardService
+import com.project.jiguhada.util.BOARD_SEARCH_TYPE
 import com.project.jiguhada.util.BOARD_CATEGORY
 import com.project.jiguhada.util.BOARD_ORDER_TYPE
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -43,13 +44,14 @@ class BoardController(
         @RequestParam(required = false, value = "query") query: String?,
         @RequestParam(required = false, value = "page") page: Int?,
         @RequestParam(required = false, value = "order") order: BOARD_ORDER_TYPE?,
-        @RequestParam(required = false, value = "category") category: BOARD_CATEGORY?
+        @RequestParam(required = false, value = "category") category: BOARD_CATEGORY?,
+        @RequestParam(required = false, value = "searchType") searchType: BOARD_SEARCH_TYPE?
     ): ResponseEntity<BoardListResponse> {
         val pageNum = when(page) {
             0, null -> 0
             else -> Math.abs(page) - 1
         }
-        return ResponseEntity(boardService.readBoardList(query, order, category, PageRequest.of(pageNum, 15)), HttpStatus.OK)
+        return ResponseEntity(boardService.readBoardList(query, order, category, PageRequest.of(pageNum, 15), searchType), HttpStatus.OK)
     }
 
     @GetMapping("/update/{id}")
@@ -60,6 +62,16 @@ class BoardController(
         val response = boardService.getUpdateBoard(boardId, jwtAuthenticationProvider.getTokenFromHeader(httprequest))
         return ResponseEntity(response, HttpStatus.OK)
     }
+
+    @PostMapping("/update")
+    fun updateBoard(
+        @RequestBody request: BoardUpdateRequestDto,
+        httprequest: HttpServletRequest
+    ): ResponseEntity<BoardResponseDto> {
+        val response = boardService.updateBoard(request, jwtAuthenticationProvider.getTokenFromHeader(httprequest))
+        return ResponseEntity(response, HttpStatus.OK)
+    }
+
 
     @DeleteMapping("/delete/{id}")
     fun deleteBoard(
