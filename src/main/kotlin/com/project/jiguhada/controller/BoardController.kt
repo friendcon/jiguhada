@@ -37,6 +37,14 @@ class BoardController(
         return ResponseEntity(boardService.uploadBoardImg(multipartFile), HttpStatus.OK)
     }
 
+    @GetMapping("/read/{id}")
+    fun readBoard(
+        @PathVariable("id") boardId: Long
+    ): ResponseEntity<BoardResponseDto> {
+        val response = boardService.readBoard(boardId)
+        return ResponseEntity(response, HttpStatus.OK)
+    }
+
     @GetMapping("/list")
     fun getBoardList(
         @RequestParam(required = false, value = "query") query: String?,

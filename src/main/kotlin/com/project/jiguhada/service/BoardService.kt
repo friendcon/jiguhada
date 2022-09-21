@@ -51,6 +51,13 @@ class BoardService(
         )
     }
 
+    @Transactional
+    fun readBoard(
+        boardId: Long
+    ): BoardResponseDto {
+        return boardRepository.findById(boardId).get().toBoardResponse()
+    }
+
     fun readBoardList(
         query: String?, orderType: BOARD_ORDER_TYPE?,
         category: BOARD_CATEGORY?, page: Pageable,
