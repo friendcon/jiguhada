@@ -11,3 +11,5 @@ class FailToUploadImgException(override val message: String): RuntimeException()
 class RequestBoardIdNotMatched(override val message: String): RuntimeException()
 
 class LimitFileCountException(override val message: String): RuntimeException()
+
+class UserAlreadyLikeBoard(override val message: String): RuntimeException()

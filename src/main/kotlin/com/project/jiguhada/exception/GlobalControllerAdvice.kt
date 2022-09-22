@@ -107,4 +107,9 @@ class GlobalControllerAdv0ice {
     fun invalidFormatException(e: InvalidFormatException): ResponseEntity<ErrorResponseDto> {
         return ResponseEntity(ErrorResponseDto(ERRORCODE.INVALID_FORMAT_REQUEST, "잘못된 요청"), HttpStatus.BAD_REQUEST)
     }
+
+    @ExceptionHandler(UserAlreadyLikeBoard::class)
+    fun userAlreadyLikeBoard(e:UserAlreadyLikeBoard): ResponseEntity<ErrorResponseDto> {
+        return ResponseEntity(ErrorResponseDto(ERRORCODE.USER_ALREADY_LIKE, e.message), HttpStatus.BAD_REQUEST)
+    }
 }

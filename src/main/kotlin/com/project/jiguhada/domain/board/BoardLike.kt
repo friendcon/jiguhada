@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne
 
 @Entity
 data class BoardLike(
-    val isLike: Boolean,
+    var isLike: Boolean,
     @ManyToOne
     @JoinColumn(name = "board_id")
     val board: Board,
@@ -18,6 +18,10 @@ data class BoardLike(
     @JoinColumn(name = "user_entity_id")
     val userEntity: UserEntity
 ): BaseEntity() {
+    fun deleteLike(): BoardLike {
+        isLike = false
+        return this
+    }
 
     fun toResponse(): BoardLikeResponseDto {
         return BoardLikeResponseDto(
