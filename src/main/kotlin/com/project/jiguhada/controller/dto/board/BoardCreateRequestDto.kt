@@ -7,4 +7,5 @@ data class BoardCreateRequestDto(
     val content: String,
     val category: BOARD_CATEGORY,
     val imgList: List<String>,
+    val deletedImgList: List<String>
 )

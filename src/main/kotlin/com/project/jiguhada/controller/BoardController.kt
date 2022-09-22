@@ -1,9 +1,7 @@
 package com.project.jiguhada.controller
 
 import com.project.jiguhada.controller.dto.CommonResponseDto
-import com.project.jiguhada.controller.dto.board.BoardCreateRequestDto
-import com.project.jiguhada.controller.dto.board.BoardListResponse
-import com.project.jiguhada.controller.dto.board.BoardResponseDto
+import com.project.jiguhada.controller.dto.board.*
 import com.project.jiguhada.controller.dto.user.ImgUrlResponseDto
 import com.project.jiguhada.jwt.JwtAuthenticationProvider
 import com.project.jiguhada.service.BoardService
@@ -35,6 +33,32 @@ class BoardController(
     @PostMapping("/uploadImg", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     fun uploadBoardImg(@RequestParam("imgFile") multipartFile: MultipartFile): ResponseEntity<ImgUrlResponseDto> {
         return ResponseEntity(boardService.uploadBoardImg(multipartFile), HttpStatus.OK)
+    }
+
+    @GetMapping("/read/{id}")
+    fun readBoard(
+        @PathVariable("id") boardId: Long
+    ): ResponseEntity<BoardResponseDto> {
+        val response = boardService.readBoard(boardId)
+        return ResponseEntity(response, HttpStatus.OK)
+    }
+
+    @GetMapping("/update/{id}")
+    fun getUpdateBoard(
+        @PathVariable("id") boardId: Long,
+        httprequest: HttpServletRequest
+    ): ResponseEntity<BoardUpdateResponseDto> {
+        val response = boardService.getUpdateBoard(boardId, jwtAuthenticationProvider.getTokenFromHeader(httprequest))
+        return ResponseEntity(response, HttpStatus.OK)
+    }
+
+    @PostMapping("/update")
+    fun updatdBoard(
+        @RequestBody boardUpdateRequestDto: BoardUpdateRequestDto,
+        httprequest: HttpServletRequest
+    ): ResponseEntity<BoardResponseDto>{
+        val response = boardService.updateBoard(boardUpdateRequestDto, jwtAuthenticationProvider.getTokenFromHeader(httprequest))
+        return ResponseEntity(response, HttpStatus.OK)
     }
 
     @GetMapping("/list")

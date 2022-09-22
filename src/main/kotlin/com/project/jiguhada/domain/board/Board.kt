@@ -1,6 +1,5 @@
 package com.project.jiguhada.domain.board
 
-import com.project.jiguhada.controller.dto.board.BoardImgRequestDto
 import com.project.jiguhada.controller.dto.board.BoardResponseDto
 import com.project.jiguhada.controller.dto.board.BoardUpdateRequestDto
 import com.project.jiguhada.controller.dto.board.BoardUpdateResponseDto
@@ -8,11 +7,7 @@ import com.project.jiguhada.domain.BaseEntity
 import com.project.jiguhada.domain.user.UserEntity
 import org.hibernate.Hibernate
 import org.hibernate.annotations.ColumnDefault
-import javax.persistence.CascadeType
-import javax.persistence.Entity
-import javax.persistence.JoinColumn
-import javax.persistence.ManyToOne
-import javax.persistence.OneToMany
+import javax.persistence.*
 
 @Entity
 data class Board(
@@ -44,7 +39,11 @@ data class Board(
     fun updateBoard(boardUpdateRequestDto: BoardUpdateRequestDto): Board {
         title = boardUpdateRequestDto.title
         content = boardUpdateRequestDto.content
-        boardCategory = BoardCategory(boardUpdateRequestDto.boardCategory)
+        return this
+    }
+
+    fun updateCategory(boardCategory: BoardCategory): Board {
+        this.boardCategory = boardCategory
         return this
     }
 
@@ -59,7 +58,7 @@ data class Board(
             nickname = userEntity.nickname,
             commentList = boardCommentsList.map{it.toResponse()},
             likeList = boardLikes.map { it.toResponse() },
-            imgList = boardImgs.map { it.toResponse() }
+            imgList = boardImgs.filter { !it.isDeleted }.map { it.toResponse() }
         )
     }
 
@@ -69,7 +68,7 @@ data class Board(
             content = content,
             boardCategory = boardCategory.categoryName.toString(),
             nickname = userEntity.nickname,
-            imgList = boardImgs.map { it.toResponse() }
+            imgList = boardImgs.filter { !it.isDeleted }.map { it.toResponse() }
         )
     }
     override fun toString(): String {
