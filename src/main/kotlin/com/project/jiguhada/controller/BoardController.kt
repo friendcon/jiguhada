@@ -8,6 +8,7 @@ import com.project.jiguhada.service.BoardService
 import com.project.jiguhada.util.BOARD_CATEGORY
 import com.project.jiguhada.util.BOARD_ORDER_TYPE
 import com.project.jiguhada.util.BOARD_SEARCH_TYPE
+import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
@@ -25,17 +26,20 @@ class BoardController(
     private val jwtAuthenticationProvider: JwtAuthenticationProvider
 ) {
     @PostMapping("/create")
+    @Operation(summary = "게시글 작성")
     fun createBoard(@RequestBody boardCreateRequestDto: BoardCreateRequestDto, httprequest: HttpServletRequest): ResponseEntity<BoardResponseDto> {
         val response = boardService.createBoard(boardCreateRequestDto, jwtAuthenticationProvider.getTokenFromHeader(httprequest))
         return ResponseEntity(response, HttpStatus.OK)
     }
 
     @PostMapping("/uploadImg", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    @Operation(summary = "게시글 이미지 업로드")
     fun uploadBoardImg(@RequestParam("imgFile") multipartFile: MultipartFile): ResponseEntity<ImgUrlResponseDto> {
         return ResponseEntity(boardService.uploadBoardImg(multipartFile), HttpStatus.OK)
     }
 
     @GetMapping("/read/{id}")
+    @Operation(summary = "게시글 조회")
     fun readBoard(
         @PathVariable("id") boardId: Long
     ): ResponseEntity<BoardResponseDto> {
@@ -44,6 +48,7 @@ class BoardController(
     }
 
     @GetMapping("/update/{id}")
+    @Operation(summary = "게시글 수정을 위한 데이터 가져오는 API")
     fun getUpdateBoard(
         @PathVariable("id") boardId: Long,
         httprequest: HttpServletRequest
@@ -53,6 +58,7 @@ class BoardController(
     }
 
     @PostMapping("/update")
+    @Operation(summary = "게시글 수정")
     fun updatdBoard(
         @RequestBody boardUpdateRequestDto: BoardUpdateRequestDto,
         httprequest: HttpServletRequest
@@ -62,6 +68,7 @@ class BoardController(
     }
 
     @GetMapping("/list")
+    @Operation(summary = "게시글 목록 조회")
     fun getBoardList(
         @RequestParam(required = false, value = "query") query: String?,
         @RequestParam(required = false, value = "page") page: Int?,
@@ -77,6 +84,7 @@ class BoardController(
     }
 
     @DeleteMapping("/delete/{id}")
+    @Operation(summary = "게시글 삭제")
     fun deleteBoard(
         @PathVariable("id") boardId: Long, httprequest: HttpServletRequest
     ): ResponseEntity<CommonResponseDto> {
