@@ -57,7 +57,7 @@ class BoardController(
         return ResponseEntity(response, HttpStatus.OK)
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     @Operation(summary = "게시글 수정")
     fun updatdBoard(
         @RequestBody boardUpdateRequestDto: BoardUpdateRequestDto,

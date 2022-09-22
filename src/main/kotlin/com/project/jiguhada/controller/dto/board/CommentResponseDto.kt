@@ -8,5 +8,7 @@ data class CommentResponseDto @QueryProjection constructor(
     val username: String,
     val nickname: String,
     val content: String,
-    val createdDate: LocalDateTime
+    val createdDate: LocalDateTime,
+    val parentComment: Long?,
+    val childComment: List<ReCommentResponseDto>
 )

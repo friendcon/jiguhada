@@ -54,7 +54,7 @@ class UserController(
         val response = userService.readUserInfo(accessToken, id) ?: return ResponseEntity(HttpStatus.BAD_REQUEST)
         return ResponseEntity.ok().body(response)
     }
-    @PostMapping("/updateNickname")
+    @PutMapping("/updateNickname")
     @Operation(summary = "닉네임 수정")
     fun updateNickname(@RequestBody request: UserNicknameRequestDto, httprequest: HttpServletRequest): ResponseEntity<CommonResponseDto> {
         val response = userService.updateUserNickname(request.nickname, jwtAuthenticationProvider.getTokenFromHeader(httprequest))
@@ -67,7 +67,7 @@ class UserController(
         return ResponseEntity.ok().body(response)
     }
 
-    @PostMapping("/updateImg", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    @PutMapping("/updateImg", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     @Operation(summary = "이미지 수정")
     fun updateImgUrl(@RequestParam("imgFile") imgFile: MultipartFile, httprequest: HttpServletRequest): ResponseEntity<ImgUrlResponseDto> {
         jwtAuthenticationProvider.getTokenFromHeader(httprequest)

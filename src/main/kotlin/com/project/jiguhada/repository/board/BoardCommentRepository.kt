@@ -4,4 +4,5 @@ import com.project.jiguhada.domain.board.BoardComment
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface BoardCommentRepository: JpaRepository<BoardComment, Long> {
+    fun findByBoardCommentNullOrderByCreatedDateAsc(): List<BoardComment>
 }
