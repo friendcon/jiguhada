@@ -39,7 +39,11 @@ data class Board(
     fun updateBoard(boardUpdateRequestDto: BoardUpdateRequestDto): Board {
         title = boardUpdateRequestDto.title
         content = boardUpdateRequestDto.content
-        boardCategory = BoardCategory(boardUpdateRequestDto.boardCategory)
+        return this
+    }
+
+    fun updateCategory(boardCategory: BoardCategory): Board {
+        this.boardCategory = boardCategory
         return this
     }
 

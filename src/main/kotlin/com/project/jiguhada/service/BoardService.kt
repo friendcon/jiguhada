@@ -1,16 +1,15 @@
 package com.project.jiguhada.service
 
 import com.project.jiguhada.controller.dto.CommonResponseDto
-import com.project.jiguhada.controller.dto.board.BoardCreateRequestDto
-import com.project.jiguhada.controller.dto.board.BoardListResponse
-import com.project.jiguhada.controller.dto.board.BoardResponseDto
-import com.project.jiguhada.controller.dto.board.BoardUpdateResponseDto
+import com.project.jiguhada.controller.dto.board.*
 import com.project.jiguhada.controller.dto.user.ImgUrlResponseDto
 import com.project.jiguhada.domain.board.Board
 import com.project.jiguhada.domain.board.BoardImg
+import com.project.jiguhada.exception.LimitFileCountException
 import com.project.jiguhada.exception.RequestBoardIdNotMatched
 import com.project.jiguhada.jwt.JwtAuthenticationProvider
 import com.project.jiguhada.repository.board.BoardCategoryRepository
+import com.project.jiguhada.repository.board.BoardImgRepository
 import com.project.jiguhada.repository.board.BoardRepository
 import com.project.jiguhada.repository.user.UserEntityRepository
 import com.project.jiguhada.util.BOARD_CATEGORY
@@ -29,6 +28,7 @@ class BoardService(
     private val boardRepository: BoardRepository,
     private val userEntityRepository: UserEntityRepository,
     private val boardCategoryRepository: BoardCategoryRepository,
+    private val boardImgRepository: BoardImgRepository,
     private val jwtAuthenticationProvider: JwtAuthenticationProvider
 ) {
     @Transactional
@@ -37,7 +37,11 @@ class BoardService(
 
         val board = boardRequest.toEntity(usernameFromToken)
         val commentToEntity = boardRequest.imgList.map {
-            toBoardImgEntity(board, it)
+            BoardImg(
+                board = board,
+                imgUrl = it,
+                isDeleted = false
+            )
         }
 
         board.boardImgs = commentToEntity.toMutableList()
@@ -96,6 +100,39 @@ class BoardService(
         }
     }
 
+    @Transactional
+    fun updateBoard(boardUpdateRequestDto: BoardUpdateRequestDto, token: String): BoardResponseDto {
+        val usernameFromToken = jwtAuthenticationProvider.getIdFromTokenClaims(resolveToken(token)!!)
+        val board = boardRepository.findById(boardUpdateRequestDto.boardId).get()
+        if(board.userEntity.username.equals(usernameFromToken)) {
+            deleteBoardImg(boardUpdateRequestDto.deleteImg) // 이미지 삭제
+            updateBoardImg(board, boardUpdateRequestDto.boardImg) // 이미지 업데이트
+            val category = boardCategoryRepository.findById(boardUpdateRequestDto.boardCategory).get()
+            board.updateCategory(category) // 카테고리 수정
+            board.updateBoard(boardUpdateRequestDto) // 다른 게시글 정보 수정
+            return board.toBoardResponse()
+        } else {
+            throw RequestBoardIdNotMatched("권한이 없는 요청입니다")
+        }
+    }
+
+    fun updateBoardImg(board: Board, updateList: List<BoardImgRequestDto>) {
+        val imgListSize = board.boardImgs.filter { it.isDeleted == false }.size
+        if(imgListSize + updateList.size <= 3) {
+            val imgEntity = updateList.map { it.toEntity(board, it.image_url) }
+            boardImgRepository.saveAll(imgEntity)
+        } else {
+            throw LimitFileCountException("업로드 할 수 있는 파일 개수를 초과하였습니다.")
+        }
+    }
+
+    fun deleteBoardImg(deleteList: List<BoardImgRequestDto>) {
+        deleteList.forEach {
+            val boardImg = boardImgRepository.findById(it.image_id).get()
+            boardImg.deleteImg()
+        }
+    }
+
     fun removeBoard(boardId: Long, token: String): CommonResponseDto {
         // token 에서 id 가져오기
         val usernameFromToken = jwtAuthenticationProvider.getIdFromTokenClaims(resolveToken(token)!!)
@@ -128,7 +165,7 @@ class BoardService(
         return boardRepository.save(board)
     }
 
-    fun toBoardImgEntity(board: Board, imgUrl: String): BoardImg {
+    fun BoardImgRequestDto.toEntity(board: Board, imgUrl: String): BoardImg {
         return BoardImg(
             board = board,
             imgUrl = imgUrl,
