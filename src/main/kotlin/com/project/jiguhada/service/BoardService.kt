@@ -63,7 +63,9 @@ class BoardService(
     fun readBoard(
         boardId: Long
     ): BoardResponseDto {
-        return boardRepository.findById(boardId).get().toBoardResponse()
+        val response = boardRepository.findById(boardId).get()
+        response.updateViewCount()
+        return response.toBoardResponse()
     }
 
     fun readBoardList(

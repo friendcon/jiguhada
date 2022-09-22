@@ -36,6 +36,10 @@ data class Board(
     var boardImgs: MutableList<BoardImg> = mutableListOf()
 ): BaseEntity() {
 
+    fun updateViewCount(): Board {
+        view_count++
+        return this
+    }
     fun updateBoard(boardUpdateRequestDto: BoardUpdateRequestDto): Board {
         title = boardUpdateRequestDto.title
         content = boardUpdateRequestDto.content
