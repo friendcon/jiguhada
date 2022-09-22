@@ -35,6 +35,9 @@ class BoardService(
     fun createBoard(boardRequest: BoardCreateRequestDto, token: String): BoardResponseDto {
         val usernameFromToken = jwtAuthenticationProvider.getIdFromTokenClaims(resolveToken(token)!!)
 
+        if(boardRequest.imgList.size > 3) {
+            throw LimitFileCountException("업로드 할 수 있는 파일 개수를 초과하였습니다.")
+        }
         val board = boardRequest.toEntity(usernameFromToken)
         val commentToEntity = boardRequest.imgList.map {
             BoardImg(
