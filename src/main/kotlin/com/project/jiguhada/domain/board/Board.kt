@@ -56,7 +56,8 @@ data class Board(
             boardCategory = boardCategory.categoryName.toString(),
             username = userEntity.username,
             nickname = userEntity.nickname,
-            commentList = boardCommentsList.map{it.toResponse()},
+            //commentList = boardCommentsList.map{it.toResponse()},
+            commentList = boardCommentsList.filter { it.boardComment == null }.map { it.toResponse() },
             likeList = boardLikes.map { it.toResponse() },
             imgList = boardImgs.filter { !it.isDeleted }.map { it.toResponse() }
         )
