@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface BoardRepository: JpaRepository<Board, Long>, BoardRepositorySupport {
     fun countBoardByBoardCategory(category: BoardCategory): Long
+    fun countBoardByUserEntityId(id: Long): Long
 }
