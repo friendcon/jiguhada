@@ -74,4 +74,14 @@ class UserController(
         val response = userService.updateUserImgUrl(imgFile, jwtAuthenticationProvider.getTokenFromHeader(httprequest))
         return ResponseEntity.ok().body(response)
     }
+
+    @DeleteMapping("/signOut")
+    @Operation(summary = "회원탈퇴")
+    fun signOutUser(
+        @RequestBody passwordRequestDto: PasswordRequestDto,
+        httprequest: HttpServletRequest
+    ): ResponseEntity<CommonResponseDto> {
+        val response = userService.singOutUser(passwordRequestDto, jwtAuthenticationProvider.getTokenFromHeader(httprequest))
+        return ResponseEntity(response, HttpStatus.OK)
+    }
 }
