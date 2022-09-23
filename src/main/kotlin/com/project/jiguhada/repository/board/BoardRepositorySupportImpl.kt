@@ -49,6 +49,27 @@ class BoardRepositorySupportImpl(
             .fetch()
     }
 
+    override fun findBoardListByUserId(userId: Long, page: Pageable): List<BoardListItemResponse> {
+        return queryFactory.select(QBoardListItemResponse(
+            board.boardCategory.categoryName,
+            board.id,
+            board.title,
+            board.userEntity.nickname,
+            board.createdDate,
+            board.view_count,
+            board.boardLikes.size().longValue(),
+            board.boardCommentsList.size().longValue()
+        ))
+            .from(board)
+            .where(
+                board.userEntity.id.eq(userId)
+            )
+            .orderBy(OrderSpecifier(Order.DESC, board.createdDate))
+            .offset(page.offset)
+            .limit(page.pageSize.toLong())
+            .fetch()
+    }
+
     /*override fun getBoard(boardId: Long): BoardResponseDto? {
         return queryFactory.select(QBoardResponseDto(
             board.id,

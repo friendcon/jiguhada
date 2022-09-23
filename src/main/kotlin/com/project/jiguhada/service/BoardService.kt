@@ -97,6 +97,7 @@ class BoardService(
     fun getUpdateBoard(boardId: Long, token: String): BoardUpdateResponseDto {
         val usernameFromToken = jwtAuthenticationProvider.getIdFromTokenClaims(resolveToken(token)!!)
         val board = boardRepository.findById(boardId).get()
+
         if(board.userEntity.username.equals(usernameFromToken)) {
             boardRepository.findById(boardId)
             return board.toBoardUpdateResponse()
