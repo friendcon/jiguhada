@@ -1,12 +1,13 @@
 package com.project.jiguhada.service
 
-import com.project.jiguhada.controller.dto.*
 import com.project.jiguhada.controller.dto.CommonResponseDto
+import com.project.jiguhada.controller.dto.TokenDto
 import com.project.jiguhada.controller.dto.user.*
 import com.project.jiguhada.domain.user.Role
 import com.project.jiguhada.domain.user.UserEntity
 import com.project.jiguhada.exception.*
 import com.project.jiguhada.jwt.JwtAuthenticationProvider
+import com.project.jiguhada.jwt.JwtUserDetails
 import com.project.jiguhada.repository.user.UserEntityRepository
 import com.project.jiguhada.util.ROLE
 import com.project.jiguhada.util.SecurityUtil
@@ -23,7 +24,8 @@ class UserService(
     private val passwordEncoder: PasswordEncoder,
     private val authService: AuthService,
     private val awsS3Service: AwsS3Service,
-    private val jwtAuthenticationProvider: JwtAuthenticationProvider
+    private val jwtAuthenticationProvider: JwtAuthenticationProvider,
+    private val jwtUserDetailsService: JwtUserDetailsService
 ) {
     companion object {
         const val PROFILE_DIR_NAME = "profile-img"
@@ -102,6 +104,18 @@ class UserService(
             }
         }
         throw UsernameNotFoundException("해당 사용자가 존재하지 않습니다")
+    }
+
+    fun singOutUser(requestDto: PasswordRequestDto, token: String): CommonResponseDto {
+        val username = SecurityUtil.currentUsername
+        val user = userEntityRepository.findByUsername(username).get()
+        if(passwordEncoder.matches(requestDto.password, user.password)) {
+            val userDetails = jwtUserDetailsService.loadUserByUsername(username) as JwtUserDetails
+            userDetails.changeDisabled()
+            return CommonResponseDto(200, "회원탈퇴가 완료되었습니다.")
+        } else {
+            throw UserNowPasswordNotMatchException("비밀번호가 일치하지 않습니다.")
+        }
     }
 
     fun resolveToken(token: String): String? {

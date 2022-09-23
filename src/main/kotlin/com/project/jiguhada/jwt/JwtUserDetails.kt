@@ -9,8 +9,14 @@ class JwtUserDetails(
     val nickname: String,
     val passWord: String,
     val imgUrl: String,
+    var enabled: Boolean,
     val roles: MutableList<GrantedAuthority> = mutableListOf<GrantedAuthority>()
 ): UserDetails {
+
+    fun changeDisabled(): JwtUserDetails {
+        enabled = false
+        return this
+    }
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         return roles
@@ -57,6 +63,6 @@ class JwtUserDetails(
      * false : 비활성화
      */
     override fun isEnabled(): Boolean {
-        return true
+        return enabled
     }
 }
