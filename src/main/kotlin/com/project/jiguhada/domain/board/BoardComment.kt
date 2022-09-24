@@ -36,6 +36,7 @@ data class BoardComment(
         return CommentResponseDto(
             commentId = id!!,
             username = userEntity.username,
+            userId = userEntity.id!!,
             nickname = userEntity.nickname,
             content = content,
             createdDate = createdDate,
