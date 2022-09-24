@@ -22,7 +22,7 @@ data class Challenge(
     val challengeDetails: String, // 챌린지 설명
     val participantsCount: Long, // 챌린지 참가자 수
     var currrentParticipantsCount: Long, // 현재 참가자 수
-    @OneToMany(orphanRemoval = true)
+    @OneToMany(orphanRemoval = true, cascade = [CascadeType.PERSIST])
     @JoinColumn(name = "challenge_ID")
     val challengeTags: List<ChallengeTag> = mutableListOf(), // 챌린지 태그
     val challengeImg: String, // 챌린지 대표 사진
@@ -58,7 +58,7 @@ data class Challenge(
             challengeDetails = challengeDetails,
             participantsCount = participantsCount,
             currrentParticipantsCount = currrentParticipantsCount,
-            challengeTag = challengeTags.map { it.challengeTagName.toString() },
+            challengeTag = challengeTags.map { it.tag.challengeTagName.toString() },
             challengeImg = challengeImg,
             authMethodContent = authMethodContent,
             authMethodImgUrl = authMethodImgUrl,

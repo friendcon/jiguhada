@@ -2,12 +2,12 @@ package com.project.jiguhada.service
 
 import com.project.jiguhada.controller.dto.challenge.ChallengeCreateRequest
 import com.project.jiguhada.controller.dto.challenge.ChallengeCreateResponse
-import com.project.jiguhada.controller.dto.challenge.ChallengeTagRequest
 import com.project.jiguhada.domain.challenge.Challenge
 import com.project.jiguhada.domain.challenge.ChallengeTag
 import com.project.jiguhada.domain.challenge.UserChallenge
 import com.project.jiguhada.repository.challenge.ChallengeRepository
 import com.project.jiguhada.repository.challenge.ChallengeTagRepository
+import com.project.jiguhada.repository.challenge.TagRepository
 import com.project.jiguhada.repository.challenge.UserChallengeRepository
 import com.project.jiguhada.repository.user.UserEntityRepository
 import com.project.jiguhada.util.CHALLENGE_PERIOD
@@ -23,7 +23,8 @@ class ChallengeService(
     private val userEntityRepository: UserEntityRepository,
     private val challengeRepository: ChallengeRepository,
     private val challengeTagRepository: ChallengeTagRepository,
-    private val userChallengeRepository: UserChallengeRepository
+    private val userChallengeRepository: UserChallengeRepository,
+    private val tagRepository: TagRepository
 ) {
 
     @Transactional
@@ -48,7 +49,7 @@ class ChallengeService(
             challengeDetails = challengeDetails,
             participantsCount = participantsCount,
             currrentParticipantsCount = 1,
-            challengeTags = challengeTag.map { it.toEntity() },
+            challengeTags = challengeTag.map { ChallengeTag(tag = tagRepository.findByChallengeTagName(it)) },
             challengeImg = challengeImg,
             authMethodContent = authMethodContent,
             authMethodImgUrl = authMethodImg,
@@ -74,9 +75,5 @@ class ChallengeService(
             CHALLENGE_PERIOD.THREEWEEK -> startDate.plusWeeks(3)
             CHALLENGE_PERIOD.FOURWEEK -> startDate.plusWeeks(4)
         }
-    }
-
-    fun ChallengeTagRequest.toEntity(): ChallengeTag {
-        return challengeTagRepository.findById(tagname.toString()).get()
     }
 }
