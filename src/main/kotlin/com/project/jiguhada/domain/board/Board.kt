@@ -60,6 +60,7 @@ data class Board(
             viewCount = view_count,
             boardCategory = boardCategory.categoryName.toString(),
             username = userEntity.username,
+            userId = userEntity.id!!,
             nickname = userEntity.nickname,
             createDate = createdDate,
             //commentList = boardCommentsList.map{it.toResponse()},

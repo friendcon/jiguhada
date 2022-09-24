@@ -10,6 +10,7 @@ data class BoardResponseDto @QueryProjection constructor(
     val viewCount: Long,
     val boardCategory: String,
     val username: String,
+    val userId: Long,
     val nickname: String,
     val createDate: LocalDateTime,
     val commentList: List<CommentResponseDto>,

@@ -6,6 +6,7 @@ import java.time.LocalDateTime
 data class CommentResponseDto @QueryProjection constructor(
     val commentId: Long,
     val username: String,
+    val userId: Long,
     val nickname: String,
     val content: String,
     val createdDate: LocalDateTime,
