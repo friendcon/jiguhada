@@ -13,6 +13,7 @@ import javax.persistence.*
 data class Board(
 
     var title: String,
+    @Column(length = 2000)
     var content: String,
     @ColumnDefault("0")
     var view_count: Long,
