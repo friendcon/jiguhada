@@ -83,3 +83,13 @@ enum class CHALLENGE_TAG {
     ETC
 }
 
+enum class CHALLENGE_STATUS {
+    BEFORE,
+    INPROGRESS,
+    END
+}
+
+enum class CHALLENGE_IS_SUCCESS {
+    SUCCESS,
+    INPROGRESS
+}
