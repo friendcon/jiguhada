@@ -3,7 +3,6 @@ package com.project.jiguhada.controller.dto.challenge
 import com.project.jiguhada.util.AUTH_AVAILABLE_TIME_TYPE
 import com.project.jiguhada.util.AUTH_FREQUENCY
 import com.project.jiguhada.util.CHALLENGE_PERIOD
-import com.project.jiguhada.util.CHALLENGE_TAG
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -14,6 +13,7 @@ data class ChallengeCreateRequest(
     val challengeTag: List<ChallengeTagRequest>,
     val challengeImg: String, // 챌린지 대표 이미지
     val authMethodContent: String, // 인증방법 설명
+    val authMethodImg: String, // 인증방법 이미지
     val challengeStartDate: LocalDate, // 챌린지 시작일
     val challengePeroid: CHALLENGE_PERIOD, // 챌린지 기간 (1주, 2주, 3주, 4주)
     val authFrequency: AUTH_FREQUENCY, // 인증빈도
@@ -23,8 +23,4 @@ data class ChallengeCreateRequest(
     val authAvailableEndTime: LocalTime, // 인증 가능 종료 시간
     val authHoliday: Boolean // 공휴일 인증 여부 true : 공휴일에도 인증 false : 공휴일에는 인증 x
 ) {
-
-    data class ChallengeTagRequest(
-        val tagname: CHALLENGE_TAG
-    )
 }

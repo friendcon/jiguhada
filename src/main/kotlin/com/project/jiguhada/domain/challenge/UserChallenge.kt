@@ -8,22 +8,20 @@ import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
-import javax.persistence.OneToMany
 
 @Entity
 data class UserChallenge(
     @ManyToOne
     @JoinColumn(name = "user_entity_id")
     val userEntity: UserEntity, // 회원 id
-    @OneToMany(orphanRemoval = true)
-    @JoinColumn(name = "user_challenge_id")
-    val challenges: MutableList<Challenge> = mutableListOf(), // 챌린지 id
+    @ManyToOne
+    @JoinColumn(name = "challenge_id")
+    val challenge: Challenge,
     @Column(precision = 5, scale = 2)
     val achievementRate: BigDecimal // 회원의 챌린지 달성률
 ): BaseEntity() {
-
     override fun toString(): String {
-        return "UserChallenge(userEntity=$userEntity, challenges=$challenges, achievementRate=$achievementRate)"
+        return "UserChallenge(userEntity=$userEntity, challenge=$challenge, achievementRate=$achievementRate)"
     }
 
     override fun equals(other: Any?): Boolean {
