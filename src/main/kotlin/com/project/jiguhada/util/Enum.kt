@@ -48,3 +48,38 @@ enum class BOARD_SEARCH_TYPE {
     CONTENT,
     TITLE
 }
+
+enum class CHALLENGE_PERIOD {
+    ONEWEEK,
+    TWOWEEK,
+    THREEWEEK,
+    FOURWEEK
+}
+
+enum class AUTH_FREQUENCY {
+    EVERYDAY,
+    WEEKDAY,
+    WEEKEND,
+    ONCEAWEEK,
+    TWICEAWEEK,
+    THIRDAWEEK,
+    FORTHAWEEK,
+    FIFTHAWEEK,
+    SIXTHAWEEK
+}
+
+enum class AUTH_AVAILABLE_TIME_TYPE {
+    ALLDAY,
+    CUSTOMTIME
+}
+
+enum class CHALLENGE_TAG {
+    ZERO_WASTE,
+    VEGAN,
+    LIFESTYLE,
+    TUMBLER,
+    RECYCLING,
+    ENVIRONMENT_DAY,
+    ETC
+}
+
