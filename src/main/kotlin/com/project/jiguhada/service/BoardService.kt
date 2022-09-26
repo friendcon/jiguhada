@@ -16,7 +16,6 @@ import com.project.jiguhada.util.BOARD_CATEGORY
 import com.project.jiguhada.util.BOARD_ORDER_TYPE
 import com.project.jiguhada.util.BOARD_SEARCH_TYPE
 import org.springframework.data.domain.Pageable
-import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.util.StringUtils
@@ -48,10 +47,14 @@ class BoardService(
             )
         }
 
-        board.boardImgs = commentToEntity.toMutableList()
-        return board.toBoardResponse()
+        if(boardRequest.imgList.size == null) {
+            return board.toBoardResponse()
+        }
 
-        throw UsernameNotFoundException("해당 사용자가 존재하지 않습니다.")
+        boardImgRepository.saveAll(commentToEntity)
+        board.boardImgs = commentToEntity.toMutableList()
+
+        return board.toBoardResponse()
     }
 
     fun uploadBoardImg(multipartFile: MultipartFile): ImgUrlResponseDto {

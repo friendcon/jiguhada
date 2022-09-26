@@ -22,10 +22,10 @@ class GlobalControllerAdv0ice {
         return ResponseEntity(ErrorResponseDto(ERRORCODE.ID_PASSWORD_NOTMATCH, "인증정보가 일치하지 않습니다"), HttpStatus.BAD_REQUEST)
     }
 
-    @ExceptionHandler(NullPointerException::class)
+    /*@ExceptionHandler(NullPointerException::class)
     fun nullPointerException(e: NullPointerException): ResponseEntity<ErrorResponseDto> {
         return ResponseEntity(ErrorResponseDto(ERRORCODE.REQUEST_NOT_INCLUDE_TOKEN, e.message), HttpStatus.BAD_REQUEST)
-    }
+    }*/
     @ExceptionHandler(SecurityException::class)
     fun securityException(e: SecurityException): ResponseEntity<ErrorResponseDto> {
         return ResponseEntity(ErrorResponseDto(ERRORCODE.INCORRECT_JWT_SIGNATURE, "잘못된 JWT 서명입니다"), HttpStatus.UNAUTHORIZED)
