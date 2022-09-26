@@ -39,6 +39,7 @@ class BoardService(
             throw LimitFileCountException("업로드 할 수 있는 파일 개수를 초과하였습니다.")
         }
         val board = boardRequest.toEntity(usernameFromToken)
+        boardRepository.save(board)
         val commentToEntity = boardRequest.imgList.map {
             BoardImg(
                 board = board,
