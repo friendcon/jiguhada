@@ -127,8 +127,10 @@ class BoardService(
     }
 
     fun updateBoardImg(board: Board, updateList: List<BoardImgResponseDto>) {
-        val imgListSize = board.boardImgs.filter { it.isDeleted == false }.size
-        if(imgListSize + updateList.size <= 3) {
+        val imgListId = board.boardImgs.filter { !it.isDeleted }
+        val newImgCount = updateList.filter { !boardImgRepository.existsById(it.imgId)}.size
+
+        if(imgListId.size + newImgCount <= 3) {
             val imgEntity = updateList.map { it.toEntity(board, it.imgUrl) }
             boardImgRepository.saveAll(imgEntity)
         } else {
