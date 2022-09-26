@@ -126,19 +126,19 @@ class BoardService(
         }
     }
 
-    fun updateBoardImg(board: Board, updateList: List<BoardImgRequestDto>) {
+    fun updateBoardImg(board: Board, updateList: List<BoardImgResponseDto>) {
         val imgListSize = board.boardImgs.filter { it.isDeleted == false }.size
         if(imgListSize + updateList.size <= 3) {
-            val imgEntity = updateList.map { it.toEntity(board, it.image_url) }
+            val imgEntity = updateList.map { it.toEntity(board, it.imgUrl) }
             boardImgRepository.saveAll(imgEntity)
         } else {
             throw LimitFileCountException("업로드 할 수 있는 파일 개수를 초과하였습니다.")
         }
     }
 
-    fun deleteBoardImg(deleteList: List<BoardImgRequestDto>) {
+    fun deleteBoardImg(deleteList: List<BoardImgResponseDto>) {
         deleteList.forEach {
-            val boardImg = boardImgRepository.findById(it.image_id).get()
+            val boardImg = boardImgRepository.findById(it.imgId).get()
             boardImg.deleteImg()
         }
     }
@@ -175,7 +175,7 @@ class BoardService(
         return boardRepository.save(board)
     }
 
-    fun BoardImgRequestDto.toEntity(board: Board, imgUrl: String): BoardImg {
+    fun BoardImgResponseDto.toEntity(board: Board, imgUrl: String): BoardImg {
         return BoardImg(
             board = board,
             imgUrl = imgUrl,
