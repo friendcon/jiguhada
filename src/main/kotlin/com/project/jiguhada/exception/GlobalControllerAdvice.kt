@@ -22,10 +22,11 @@ class GlobalControllerAdv0ice {
         return ResponseEntity(ErrorResponseDto(ERRORCODE.ID_PASSWORD_NOTMATCH, "인증정보가 일치하지 않습니다"), HttpStatus.BAD_REQUEST)
     }
 
-    /*@ExceptionHandler(NullPointerException::class)
+    @ExceptionHandler(NullPointerException::class)
     fun nullPointerException(e: NullPointerException): ResponseEntity<ErrorResponseDto> {
         return ResponseEntity(ErrorResponseDto(ERRORCODE.REQUEST_NOT_INCLUDE_TOKEN, e.message), HttpStatus.BAD_REQUEST)
-    }*/
+    }
+
     @ExceptionHandler(SecurityException::class)
     fun securityException(e: SecurityException): ResponseEntity<ErrorResponseDto> {
         return ResponseEntity(ErrorResponseDto(ERRORCODE.INCORRECT_JWT_SIGNATURE, "잘못된 JWT 서명입니다"), HttpStatus.UNAUTHORIZED)
@@ -111,5 +112,19 @@ class GlobalControllerAdv0ice {
     @ExceptionHandler(UserAlreadyLikeBoard::class)
     fun userAlreadyLikeBoard(e:UserAlreadyLikeBoard): ResponseEntity<ErrorResponseDto> {
         return ResponseEntity(ErrorResponseDto(ERRORCODE.USER_ALREADY_LIKE, e.message), HttpStatus.BAD_REQUEST)
+    }
+
+    @ExceptionHandler(UserAlreadyChallengeMemberException::class)
+    fun userAlreadyChallengeMemberException(e: UserAlreadyChallengeMemberException): ResponseEntity<ErrorResponseDto> {
+        return ResponseEntity(ErrorResponseDto(ERRORCODE.USER_ALREADY_CHALLENGE_MEMBER,e.message), HttpStatus.BAD_REQUEST)
+    }
+    @ExceptionHandler(ChallengeJoinCountException::class)
+    fun challengeJoinCountException(e: ChallengeJoinCountException): ResponseEntity<ErrorResponseDto> {
+        return ResponseEntity(ErrorResponseDto(ERRORCODE.CHALLENGE_JOIN_COUNT, e.message), HttpStatus.BAD_REQUEST)
+    }
+
+    @ExceptionHandler(ChallengeJoinEndException::class)
+    fun challengeJoinEndException(e:ChallengeJoinEndException): ResponseEntity<ErrorResponseDto> {
+        return ResponseEntity(ErrorResponseDto(ERRORCODE.CHALLENGE_CLOSE, e.message), HttpStatus.BAD_REQUEST)
     }
 }
