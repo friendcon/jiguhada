@@ -7,6 +7,6 @@ data class BoardUpdateRequestDto(
     val title: String,
     val content: String,
     val boardCategory: BOARD_CATEGORY,
-    val boardImg: List<BoardImgRequestDto>,
-    val deleteImg: List<BoardImgRequestDto>
+    val boardImg: List<BoardImgResponseDto>,
+    val deleteImg: List<BoardImgResponseDto>
 )

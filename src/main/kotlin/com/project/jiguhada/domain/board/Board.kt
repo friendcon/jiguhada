@@ -36,7 +36,6 @@ data class Board(
     @OneToMany(mappedBy = "board", orphanRemoval = true, cascade = [CascadeType.PERSIST])
     var boardImgs: MutableList<BoardImg> = mutableListOf()
 ): BaseEntity() {
-
     fun updateViewCount(): Board {
         view_count++
         return this
@@ -66,7 +65,9 @@ data class Board(
             //commentList = boardCommentsList.map{it.toResponse()},
             commentList = boardCommentsList.filter { it.boardComment == null }.map { it.toResponse() },
             likeList = boardLikes.map { it.toResponse() },
-            imgList = boardImgs.filter { !it.isDeleted }.map { it.toResponse() }
+            imgList = boardImgs.filter {
+                !it.isDeleted
+            }.map { it.toResponse() }
         )
     }
 
