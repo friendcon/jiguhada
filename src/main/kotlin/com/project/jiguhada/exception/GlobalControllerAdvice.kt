@@ -118,4 +118,9 @@ class GlobalControllerAdv0ice {
     fun userAlreadyChallengeMemberException(e: UserAlreadyChallengeMemberException): ResponseEntity<ErrorResponseDto> {
         return ResponseEntity(ErrorResponseDto(ERRORCODE.USER_ALREADY_CHALLENGE_MEMBER,e.message), HttpStatus.BAD_REQUEST)
     }
+
+    @ExceptionHandler(ChallengeJoinEndException::class)
+    fun challengeJoinEndException(e:ChallengeJoinEndException): ResponseEntity<ErrorResponseDto> {
+        return ResponseEntity(ErrorResponseDto(ERRORCODE.CHALLENGE_CLOSE, e.message), HttpStatus.OK)
+    }
 }

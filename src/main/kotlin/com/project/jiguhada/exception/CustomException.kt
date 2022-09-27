@@ -16,3 +16,4 @@ class UserAlreadyLikeBoard(override val message: String): RuntimeException()
 class UserAlreadyChallengeMemberException(override val message: String): RuntimeException()
 
 class ChallengeJoinCountException(override val message: String): RuntimeException()
+class ChallengeJoinEndException(override val message: String): RuntimeException()
