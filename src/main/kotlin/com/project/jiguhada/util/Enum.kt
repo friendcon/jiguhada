@@ -96,3 +96,17 @@ enum class CHALLENGE_IS_SUCCESS {
     SUCCESS,
     INPROGRESS
 }
+
+enum class CHALLENGE_ORDER_TYPE {
+    RECENTYL,
+    POPULAR,
+    BEFORE,
+    INPROGRESS,
+    END
+}
+
+enum class CHALLEGE_SEARCH_TYPE {
+    TITLE,
+    CONTENT,
+    TAG
+}
