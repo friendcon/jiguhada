@@ -2,6 +2,7 @@ package com.project.jiguhada.controller.dto
 
 import com.project.jiguhada.controller.dto.challenge.ChallengeCreateRequest
 import com.project.jiguhada.controller.dto.challenge.ChallengeCreateResponse
+import com.project.jiguhada.controller.dto.challenge.ChallengeJoinRequest
 import com.project.jiguhada.jwt.JwtAuthenticationProvider
 import com.project.jiguhada.service.ChallengeService
 import io.swagger.v3.oas.annotations.Operation
@@ -25,6 +26,12 @@ class ChallengeController(
     fun createChallenge(@RequestBody challengeCreateRequest: ChallengeCreateRequest): ResponseEntity<ChallengeCreateResponse> {
         println(challengeCreateRequest.toString())
         val response = challengeService.createChallenge(challengeCreateRequest)
+        return ResponseEntity(response, HttpStatus.OK)
+    }
+
+    @PostMapping("/join")
+    fun joinChallenge(@RequestBody challengeJoinRequest: ChallengeJoinRequest): ResponseEntity<Any> {
+        val response = challengeService.joinChallenge(challengeJoinRequest)
         return ResponseEntity(response, HttpStatus.OK)
     }
 }

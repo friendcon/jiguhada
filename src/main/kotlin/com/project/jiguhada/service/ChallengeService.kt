@@ -2,9 +2,12 @@ package com.project.jiguhada.service
 
 import com.project.jiguhada.controller.dto.challenge.ChallengeCreateRequest
 import com.project.jiguhada.controller.dto.challenge.ChallengeCreateResponse
+import com.project.jiguhada.controller.dto.challenge.ChallengeJoinRequest
 import com.project.jiguhada.domain.challenge.Challenge
 import com.project.jiguhada.domain.challenge.ChallengeTag
 import com.project.jiguhada.domain.challenge.UserChallenge
+import com.project.jiguhada.exception.ChallengeJoinCountException
+import com.project.jiguhada.exception.UserAlreadyChallengeMemberException
 import com.project.jiguhada.repository.challenge.ChallengeRepository
 import com.project.jiguhada.repository.challenge.ChallengeTagRepository
 import com.project.jiguhada.repository.challenge.TagRepository
@@ -38,6 +41,28 @@ class ChallengeService(
         )
         userChallengeRepository.save(userChallenge)
         return challenge.toChallengeCreateResponse()
+    }
+
+    @Transactional
+    fun joinChallenge(challengeJoinRequest: ChallengeJoinRequest) {
+        val userList = userChallengeRepository.findByChallengeId(challengeJoinRequest.challengeId).map { it.userEntity.id }
+        val challenge = challengeRepository.findById(challengeJoinRequest.challengeId).get()
+        val user = userEntityRepository.findByUsername(SecurityUtil.currentUsername).get()
+
+        if(challenge.currrentParticipantsCount == challenge.participantsCount) {
+            throw ChallengeJoinCountException("정원이 초과되어 챌린지에 참여할 수 없습니다.")
+        } else if(userList.contains(challengeJoinRequest.userId)) {
+            throw UserAlreadyChallengeMemberException("이미 챌린지 참가자입니다.")
+        }
+
+        val userChallenge = UserChallenge(
+            user,
+            challenge,
+            BigDecimal.valueOf(0.00)
+        )
+
+        userChallengeRepository.save(userChallenge)
+        challenge.updateParticipantsCount()
     }
 
     fun ChallengeCreateRequest.toEntity(): Challenge {
