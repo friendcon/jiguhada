@@ -14,9 +14,8 @@ import com.project.jiguhada.repository.challenge.ChallengeTagRepository
 import com.project.jiguhada.repository.challenge.TagRepository
 import com.project.jiguhada.repository.challenge.UserChallengeRepository
 import com.project.jiguhada.repository.user.UserEntityRepository
-import com.project.jiguhada.util.CHALLENGE_PERIOD
-import com.project.jiguhada.util.CHALLENGE_STATUS
-import com.project.jiguhada.util.SecurityUtil
+import com.project.jiguhada.util.*
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
@@ -30,7 +29,6 @@ class ChallengeService(
     private val userChallengeRepository: UserChallengeRepository,
     private val tagRepository: TagRepository
 ) {
-
     @Transactional
     fun createChallenge(challengeCreateRequest: ChallengeCreateRequest): ChallengeCreateResponse {
         val challenge = challengeRepository.save(challengeCreateRequest.toEntity())
@@ -45,13 +43,13 @@ class ChallengeService(
     }
 
     @Transactional
-    fun joinChallenge(challengeJoinRequest: ChallengeJoinRequest) {
+    fun joinChallenge(challengeJoinRequest: ChallengeJoinRequest): ChallengeCreateResponse {
         val userList = userChallengeRepository.findByChallengeId(challengeJoinRequest.challengeId).map { it.userEntity.id }
         val challenge = challengeRepository.findById(challengeJoinRequest.challengeId).get()
         val user = userEntityRepository.findByUsername(SecurityUtil.currentUsername).get()
 
-        if(challenge.challengeStartDate.isAfter(LocalDate.now()) ||
-                challenge.challengeStartDate.isEqual(LocalDate.now())) {
+        if(LocalDate.now().isAfter(challenge.challengeStartDate) ||
+            LocalDate.now().isEqual(challenge.challengeStartDate)) {
             throw ChallengeJoinEndException("챌린지 모집기간이 지났습니다.")
         } else if(challenge.currrentParticipantsCount == challenge.participantsCount) {
             throw ChallengeJoinCountException("정원이 초과되어 챌린지에 참여할 수 없습니다.")
@@ -67,6 +65,18 @@ class ChallengeService(
 
         userChallengeRepository.save(userChallenge)
         challenge.updateParticipantsCount()
+        return challenge.toChallengeCreateResponse()
+    }
+
+    @Transactional
+    fun readChallengeList(
+        query: String?,
+        searchType: CHALLEGE_SEARCH_TYPE,
+        orderType: CHALLENGE_ORDER_TYPE?,
+        challengeTag: List<CHALLENGE_TAG>?,
+        page: Pageable
+    ) {
+        
     }
 
     fun ChallengeCreateRequest.toEntity(): Challenge {

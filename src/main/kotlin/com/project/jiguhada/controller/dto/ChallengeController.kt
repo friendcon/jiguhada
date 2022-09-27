@@ -30,7 +30,7 @@ class ChallengeController(
     }
 
     @PostMapping("/join")
-    fun joinChallenge(@RequestBody challengeJoinRequest: ChallengeJoinRequest): ResponseEntity<Any> {
+    fun joinChallenge(@RequestBody challengeJoinRequest: ChallengeJoinRequest): ResponseEntity<ChallengeCreateResponse> {
         val response = challengeService.joinChallenge(challengeJoinRequest)
         return ResponseEntity(response, HttpStatus.OK)
     }
