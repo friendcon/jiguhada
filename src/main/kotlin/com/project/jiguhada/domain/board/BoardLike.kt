@@ -26,6 +26,7 @@ data class BoardLike(
     fun toResponse(): BoardLikeResponseDto {
         return BoardLikeResponseDto(
             likeId = id!!,
+            userId = userEntity.id!!,
             username = userEntity.username,
             nickname = userEntity.nickname
         )
