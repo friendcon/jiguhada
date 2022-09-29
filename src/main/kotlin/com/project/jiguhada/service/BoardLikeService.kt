@@ -22,22 +22,25 @@ class BoardLikeService(
     @Transactional
     fun createLike(boardId: Long, userId: Long, token: String): List<BoardLikeResponseDto> {
         val usernameFromToken = jwtAuthenticationProvider.getIdFromTokenClaims(resolveToken(token)!!)
-        var boardLikeTrueList = boardLikeRepository.findByBoard_Id(boardId).filter { it.isLike == false }.map { it.userEntity.username }
+        var boardLikeTrueList = boardLikeRepository.findByBoard_Id(boardId).filter { it.isLike == 1 }.map { it.userEntity.username }
 
         boardLikeRepository.findByBoard_Id(boardId).forEach {
             println(it.toString())
         }
-        var boardLikeFalseList = boardLikeRepository.findByBoard_Id(boardId).filter { it.isLike == true }.map { it.userEntity.username }
+        var boardLikeFalseList = boardLikeRepository.findByBoard_Id(boardId).filter { it.isLike == 0 }.map { it.userEntity.username }
         println(boardLikeTrueList.toString())
         println(boardLikeFalseList.toString())
         if(boardLikeTrueList.contains(usernameFromToken)) {
             throw UserAlreadyLikeBoard("이미 좋아요를 누르셨습니다.")
         } else if(boardLikeFalseList.contains(usernameFromToken)) {
-            val like = boardLikeRepository.findByBoard_IdAndUserEntity_Id(boardId, userId)
+            val likeId = boardLikeRepository.findByBoard_IdAndUserEntity_Id(boardId, userId).id
+            val like = boardLikeRepository.findById(likeId!!).get()
             like.createLike()
+            println("dasdas " + like.toString())
+
         } else {
             val like = BoardLike(
-                isLike = true,
+                isLike = 1,
                 board = boardRepository.findById(boardId).get(),
                 userEntity = userEntityRepository.findByUsername(usernameFromToken).get()
             )
@@ -45,7 +48,7 @@ class BoardLikeService(
             boardLikeRepository.save(like)
         }
 
-        return boardLikeRepository.findByBoard_Id(boardId).filter { it.isLike }.map { it.toResponse() }
+        return boardLikeRepository.findByBoard_Id(boardId).filter { it.isLike == 1 }.map { it.toResponse() }
     }
 
     @Transactional
@@ -54,7 +57,7 @@ class BoardLikeService(
         val like = boardLikeRepository.findById(likeId).get()
         if(like.userEntity.username.equals(usernameFromToken)) {
             like.deleteLike()
-            return boardLikeRepository.findByBoard_Id(like.board.id!!).filter { it.isLike }.map { it.toResponse() }
+            return boardLikeRepository.findByBoard_Id(like.board.id!!).filter { it.isLike == 1 }.map { it.toResponse() }
         } else {
             throw RequestBoardIdNotMatched("권한이 없는 요청입니다")
         }

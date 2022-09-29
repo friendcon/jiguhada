@@ -4,13 +4,14 @@ import com.project.jiguhada.controller.dto.board.BoardLikeResponseDto
 import com.project.jiguhada.domain.BaseEntity
 import com.project.jiguhada.domain.user.UserEntity
 import org.hibernate.Hibernate
+import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 
 @Entity
 data class BoardLike(
-    var isLike: Boolean,
+    var isLike: Int,
     @ManyToOne
     @JoinColumn(name = "board_id")
     val board: Board,
@@ -19,11 +20,11 @@ data class BoardLike(
     val userEntity: UserEntity
 ): BaseEntity() {
     fun createLike(): BoardLike {
-        isLike = true
+        isLike = 1
         return this
     }
     fun deleteLike(): BoardLike {
-        isLike = false
+        isLike = 0
         return this
     }
 
