@@ -20,12 +20,21 @@ class BoardLikeService(
     private val jwtAuthenticationProvider: JwtAuthenticationProvider
 ) {
     @Transactional
-    fun createLike(boardId: Long, token: String): List<BoardLikeResponseDto> {
+    fun createLike(boardId: Long, userId: Long, token: String): List<BoardLikeResponseDto> {
         val usernameFromToken = jwtAuthenticationProvider.getIdFromTokenClaims(resolveToken(token)!!)
+        var boardLikeTrueList = boardLikeRepository.findByBoard_Id(boardId).filter { it.isLike == false }.map { it.userEntity.username }
 
-        val boardLikeList = boardLikeRepository.findByBoard_Id(boardId).filter { it.isLike }.map { it.userEntity.username }
-        if(boardLikeList.contains(usernameFromToken)) {
+        boardLikeRepository.findByBoard_Id(boardId).forEach {
+            println(it.toString())
+        }
+        var boardLikeFalseList = boardLikeRepository.findByBoard_Id(boardId).filter { it.isLike == true }.map { it.userEntity.username }
+        println(boardLikeTrueList.toString())
+        println(boardLikeFalseList.toString())
+        if(boardLikeTrueList.contains(usernameFromToken)) {
             throw UserAlreadyLikeBoard("이미 좋아요를 누르셨습니다.")
+        } else if(boardLikeFalseList.contains(usernameFromToken)) {
+            val like = boardLikeRepository.findByBoard_IdAndUserEntity_Id(boardId, userId)
+            like.createLike()
         } else {
             val like = BoardLike(
                 isLike = true,

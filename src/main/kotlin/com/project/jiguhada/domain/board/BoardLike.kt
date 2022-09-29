@@ -18,6 +18,10 @@ data class BoardLike(
     @JoinColumn(name = "user_entity_id")
     val userEntity: UserEntity
 ): BaseEntity() {
+    fun createLike(): BoardLike {
+        isLike = true
+        return this
+    }
     fun deleteLike(): BoardLike {
         isLike = false
         return this

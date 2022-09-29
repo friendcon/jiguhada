@@ -21,9 +21,10 @@ class BoardLikeController(
     @Operation(summary = "게시글 좋아요")
     fun createLike(
         @PathVariable("boardid") boardId: Long,
+        @RequestParam("userId") userId: Long,
         httprequest: HttpServletRequest
     ): ResponseEntity<List<BoardLikeResponseDto>> {
-        val response = boardLikeService.createLike(boardId, jwtAuthenticationProvider.getTokenFromHeader(httprequest))
+        val response = boardLikeService.createLike(boardId, userId, jwtAuthenticationProvider.getTokenFromHeader(httprequest))
         return ResponseEntity(response, HttpStatus.OK)
     }
 
