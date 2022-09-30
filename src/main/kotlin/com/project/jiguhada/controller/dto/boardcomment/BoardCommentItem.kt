@@ -12,5 +12,7 @@ data class BoardCommentItem @QueryProjection constructor(
     val commentContent: String,
     val commentCount: Long,
     val nickname: String,
+    val userId: Long?,
+    val userImg: String?,
     val commentCreateDate: LocalDateTime
 )

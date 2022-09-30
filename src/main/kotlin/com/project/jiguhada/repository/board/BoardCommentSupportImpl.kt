@@ -22,6 +22,8 @@ class BoardCommentSupportImpl(
             boardComment1.content,
             board.boardCommentsList.size().longValue(),
             boardComment1.userEntity.nickname,
+            boardComment1.userEntity.id,
+            boardComment1.userEntity.userImageUrl,
             boardComment1.createdDate
         ))
             .from(boardComment1)
