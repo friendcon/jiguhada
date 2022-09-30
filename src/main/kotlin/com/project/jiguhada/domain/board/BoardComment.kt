@@ -41,6 +41,7 @@ data class BoardComment(
             nickname = userEntity.nickname,
             content = content,
             createdDate = createdDate,
+            updatedDate = lastModifiedDate,
             parentComment = boardComment?.id,
             childComment = boardComments.map { it.toReCommentResponse() }
         )
@@ -51,9 +52,11 @@ data class BoardComment(
             parentCommentId = boardComment?.id,
             commentId = id!!,
             username = userEntity.username,
+            userUrl = userEntity.userImageUrl,
             nickname = userEntity.nickname,
             content = content,
-            createdDate = createdDate
+            createdDate = createdDate,
+            updatedDate = lastModifiedDate
         )
     }
 

@@ -14,6 +14,7 @@ data class BoardResponseDto @QueryProjection constructor(
     val userImgUrl: String,
     val nickname: String,
     val createDate: LocalDateTime,
+    val updateDate: LocalDateTime,
     val commentList: List<CommentResponseDto>,
     val likeList: List<BoardLikeResponseDto>,
     val imgList: List<BoardImgResponseDto>
