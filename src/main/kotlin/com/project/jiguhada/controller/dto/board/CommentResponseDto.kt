@@ -7,6 +7,7 @@ data class CommentResponseDto @QueryProjection constructor(
     val commentId: Long,
     val username: String,
     val userId: Long,
+    val userUrl: String,
     val nickname: String,
     val content: String,
     val createdDate: LocalDateTime,

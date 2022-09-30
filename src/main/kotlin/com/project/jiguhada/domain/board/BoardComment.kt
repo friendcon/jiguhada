@@ -37,6 +37,7 @@ data class BoardComment(
             commentId = id!!,
             username = userEntity.username,
             userId = userEntity.id!!,
+            userUrl = userEntity.userImageUrl,
             nickname = userEntity.nickname,
             content = content,
             createdDate = createdDate,
