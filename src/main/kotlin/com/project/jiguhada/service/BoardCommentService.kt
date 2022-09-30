@@ -33,7 +33,7 @@ class BoardCommentService(
         val usernameFromToken = jwtAuthenticationProvider.getIdFromTokenClaims(resolveToken(token)!!)
         val comment = commentRequestDto.toEntity(usernameFromToken)
         boardCommentRepository.save(comment)
-        return boardCommentRepository.findByBoardCommentNullOrderByCreatedDateAsc().map { it.toResponse() }
+        return boardCommentRepository.findByBoardCommentNullOrderByCreatedDateDesc().map { it.toResponse() }
     }
 
     // 대댓글 작성
@@ -42,7 +42,7 @@ class BoardCommentService(
         val usernameFromToken = jwtAuthenticationProvider.getIdFromTokenClaims(resolveToken(token)!!)
         val recomment = reCommentRequestDto.toEntity(usernameFromToken)
         boardCommentRepository.save(recomment)
-        return boardCommentRepository.findByBoardCommentNullOrderByCreatedDateAsc().map { it.toResponse() }
+        return boardCommentRepository.findByBoardCommentNullOrderByCreatedDateDesc().map { it.toResponse() }
     }
 
     // 업데이트 할 댓글 가져옴
@@ -63,7 +63,7 @@ class BoardCommentService(
         val comment = boardCommentRepository.findById(commentUpdateRequestDto.commentId).get()
         if(comment.userEntity.username.equals(usernameFromToken)) {
             comment.updateComment(commentUpdateRequestDto)
-            return boardCommentRepository.findByBoardCommentNullOrderByCreatedDateAsc().map { it.toResponse() }
+            return boardCommentRepository.findByBoardCommentNullOrderByCreatedDateDesc().map { it.toResponse() }
         } else {
             throw RequestBoardIdNotMatched("권한이 없는 요청입니다")
         }
@@ -75,7 +75,7 @@ class BoardCommentService(
         val comment = boardCommentRepository.findById(commentId).get()
         if(comment.userEntity.username.equals(usernameFromToken)) {
             boardCommentRepository.delete(comment)
-            return boardCommentRepository.findByBoardCommentNullOrderByCreatedDateAsc().map { it.toResponse() }
+            return boardCommentRepository.findByBoardCommentNullOrderByCreatedDateDesc().map { it.toResponse() }
         } else {
             throw RequestBoardIdNotMatched("권한이 없는 요청입니다")
         }
