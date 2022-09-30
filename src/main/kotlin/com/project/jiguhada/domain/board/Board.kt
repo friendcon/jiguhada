@@ -61,6 +61,7 @@ data class Board(
             username = userEntity.username,
             userId = userEntity.id!!,
             nickname = userEntity.nickname,
+            userImgUrl = userEntity.userImageUrl,
             createDate = createdDate,
             //commentList = boardCommentsList.map{it.toResponse()},
             commentList = boardCommentsList.filter { it.boardComment == null }.map { it.toResponse() },
