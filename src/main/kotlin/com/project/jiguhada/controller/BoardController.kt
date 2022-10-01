@@ -1,7 +1,11 @@
 package com.project.jiguhada.controller
 
 import com.project.jiguhada.controller.dto.CommonResponseDto
-import com.project.jiguhada.controller.dto.board.*
+import com.project.jiguhada.controller.dto.board.BoardCreateRequestDto
+import com.project.jiguhada.controller.dto.board.BoardListResponse
+import com.project.jiguhada.controller.dto.board.BoardUpdateRequestDto
+import com.project.jiguhada.controller.dto.board.BoardUpdateResponseDto
+import com.project.jiguhada.controller.dto.board.refactor.BoardResponse
 import com.project.jiguhada.controller.dto.user.ImgUrlResponseDto
 import com.project.jiguhada.jwt.JwtAuthenticationProvider
 import com.project.jiguhada.service.BoardService
@@ -27,7 +31,7 @@ class BoardController(
 ) {
     @PostMapping("/create")
     @Operation(summary = "게시글 작성")
-    fun createBoard(@RequestBody boardCreateRequestDto: BoardCreateRequestDto, httprequest: HttpServletRequest): ResponseEntity<BoardResponseDto> {
+    fun createBoard(@RequestBody boardCreateRequestDto: BoardCreateRequestDto, httprequest: HttpServletRequest): ResponseEntity<BoardResponse> {
         val response = boardService.createBoard(boardCreateRequestDto, jwtAuthenticationProvider.getTokenFromHeader(httprequest))
         return ResponseEntity(response, HttpStatus.OK)
     }
@@ -42,8 +46,8 @@ class BoardController(
     @Operation(summary = "게시글 조회")
     fun readBoard(
         @PathVariable("id") boardId: Long
-    ): ResponseEntity<BoardResponseDto> {
-        val response = boardService.readBoard(boardId)
+    ): ResponseEntity<BoardResponse> {
+        val response = boardService.readsBoard(boardId)
         return ResponseEntity(response, HttpStatus.OK)
     }
 
@@ -62,7 +66,7 @@ class BoardController(
     fun updatdBoard(
         @RequestBody boardUpdateRequestDto: BoardUpdateRequestDto,
         httprequest: HttpServletRequest
-    ): ResponseEntity<BoardResponseDto>{
+    ): ResponseEntity<BoardResponse>{
         val response = boardService.updateBoard(boardUpdateRequestDto, jwtAuthenticationProvider.getTokenFromHeader(httprequest))
         return ResponseEntity(response, HttpStatus.OK)
     }

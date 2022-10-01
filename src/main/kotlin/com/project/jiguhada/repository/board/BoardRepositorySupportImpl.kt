@@ -49,6 +49,7 @@ class BoardRepositorySupportImpl(
             .fetch()
     }
 
+
     override fun findBoardListByUserId(userId: Long, page: Pageable): List<BoardListItemResponse> {
         return queryFactory.select(QBoardListItemResponse(
             board.boardCategory.categoryName,

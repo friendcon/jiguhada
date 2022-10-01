@@ -5,4 +5,5 @@ import org.springframework.data.domain.Pageable
 
 interface BoardCommentSupport {
     fun findCommentByUserId(userId: Long, page: Pageable): List<BoardCommentItem>
+    fun findCommentList(boardId: Long, page: Pageable): List<BoardCommentItem>
 }

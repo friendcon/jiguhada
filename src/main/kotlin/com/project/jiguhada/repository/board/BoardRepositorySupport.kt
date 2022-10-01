@@ -13,6 +13,4 @@ interface BoardRepositorySupport {
     ): List<BoardListItemResponse>
 
     fun findBoardListByUserId(userId: Long, page: Pageable): List<BoardListItemResponse>
-
-    // fun getBoard(boardId: Long): BoardResponseDto
 }

@@ -12,6 +12,31 @@ import org.springframework.data.domain.Pageable
 class BoardCommentSupportImpl(
     private val queryFactory: JPAQueryFactory
 ): BoardCommentSupport {
+    override fun findCommentList(boardId: Long, page: Pageable): List<BoardCommentItem> {
+        return queryFactory.select(QBoardCommentItem(
+            board.id,
+            board.title,
+            board.boardCategory.categoryName,
+            boardComment1.id,
+            boardComment1.content,
+            board.boardCommentsList.size().longValue(),
+            boardComment1.userEntity.nickname,
+            boardComment1.userEntity.id,
+            boardComment1.userEntity.userImageUrl,
+            boardComment1.createdDate,
+            boardComment1.lastModifiedDate
+        ))
+            .from(boardComment1)
+            .leftJoin(board)
+            .on(boardComment1.board.id.eq(board.id))
+            .where(
+                boardComment1.board.id.eq(boardId)
+            )
+            .orderBy(OrderSpecifier(Order.DESC, boardComment1.lastModifiedDate))
+            .offset(page.offset)
+            .limit(page.pageSize.toLong())
+            .fetch()
+    }
 
     override fun findCommentByUserId(userId: Long, page: Pageable): List<BoardCommentItem> {
         return queryFactory.select(QBoardCommentItem(

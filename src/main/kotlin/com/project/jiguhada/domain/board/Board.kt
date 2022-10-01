@@ -1,8 +1,8 @@
 package com.project.jiguhada.domain.board
 
-import com.project.jiguhada.controller.dto.board.BoardResponseDto
 import com.project.jiguhada.controller.dto.board.BoardUpdateRequestDto
 import com.project.jiguhada.controller.dto.board.BoardUpdateResponseDto
+import com.project.jiguhada.controller.dto.board.refactor.BoardResponse
 import com.project.jiguhada.domain.BaseEntity
 import com.project.jiguhada.domain.user.UserEntity
 import org.hibernate.Hibernate
@@ -51,7 +51,7 @@ data class Board(
         return this
     }
 
-    fun toBoardResponse(): BoardResponseDto {
+    /*fun toBoardResponse(): BoardResponseDto {
         return BoardResponseDto(
             boardId = id!!,
             title = title,
@@ -71,8 +71,23 @@ data class Board(
                 !it.isDeleted
             }.map { it.toResponse() }
         )
-    }
+    }*/
 
+    fun toBoardResponse(): BoardResponse {
+        return BoardResponse(
+            id!!,
+            title,
+            content,
+            view_count,
+            boardCategory.categoryName.toString(),
+            userEntity.username,
+            userEntity.id!!,
+            userEntity.userImageUrl,
+            userEntity.nickname,
+            createdDate,
+            lastModifiedDate
+        )
+    }
     fun toBoardUpdateResponse(): BoardUpdateResponseDto {
         return BoardUpdateResponseDto(
             title = title,

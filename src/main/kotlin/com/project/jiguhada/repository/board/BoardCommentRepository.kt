@@ -8,4 +8,5 @@ interface BoardCommentRepository: JpaRepository<BoardComment, Long>, BoardCommen
 
     // fun findByBoardCommentNullOrderByCreatedDateDesc()
     fun countByUserEntityId(userId: Long): Long
+    fun countByBoard_Id(boardId: Long): Long
 }

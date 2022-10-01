@@ -1,16 +1,14 @@
 package com.project.jiguhada.service
 
 import com.project.jiguhada.controller.dto.board.CommentResponseDto
-import com.project.jiguhada.controller.dto.boardcomment.CommentRequestDto
-import com.project.jiguhada.controller.dto.boardcomment.CommentUpdateRequestDto
-import com.project.jiguhada.controller.dto.boardcomment.CommentUpdateResponseDto
-import com.project.jiguhada.controller.dto.boardcomment.ReCommentRequestDto
+import com.project.jiguhada.controller.dto.boardcomment.*
 import com.project.jiguhada.domain.board.BoardComment
 import com.project.jiguhada.exception.RequestBoardIdNotMatched
 import com.project.jiguhada.jwt.JwtAuthenticationProvider
 import com.project.jiguhada.repository.board.BoardCommentRepository
 import com.project.jiguhada.repository.board.BoardRepository
 import com.project.jiguhada.repository.user.UserEntityRepository
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.util.StringUtils
@@ -22,6 +20,27 @@ class BoardCommentService(
     private val boardCommentRepository: BoardCommentRepository,
     private val jwtAuthenticationProvider: JwtAuthenticationProvider
 ) {
+
+    @Transactional
+    fun readsBoardComments(
+        boardId: Long,
+        page: Pageable
+    ): BoardCommentList {
+        val response = boardCommentRepository.findCommentList(boardId, page)
+        val totalCount = boardCommentRepository.countByBoard_Id(boardId)
+        val totalPage = when(totalCount%5) {
+            0L -> totalCount/page.pageSize
+            else -> totalCount/page.pageSize + 1
+        }
+
+        val commentList = BoardCommentList(
+            totalCommentCount = totalCount,
+            currentPage = page.pageNumber.toLong() + 1,
+            totalPage = totalPage,
+            commentList = response
+        )
+        return commentList
+    }
     @Transactional
     fun getBoardComment(boardId: Long): List<CommentResponseDto> {
         val commentList = boardRepository.findById(boardId).get().boardCommentsList

@@ -2,15 +2,14 @@ package com.project.jiguhada.service
 
 import com.project.jiguhada.controller.dto.CommonResponseDto
 import com.project.jiguhada.controller.dto.board.*
+import com.project.jiguhada.controller.dto.board.refactor.BoardResponse
 import com.project.jiguhada.controller.dto.user.ImgUrlResponseDto
 import com.project.jiguhada.domain.board.Board
 import com.project.jiguhada.domain.board.BoardImg
 import com.project.jiguhada.exception.LimitFileCountException
 import com.project.jiguhada.exception.RequestBoardIdNotMatched
 import com.project.jiguhada.jwt.JwtAuthenticationProvider
-import com.project.jiguhada.repository.board.BoardCategoryRepository
-import com.project.jiguhada.repository.board.BoardImgRepository
-import com.project.jiguhada.repository.board.BoardRepository
+import com.project.jiguhada.repository.board.*
 import com.project.jiguhada.repository.user.UserEntityRepository
 import com.project.jiguhada.util.BOARD_CATEGORY
 import com.project.jiguhada.util.BOARD_ORDER_TYPE
@@ -31,7 +30,7 @@ class BoardService(
     private val jwtAuthenticationProvider: JwtAuthenticationProvider
 ) {
     @Transactional
-    fun createBoard(boardRequest: BoardCreateRequestDto, token: String): BoardResponseDto {
+    fun createBoard(boardRequest: BoardCreateRequestDto, token: String): BoardResponse {
         val usernameFromToken = jwtAuthenticationProvider.getIdFromTokenClaims(resolveToken(token)!!)
 
         if(boardRequest.imgList.size > 3) {
@@ -64,9 +63,9 @@ class BoardService(
     }
 
     @Transactional
-    fun readBoard(
+    fun readsBoard(
         boardId: Long
-    ): BoardResponseDto {
+    ): BoardResponse {
         val response = boardRepository.findById(boardId).get()
         response.updateViewCount()
         return response.toBoardResponse()
@@ -111,7 +110,7 @@ class BoardService(
     }
 
     @Transactional
-    fun updateBoard(boardUpdateRequestDto: BoardUpdateRequestDto, token: String): BoardResponseDto {
+    fun updateBoard(boardUpdateRequestDto: BoardUpdateRequestDto, token: String): BoardResponse {
         val usernameFromToken = jwtAuthenticationProvider.getIdFromTokenClaims(resolveToken(token)!!)
         val board = boardRepository.findById(boardUpdateRequestDto.boardId).get()
         if(board.userEntity.username.equals(usernameFromToken)) {
