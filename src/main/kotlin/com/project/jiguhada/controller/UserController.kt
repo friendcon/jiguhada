@@ -18,7 +18,7 @@ import javax.validation.Valid
 
 
 @RestController
-@Tag(name = "User API")
+@Tag(name = "사용자 API")
 @RequestMapping("/api/v1/user")
 class UserController(
     private val userService: UserService,

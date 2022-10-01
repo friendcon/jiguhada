@@ -23,7 +23,7 @@ import org.springframework.web.multipart.MultipartFile
 import javax.servlet.http.HttpServletRequest
 
 @RestController
-@Tag(name = "Board API")
+@Tag(name = "게시판 API")
 @RequestMapping("/api/v1/board")
 class BoardController(
     private val boardService: BoardService,

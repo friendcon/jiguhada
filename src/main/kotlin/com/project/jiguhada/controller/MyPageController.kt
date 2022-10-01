@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest
 import kotlin.math.abs
 
 @RestController
-@Tag(name = "User 마이페이지 Controller")
+@Tag(name = "사용자 마이페이지 API")
 @RequestMapping("/api/v1/mypage")
 class MyPageController(
     private val mypageService: MypageService,

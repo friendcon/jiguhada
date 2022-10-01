@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@Tag(name = "auth Controller")
+@Tag(name = "로그인 API")
 @RequestMapping("/api/v1/auth")
 class AuthController(
     private val authService: AuthService

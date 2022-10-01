@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest
 import kotlin.math.absoluteValue
 
 @RestController
-@Tag(name = "Board Like API")
+@Tag(name = "게시글 좋아요 API")
 @RequestMapping("/api/v1/boardLike")
 class BoardLikeController(
     private val boardLikeService: BoardLikeService,

@@ -31,6 +31,7 @@ class BoardCommentSupportImpl(
             .on(boardComment1.board.id.eq(board.id))
             .where(
                 boardComment1.board.id.eq(boardId)
+                    .and(boardComment1.boardComment.id.isNull)
             )
             .orderBy(OrderSpecifier(Order.DESC, boardComment1.lastModifiedDate))
             .offset(page.offset)
@@ -62,6 +63,5 @@ class BoardCommentSupportImpl(
             .offset(page.offset)
             .limit(page.pageSize.toLong())
             .fetch()
-
     }
 }

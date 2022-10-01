@@ -1,7 +1,6 @@
 package com.project.jiguhada.domain.board
 
-import com.project.jiguhada.controller.dto.board.CommentResponseDto
-import com.project.jiguhada.controller.dto.board.ReCommentResponseDto
+import com.project.jiguhada.controller.dto.boardcomment.BoardCommentItem
 import com.project.jiguhada.controller.dto.boardcomment.CommentUpdateRequestDto
 import com.project.jiguhada.controller.dto.boardcomment.CommentUpdateResponseDto
 import com.project.jiguhada.domain.BaseEntity
@@ -32,31 +31,20 @@ data class BoardComment(
         content = commentUpdateRequestDto.content
         return this
     }
-    fun toResponse(): CommentResponseDto {
-        return CommentResponseDto(
-            commentId = id!!,
-            username = userEntity.username,
-            userId = userEntity.id!!,
-            userUrl = userEntity.userImageUrl,
-            nickname = userEntity.nickname,
-            content = content,
-            createdDate = createdDate,
-            updatedDate = lastModifiedDate,
-            parentComment = boardComment?.id,
-            childComment = boardComments.map { it.toReCommentResponse() }
-        )
-    }
 
-    fun toReCommentResponse(): ReCommentResponseDto {
-        return ReCommentResponseDto(
-            parentCommentId = boardComment?.id,
+    fun toBoardCommentItem(): BoardCommentItem {
+        return BoardCommentItem(
+            boardId = board.id!!,
+            boardTitle = board.title,
+            boardCategory = board.boardCategory.categoryName,
             commentId = id!!,
-            username = userEntity.username,
-            userUrl = userEntity.userImageUrl,
+            commentContent = content,
+            commentCount = board.boardCommentsList.size.toLong(),
             nickname = userEntity.nickname,
-            content = content,
-            createdDate = createdDate,
-            updatedDate = lastModifiedDate
+            userId = userEntity.id,
+            userImg = userEntity.userImageUrl,
+            commentCreateDate = createdDate,
+            commentUpdateDate = lastModifiedDate
         )
     }
 

@@ -1,6 +1,5 @@
 package com.project.jiguhada.controller
 
-import com.project.jiguhada.controller.dto.board.CommentResponseDto
 import com.project.jiguhada.controller.dto.boardcomment.*
 import com.project.jiguhada.jwt.JwtAuthenticationProvider
 import com.project.jiguhada.service.BoardCommentService
@@ -14,7 +13,7 @@ import javax.servlet.http.HttpServletRequest
 import kotlin.math.absoluteValue
 
 @RestController
-@Tag(name = "Board Comment API")
+@Tag(name = "게시판 댓글 API")
 @RequestMapping("/api/v1/boardComment")
 class BoardCommentController(
     private val boardCommentService: BoardCommentService,
@@ -34,22 +33,13 @@ class BoardCommentController(
         return ResponseEntity(response, HttpStatus.OK)
     }
 
-    @GetMapping("/list/{id}")
-    @Operation(summary = "게시글 댓글만 조회")
-    fun getBoardCommentList(
-        @PathVariable("id") boardId: Long,
-        httprequest: HttpServletRequest
-    ): ResponseEntity<List<CommentResponseDto>> {
-        val response = boardCommentService.getBoardComment(boardId)
-        return ResponseEntity(response, HttpStatus.OK)
-    }
     @PostMapping("/create")
     @Operation(summary = "댓글 작성")
     fun createBoardComment(
         @RequestBody commentRequestDto: CommentRequestDto,
         httprequest: HttpServletRequest
-    ): ResponseEntity<List<CommentResponseDto>> {
-        val response = boardCommentService.createComment(commentRequestDto, jwtAuthenticationProvider.getTokenFromHeader(httprequest))
+    ): ResponseEntity<BoardCommentList> {
+        val response = boardCommentService.createComment(commentRequestDto)
         return ResponseEntity(response, HttpStatus.OK)
     }
 
@@ -58,8 +48,8 @@ class BoardCommentController(
     fun createBoardReComment(
         @RequestBody commentRequestDto: ReCommentRequestDto,
         httprequest: HttpServletRequest
-    ): ResponseEntity<List<CommentResponseDto>> {
-        val response = boardCommentService.createReComment(commentRequestDto, jwtAuthenticationProvider.getTokenFromHeader(httprequest))
+    ): ResponseEntity<BoardCommentList> {
+        val response = boardCommentService.createReComment(commentRequestDto)
         return ResponseEntity(response, HttpStatus.OK)
     }
 
@@ -78,8 +68,8 @@ class BoardCommentController(
     fun updateComment(
         @RequestBody commentUpdateRequestDto: CommentUpdateRequestDto,
         httprequest: HttpServletRequest
-    ): ResponseEntity<List<CommentResponseDto>> {
-        val response = boardCommentService.updateComment(commentUpdateRequestDto,jwtAuthenticationProvider.getTokenFromHeader(httprequest))
+    ): ResponseEntity<BoardCommentList> {
+        val response = boardCommentService.updateComment(commentUpdateRequestDto)
         return ResponseEntity(response, HttpStatus.OK)
     }
 
@@ -87,8 +77,8 @@ class BoardCommentController(
     fun deleteComment(
         @PathVariable("id") commentId: Long,
         httprequest: HttpServletRequest
-    ): ResponseEntity<List<CommentResponseDto>> {
-        val response = boardCommentService.deleteComment(commentId, jwtAuthenticationProvider.getTokenFromHeader(httprequest))
+    ): ResponseEntity<BoardCommentList> {
+        val response = boardCommentService.deleteComment(commentId)
         return ResponseEntity(response, HttpStatus.OK)
     }
 }

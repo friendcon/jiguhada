@@ -1,6 +1,5 @@
 package com.project.jiguhada.service
 
-import com.project.jiguhada.controller.dto.board.CommentResponseDto
 import com.project.jiguhada.controller.dto.boardcomment.*
 import com.project.jiguhada.domain.board.BoardComment
 import com.project.jiguhada.exception.RequestBoardIdNotMatched
@@ -8,6 +7,7 @@ import com.project.jiguhada.jwt.JwtAuthenticationProvider
 import com.project.jiguhada.repository.board.BoardCommentRepository
 import com.project.jiguhada.repository.board.BoardRepository
 import com.project.jiguhada.repository.user.UserEntityRepository
+import com.project.jiguhada.util.SecurityUtil
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -41,27 +41,43 @@ class BoardCommentService(
         )
         return commentList
     }
+
     @Transactional
-    fun getBoardComment(boardId: Long): List<CommentResponseDto> {
-        val commentList = boardRepository.findById(boardId).get().boardCommentsList
-        return commentList.map { it.toResponse() }
-    }
-    // 댓글 작성
-    @Transactional
-    fun createComment(commentRequestDto: CommentRequestDto, token: String): List<CommentResponseDto> {
-        val usernameFromToken = jwtAuthenticationProvider.getIdFromTokenClaims(resolveToken(token)!!)
-        val comment = commentRequestDto.toEntity(usernameFromToken)
+    fun createComment(commentRequestDto: CommentRequestDto): BoardCommentList {
+        val comment = commentRequestDto.toEntity(SecurityUtil.currentUsername)
         boardCommentRepository.save(comment)
-        return boardCommentRepository.findByBoardCommentNullOrderByCreatedDateDesc().map { it.toResponse() }
+        val totalCount = boardCommentRepository.countByBoard_Id(commentRequestDto.boardId)
+        val totalPage = when(totalCount%5) {
+            0L -> totalCount/5
+            else -> totalCount/5 + 1
+        }
+        val comments = boardCommentRepository.findTop5ByBoardCommentNullOrderByCreatedDateDesc().map { it.toBoardCommentItem() }
+        val commentList = BoardCommentList(
+            totalCommentCount = totalCount,
+            currentPage = 1,
+            totalPage = totalPage,
+            commentList = comments
+        )
+        return commentList
     }
 
     // 대댓글 작성
     @Transactional
-    fun createReComment(reCommentRequestDto: ReCommentRequestDto, token: String): List<CommentResponseDto> {
-        val usernameFromToken = jwtAuthenticationProvider.getIdFromTokenClaims(resolveToken(token)!!)
-        val recomment = reCommentRequestDto.toEntity(usernameFromToken)
+    fun createReComment(reCommentRequestDto: ReCommentRequestDto): BoardCommentList {
+        val recomment = reCommentRequestDto.toEntity(SecurityUtil.currentUsername)
         boardCommentRepository.save(recomment)
-        return boardCommentRepository.findByBoardCommentNullOrderByCreatedDateDesc().map { it.toResponse() }
+        val totalCount = boardCommentRepository.countByBoard_Id(reCommentRequestDto.boardId)
+        val totalPage = when(totalCount%5) {
+            0L -> totalCount/5
+            else -> totalCount/5 + 1
+        }
+        val comments = boardCommentRepository.findTop5ByBoardCommentNullOrderByCreatedDateDesc().map { it.toBoardCommentItem() }
+        return BoardCommentList(
+            totalCommentCount = totalCount,
+            currentPage = 1,
+            totalPage = totalPage,
+            commentList = comments
+        )
     }
 
     // 업데이트 할 댓글 가져옴
@@ -77,24 +93,45 @@ class BoardCommentService(
     }
 
     @Transactional
-    fun updateComment(commentUpdateRequestDto: CommentUpdateRequestDto, token: String): List<CommentResponseDto> {
-        val usernameFromToken = jwtAuthenticationProvider.getIdFromTokenClaims(resolveToken(token)!!)
+    fun updateComment(commentUpdateRequestDto: CommentUpdateRequestDto): BoardCommentList {
         val comment = boardCommentRepository.findById(commentUpdateRequestDto.commentId).get()
-        if(comment.userEntity.username.equals(usernameFromToken)) {
-            comment.updateComment(commentUpdateRequestDto)
-            return boardCommentRepository.findByBoardCommentNullOrderByCreatedDateDesc().map { it.toResponse() }
+        if(comment.userEntity.username.equals(SecurityUtil.currentUsername)) {
+            comment.updateComment(commentUpdateRequestDto) // 댓글 업데이트
+            val totalCount = boardCommentRepository.countByBoard_Id(comment.board.id!!)
+            val totalPage = when(totalCount%5) {
+                0L -> totalCount/5
+                else -> totalCount/5 + 1
+            }
+            val comments = boardCommentRepository.findTop5ByBoardCommentNullOrderByCreatedDateDesc().map { it.toBoardCommentItem() }
+            return BoardCommentList(
+                totalCommentCount = totalCount,
+                currentPage = 1,
+                totalPage = totalPage,
+                commentList = comments
+            )
         } else {
             throw RequestBoardIdNotMatched("권한이 없는 요청입니다")
         }
     }
 
     @Transactional
-    fun deleteComment(commentId: Long, token: String): List<CommentResponseDto> {
-        val usernameFromToken = jwtAuthenticationProvider.getIdFromTokenClaims(resolveToken(token)!!)
+    fun deleteComment(commentId: Long): BoardCommentList {
         val comment = boardCommentRepository.findById(commentId).get()
-        if(comment.userEntity.username.equals(usernameFromToken)) {
-            boardCommentRepository.delete(comment)
-            return boardCommentRepository.findByBoardCommentNullOrderByCreatedDateDesc().map { it.toResponse() }
+        val boardId = comment.board.id
+        if(comment.userEntity.username.equals(SecurityUtil.currentUsername)) {
+            boardCommentRepository.delete(comment) // 삭제
+            val totalCount = boardCommentRepository.countByBoard_Id(boardId!!)
+            val totalPage = when(totalCount%5) {
+                0L -> totalCount/5
+                else -> totalCount/5 + 1
+            }
+            val comments = boardCommentRepository.findTop5ByBoardCommentNullOrderByCreatedDateDesc().map { it.toBoardCommentItem() }
+            return BoardCommentList(
+                totalCommentCount = totalCount,
+                currentPage = 1,
+                totalPage = totalPage,
+                commentList = comments
+            )
         } else {
             throw RequestBoardIdNotMatched("권한이 없는 요청입니다")
         }
