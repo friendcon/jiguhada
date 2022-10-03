@@ -71,6 +71,41 @@ class BoardRepositorySupportImpl(
             .fetch()
     }
 
+    override fun countBoardByCategoryAndBoardSearch(
+        query: String?,
+        searchType: BOARD_SEARCH_TYPE?,
+        boardCategory: BOARD_CATEGORY?
+    ):Long {
+        return queryFactory.select(board.id)
+            .from(board)
+            .where(
+                isTitleOrContentContainQuery(query, searchType),
+                isSameCategory(boardCategory)
+            )
+            .fetch()
+            .size.toLong()
+    }
+
+    override fun countBoardByCategory(category: BOARD_CATEGORY): Long {
+        return queryFactory.select(board.id)
+            .from(board)
+            .where(
+                isSameCategory(category)
+            )
+            .fetch()
+            .size.toLong()
+    }
+
+    override fun countBoardBySearch(searchType: BOARD_SEARCH_TYPE?, query: String?): Long {
+        return queryFactory.select(board.id)
+            .from(board)
+            .where(
+                isTitleOrContentContainQuery(query, searchType)
+            )
+            .fetch()
+            .size.toLong()
+    }
+
     /*override fun getBoard(boardId: Long): BoardResponseDto? {
         return queryFactory.select(QBoardResponseDto(
             board.id,

@@ -82,17 +82,36 @@ class BoardService(
             null -> boardRepository.count()
             else -> boardRepository.countBoardByBoardCategory(boardCategoryRepository.findByCategoryName(category))
         }
+        var totalBoardCounts = 0L
+        var totalBoardPage = 0L
 
-        val totalPage = when(totalBoardCount%15) {
-            0L -> totalBoardCount/15
-            else -> totalBoardCount/15 + 1
+        if(category != null && searchType != null) {
+            totalBoardCounts = boardRepository.countBoardByCategoryAndBoardSearch(query, searchType, category)
+            totalBoardPage = getBoardTotalPage(totalBoardCounts)
+        } else if(category != null && searchType == null) {
+            totalBoardCounts = boardRepository.countBoardByCategory(category)
+            totalBoardPage = getBoardTotalPage(totalBoardCounts)
+        } else if(category == null && searchType != null) {
+            totalBoardCounts = boardRepository.countBoardBySearch(searchType, query)
+            totalBoardPage = getBoardTotalPage(totalBoardCounts)
+        } else {
+            totalBoardCounts = boardRepository.count()
+            totalBoardPage = getBoardTotalPage(totalBoardCounts)
         }
+
         return BoardListResponse(
-            totalBoardCount = totalPage,
+            totalBoardCount = totalBoardCounts,
             currentPage = page.pageNumber.toLong() + 1,
-            totalPage = totalPage,
+            totalPage = totalBoardPage,
             boardItemList = list
         )
+    }
+
+    fun getBoardTotalPage(totalBoardCounts: Long): Long {
+        return when(totalBoardCounts%15) {
+            0L -> totalBoardCounts/15
+            else -> totalBoardCounts/15 + 1
+        }
     }
 
     // 업데이트할 게시글 가져옴

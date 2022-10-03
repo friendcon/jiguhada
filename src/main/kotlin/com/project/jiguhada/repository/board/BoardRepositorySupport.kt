@@ -13,4 +13,9 @@ interface BoardRepositorySupport {
     ): List<BoardListItemResponse>
 
     fun findBoardListByUserId(userId: Long, page: Pageable): List<BoardListItemResponse>
+
+    fun countBoardByCategoryAndBoardSearch(query: String?, searchType: BOARD_SEARCH_TYPE?, boardCategory: BOARD_CATEGORY?): Long
+    fun countBoardByCategory(category: BOARD_CATEGORY): Long
+
+    fun countBoardBySearch(searchType: BOARD_SEARCH_TYPE?, query: String?): Long
 }
