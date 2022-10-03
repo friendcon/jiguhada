@@ -67,7 +67,7 @@ class UserController(
         return ResponseEntity.ok().body(response)
     }
 
-    @PutMapping("/updateImg", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    @PostMapping("/updateImg", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     @Operation(summary = "이미지 수정")
     fun updateImgUrl(@RequestParam("imgFile") imgFile: MultipartFile, httprequest: HttpServletRequest): ResponseEntity<ImgUrlResponseDto> {
         jwtAuthenticationProvider.getTokenFromHeader(httprequest)
