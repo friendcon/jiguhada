@@ -124,7 +124,7 @@ class ChallengeService(
     }
 
     fun calculateChallengeEndDate(startDate: LocalDate, challengePeriod: CHALLENGE_PERIOD): LocalDateTime {
-        val endTime = LocalTime.of(23,59,59,999999999)
+        val endTime = LocalTime.of(23,59,59)
         return when(challengePeriod) {
             CHALLENGE_PERIOD.ONEWEEK -> LocalDateTime.of(startDate, endTime).plusWeeks(1)
             CHALLENGE_PERIOD.TWOWEEK -> LocalDateTime.of(startDate, endTime).plusWeeks(2)
