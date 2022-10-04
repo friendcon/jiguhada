@@ -6,6 +6,7 @@ data class BoardLikeResponseDto @QueryProjection constructor(
     val likeId: Long,
     val userId: Long,
     val username: String,
-    val nickname: String
+    val nickname: String,
+    val userImgUrl: String
 )
 
