@@ -106,26 +106,6 @@ class BoardRepositorySupportImpl(
             .size.toLong()
     }
 
-    /*override fun getBoard(boardId: Long): BoardResponseDto? {
-        return queryFactory.select(QBoardResponseDto(
-            board.id,
-            board.title,
-            board.content,
-            board.view_count,
-            board.boardCategory.categoryName.stringValue(),
-            board.userEntity.username,
-            board.userEntity.nickname,
-            board.boardCommentsList,
-            board.boardLikes,
-            boardImg
-        ))
-            .from(board)
-            .leftJoin(board.boardImgs, boardImg)
-            .on(board.id.eq(boardImg.id))
-            .groupBy(board.id)
-            .fetchOne()
-    }*/
-
     private fun isTitleOrContentContainQuery(query: String?, searchType: BOARD_SEARCH_TYPE?): BooleanExpression? {
         if(StringUtils.isNullOrEmpty(query)) {
             return null
@@ -140,7 +120,6 @@ class BoardRepositorySupportImpl(
     }
 
     private fun isSameCategory(boardCategory: BOARD_CATEGORY?): BooleanExpression? {
-        println(boardCategory.toString())
         return when(boardCategory) {
             BOARD_CATEGORY.FREE -> board.boardCategory.categoryName.eq(boardCategory)
             BOARD_CATEGORY.ENVIRONMENT -> board.boardCategory.categoryName.eq(boardCategory)
