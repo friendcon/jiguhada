@@ -33,6 +33,13 @@ class ChallengeController(
         return ResponseEntity(response,HttpStatus.OK)
     }
 
+    @GetMapping("/{challengeId}")
+    @Operation(summary = "챌린지 정보 조회")
+    fun readChallengeInfo(@PathVariable("challengeId") id: Long): ResponseEntity<ChallengeCreateResponse> {
+        val response = challengeService.readChallenge(id)
+        return ResponseEntity(response, HttpStatus.OK)
+    }
+
     @PostMapping("/join")
     fun joinChallenge(@RequestBody challengeJoinRequest: ChallengeJoinRequest): ResponseEntity<ChallengeCreateResponse> {
         val response = challengeService.joinChallenge(challengeJoinRequest)

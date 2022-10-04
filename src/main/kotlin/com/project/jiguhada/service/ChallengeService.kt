@@ -86,6 +86,12 @@ class ChallengeService(
         return challenge.toChallengeCreateResponse()
     }
 
+    // 챌린지 정보 조회
+    @Transactional
+    fun readChallenge(challengeId: Long): ChallengeCreateResponse {
+        return challengeRepository.findById(challengeId).get().toChallengeCreateResponse()
+    }
+
     fun ChallengeCreateRequest.toEntity(): Challenge {
         val user = userEntityRepository.findByUsername(SecurityUtil.currentUsername).get()
 
