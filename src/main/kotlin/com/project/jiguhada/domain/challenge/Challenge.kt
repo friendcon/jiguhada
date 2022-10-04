@@ -15,6 +15,9 @@ import javax.persistence.*
 
 @Entity
 data class Challenge(
+    @ManyToOne
+    @JoinColumn(name = "challenge_category_category_name")
+    val challengeCategory: ChallengeCategory, // 챌린지 카테고리
     @OneToMany(orphanRemoval = true, cascade = [CascadeType.PERSIST])
     @JoinColumn(name = "challenge_ID")
     val challengeTags: List<ChallengeTag> = mutableListOf(), // 챌린지 태그
@@ -60,6 +63,7 @@ data class Challenge(
             challengeTag = challengeTags.map { it.tag.challengeTagName.toString() },
             challengeTitle = title,
             challengeDetails = challengeDetails,
+            challengeCategory = challengeCategory.categoryName,
             challengeImg = challengeImg,
             challengeAddDetails = challengeAddDetails,
             challengeAddImgs = challengeAddImg,
@@ -98,5 +102,6 @@ data class Challenge(
     override fun toString(): String {
         return "Challenge(challengeTags=$challengeTags, title='$title', challengeDetails='$challengeDetails', challengeImg='$challengeImg', challengeAddDetails='$challengeAddDetails', challengeAddImg='$challengeAddImg', userEntity=$userEntity, participantsCount=$participantsCount, currrentParticipantsCount=$currrentParticipantsCount, authMethodContent='$authMethodContent', authMethodImgUrl=$authMethodImgUrl, authMethodFailImg='$authMethodFailImg', challengeStartDate=$challengeStartDate, challengePeroid=$challengePeroid, challengeEndDate=$challengeEndDate, authFrequency=$authFrequency, authCountPerDay=$authCountPerDay, authAvailableTimeType=$authAvailableTimeType, authAvailableStartTime=$authAvailableStartTime, authAvailableEndTime=$authAvailableEndTime, authHoliday=$authHoliday, isOfficial=$isOfficial, challengeStatus=$challengeStatus, achievementRate=$achievementRate)"
     }
+
 
 }

@@ -86,6 +86,12 @@ enum class CHALLENGE_TAG {
     ETC
 }
 
+enum class CHALLENGE_CATEGORY {
+    VEGAN,
+    ENVIRONMENT,
+    ETC
+}
+
 enum class CHALLENGE_STATUS {
     BEFORE,
     INPROGRESS,

@@ -1,14 +1,12 @@
 package com.project.jiguhada.controller.dto.challenge
 
-import com.project.jiguhada.util.AUTH_AVAILABLE_TIME_TYPE
-import com.project.jiguhada.util.AUTH_FREQUENCY
-import com.project.jiguhada.util.CHALLENGE_PERIOD
-import com.project.jiguhada.util.CHALLENGE_STATUS
+import com.project.jiguhada.util.*
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.time.LocalTime
 
 data class ChallengeCreateResponse(
+    val challengeCategory: CHALLENGE_CATEGORY, // 챌린지 카테고리
     val challengeId: Long,
     val challengeTag: List<String>,
     val challengeTitle: String,

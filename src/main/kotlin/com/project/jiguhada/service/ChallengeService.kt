@@ -10,6 +10,7 @@ import com.project.jiguhada.domain.challenge.UserChallenge
 import com.project.jiguhada.exception.ChallengeJoinCountException
 import com.project.jiguhada.exception.ChallengeJoinEndException
 import com.project.jiguhada.exception.UserAlreadyChallengeMemberException
+import com.project.jiguhada.repository.challenge.ChallengeCategoryRepository
 import com.project.jiguhada.repository.challenge.ChallengeRepository
 import com.project.jiguhada.repository.challenge.TagRepository
 import com.project.jiguhada.repository.challenge.UserChallengeRepository
@@ -29,6 +30,7 @@ import java.time.LocalTime
 class ChallengeService(
     private val userEntityRepository: UserEntityRepository,
     private val challengeRepository: ChallengeRepository,
+    private val challengeCategoryRepository: ChallengeCategoryRepository,
     private val awsS3Service: AwsS3Service,
     private val userChallengeRepository: UserChallengeRepository,
     private val tagRepository: TagRepository
@@ -94,13 +96,14 @@ class ChallengeService(
 
     fun ChallengeCreateRequest.toEntity(): Challenge {
         val user = userEntityRepository.findByUsername(SecurityUtil.currentUsername).get()
-
+        val category = challengeCategoryRepository.findById(challengeCategory).get()
         return Challenge(
             challengeTags = challengeTag.map { ChallengeTag(tag = tagRepository.findByChallengeTagName(it)) },
             title = title,
             challengeDetails = challengeDetails,
             challengeImg = challengeImg, // 챌린지 대표 사진
             challengeAddDetails = challengeDetails,
+            challengeCategory = category,
             challengeAddImg = challengeAddImg, // 챌린지 추가 이미지
             userEntity = user,
             participantsCount = participantsCount,

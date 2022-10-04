@@ -1,9 +1,6 @@
 package com.project.jiguhada.controller.dto.challenge
 
-import com.project.jiguhada.util.AUTH_AVAILABLE_TIME_TYPE
-import com.project.jiguhada.util.AUTH_FREQUENCY
-import com.project.jiguhada.util.CHALLENGE_PERIOD
-import com.project.jiguhada.util.CHALLENGE_TAG
+import com.project.jiguhada.util.*
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -11,6 +8,7 @@ data class ChallengeCreateRequest(
     val challengeTag: List<CHALLENGE_TAG>,
     val title: String, // 챌린지 제목
     val challengeDetails: String, // 챌린지 간단한 설명
+    val challengeCategory: CHALLENGE_CATEGORY, // 챌린지 카테고리
     val challengeImg: String, // 챌린지 대표 이미지
     val challengeAddDetails: String, // 챌린지 추가 설명
     val challengeAddImg: String , // 챌린지 추가 이미지
