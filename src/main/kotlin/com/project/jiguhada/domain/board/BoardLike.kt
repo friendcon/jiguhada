@@ -4,7 +4,6 @@ import com.project.jiguhada.controller.dto.board.BoardLikeResponseDto
 import com.project.jiguhada.domain.BaseEntity
 import com.project.jiguhada.domain.user.UserEntity
 import org.hibernate.Hibernate
-import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
@@ -33,7 +32,8 @@ data class BoardLike(
             likeId = id!!,
             userId = userEntity.id!!,
             username = userEntity.username,
-            nickname = userEntity.nickname
+            nickname = userEntity.nickname,
+            userImgUrl = userEntity.userImageUrl
         )
     }
 

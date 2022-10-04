@@ -18,7 +18,8 @@ class BoardLikeSupportImpl(
             boardLike.id,
             boardLike.userEntity.id,
             boardLike.userEntity.username,
-            boardLike.userEntity.nickname
+            boardLike.userEntity.nickname,
+            boardLike.userEntity.userImageUrl
         ))
             .from(boardLike)
             .where(
