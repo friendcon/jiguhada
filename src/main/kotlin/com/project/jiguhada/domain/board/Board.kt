@@ -51,28 +51,6 @@ data class Board(
         return this
     }
 
-    /*fun toBoardResponse(): BoardResponseDto {
-        return BoardResponseDto(
-            boardId = id!!,
-            title = title,
-            content = content,
-            viewCount = view_count,
-            boardCategory = boardCategory.categoryName.toString(),
-            username = userEntity.username,
-            userId = userEntity.id!!,
-            nickname = userEntity.nickname,
-            userImgUrl = userEntity.userImageUrl,
-            createDate = createdDate,
-            updateDate = lastModifiedDate,
-            //commentList = boardCommentsList.map{it.toResponse()},
-            commentList = boardCommentsList.filter { it.boardComment == null }.map { it.toResponse() },
-            likeList = boardLikes.map { it.toResponse() },
-            imgList = boardImgs.filter {
-                !it.isDeleted
-            }.map { it.toResponse() }
-        )
-    }*/
-
     fun toBoardResponse(): BoardResponse {
         return BoardResponse(
             id!!,
@@ -84,6 +62,8 @@ data class Board(
             userEntity.id!!,
             userEntity.userImageUrl,
             userEntity.nickname,
+            boardCommentsList.size.toLong(),
+            boardLikes.size.toLong(),
             createdDate,
             lastModifiedDate
         )

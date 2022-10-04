@@ -2,7 +2,7 @@ package com.project.jiguhada.controller.dto.board.refactor
 
 import java.time.LocalDateTime
 
-data class BoardResponse(
+data class BoardReadResponse(
     val boardId: Long,
     val title: String,
     val content: String,
