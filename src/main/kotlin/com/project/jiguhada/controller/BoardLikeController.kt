@@ -1,6 +1,7 @@
 package com.project.jiguhada.controller
 
 import com.project.jiguhada.controller.dto.board.BoardLikeResponseDto
+import com.project.jiguhada.controller.dto.board.refactor.BoardLikeItem
 import com.project.jiguhada.controller.dto.board.refactor.BoardLikeList
 import com.project.jiguhada.jwt.JwtAuthenticationProvider
 import com.project.jiguhada.service.BoardLikeService
@@ -26,7 +27,7 @@ class BoardLikeController(
         @PathVariable("boardid") boardId: Long,
         @RequestParam("userId") userId: Long,
         httprequest: HttpServletRequest
-    ): ResponseEntity<List<BoardLikeResponseDto>> {
+    ): ResponseEntity<List<BoardLikeItem>> {
         val response = boardLikeService.createLike(boardId, userId, jwtAuthenticationProvider.getTokenFromHeader(httprequest))
         return ResponseEntity(response, HttpStatus.OK)
     }

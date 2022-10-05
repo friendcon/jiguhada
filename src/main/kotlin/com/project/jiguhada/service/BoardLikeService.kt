@@ -1,6 +1,7 @@
 package com.project.jiguhada.service
 
 import com.project.jiguhada.controller.dto.board.BoardLikeResponseDto
+import com.project.jiguhada.controller.dto.board.refactor.BoardLikeItem
 import com.project.jiguhada.controller.dto.board.refactor.BoardLikeList
 import com.project.jiguhada.domain.board.BoardLike
 import com.project.jiguhada.exception.RequestBoardIdNotMatched
@@ -22,7 +23,7 @@ class BoardLikeService(
     private val jwtAuthenticationProvider: JwtAuthenticationProvider
 ) {
     @Transactional
-    fun createLike(boardId: Long, userId: Long, token: String): List<BoardLikeResponseDto> {
+    fun createLike(boardId: Long, userId: Long, token: String): List<BoardLikeItem> {
         val usernameFromToken = jwtAuthenticationProvider.getIdFromTokenClaims(resolveToken(token)!!)
         val boardLikeTrueList = boardLikeRepository.findByBoard_Id(boardId).filter { it.isLike == 1 }.map { it.userEntity.username }
 
@@ -47,7 +48,8 @@ class BoardLikeService(
             boardLikeRepository.save(like)
         }
 
-        return boardLikeRepository.findByBoard_Id(boardId).filter { it.isLike == 1 }.map { it.toResponse() }
+        // return boardLikeRepository.findByBoard_Id(boardId).filter { it.isLike == 1 }.map { it.toResponse() }
+        return boardLikeRepository.findTop10LikeByDateDesc(boardId)
     }
 
     @Transactional
@@ -68,7 +70,8 @@ class BoardLikeService(
         page: Pageable
     ): BoardLikeList {
         val response = boardLikeRepository.findBoardLikeByBoardId(boardId, page)
-        val totalCount = response.size.toLong()
+        val totalCount = boardLikeRepository.countByBoard_Id(boardId)
+        println(totalCount)
         val totalPage = when(totalCount%10) {
             0L -> totalCount/page.pageSize
             else -> totalCount/page.pageSize + 1

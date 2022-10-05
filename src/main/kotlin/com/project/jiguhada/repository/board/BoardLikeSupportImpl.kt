@@ -30,4 +30,24 @@ class BoardLikeSupportImpl(
             .limit(pageable.pageSize.toLong())
             .fetch()
     }
+
+    override fun findTop10LikeByDateDesc(boardId: Long): List<BoardLikeItem> {
+        return queryFactory.select(QBoardLikeItem(
+            boardLike.id,
+            boardLike.userEntity.id,
+            boardLike.userEntity.username,
+            boardLike.userEntity.nickname,
+            boardLike.userEntity.userImageUrl
+        ))
+            .from(boardLike)
+            .where(
+                boardLike.board.id.eq(boardId)
+            )
+            .orderBy(
+                OrderSpecifier(Order.DESC, boardLike.lastModifiedDate)
+            )
+            .offset(0)
+            .limit(10)
+            .fetch()
+    }
 }
