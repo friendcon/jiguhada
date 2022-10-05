@@ -28,7 +28,7 @@ class BoardCommentService(
     ): BoardCommentList {
         val response = boardCommentRepository.findCommentList(boardId, page)
         val totalCount = boardCommentRepository.countByBoard_Id(boardId)
-        val totalPage = when(totalCount%5) {
+        val totalPage = when(totalCount%10) {
             0L -> totalCount/page.pageSize
             else -> totalCount/page.pageSize + 1
         }
@@ -47,9 +47,9 @@ class BoardCommentService(
         val comment = commentRequestDto.toEntity(SecurityUtil.currentUsername)
         boardCommentRepository.save(comment)
         val totalCount = boardCommentRepository.countByBoard_Id(commentRequestDto.boardId)
-        val totalPage = when(totalCount%5) {
-            0L -> totalCount/5
-            else -> totalCount/5 + 1
+        val totalPage = when(totalCount%10) {
+            0L -> totalCount/10
+            else -> totalCount/10 + 1
         }
         val comments = boardCommentRepository.findTop5ByBoardCommentNullOrderByCreatedDateDesc().map { it.toBoardCommentItem() }
         val commentList = BoardCommentList(
@@ -67,9 +67,9 @@ class BoardCommentService(
         val recomment = reCommentRequestDto.toEntity(SecurityUtil.currentUsername)
         boardCommentRepository.save(recomment)
         val totalCount = boardCommentRepository.countByBoard_Id(reCommentRequestDto.boardId)
-        val totalPage = when(totalCount%5) {
-            0L -> totalCount/5
-            else -> totalCount/5 + 1
+        val totalPage = when(totalCount%10) {
+            0L -> totalCount/10
+            else -> totalCount/10 + 1
         }
         val comments = boardCommentRepository.findTop5ByBoardCommentNullOrderByCreatedDateDesc().map { it.toBoardCommentItem() }
         return BoardCommentList(
@@ -98,9 +98,9 @@ class BoardCommentService(
         if(comment.userEntity.username.equals(SecurityUtil.currentUsername)) {
             comment.updateComment(commentUpdateRequestDto) // 댓글 업데이트
             val totalCount = boardCommentRepository.countByBoard_Id(comment.board.id!!)
-            val totalPage = when(totalCount%5) {
-                0L -> totalCount/5
-                else -> totalCount/5 + 1
+            val totalPage = when(totalCount%10) {
+                0L -> totalCount/10
+                else -> totalCount/10 + 1
             }
             val comments = boardCommentRepository.findTop5ByBoardCommentNullOrderByCreatedDateDesc().map { it.toBoardCommentItem() }
             return BoardCommentList(
@@ -121,9 +121,9 @@ class BoardCommentService(
         if(comment.userEntity.username.equals(SecurityUtil.currentUsername)) {
             boardCommentRepository.delete(comment) // 삭제
             val totalCount = boardCommentRepository.countByBoard_Id(boardId!!)
-            val totalPage = when(totalCount%5) {
-                0L -> totalCount/5
-                else -> totalCount/5 + 1
+            val totalPage = when(totalCount%10) {
+                0L -> totalCount/10
+                else -> totalCount/10 + 1
             }
             val comments = boardCommentRepository.findTop5ByBoardCommentNullOrderByCreatedDateDesc().map { it.toBoardCommentItem() }
             return BoardCommentList(
