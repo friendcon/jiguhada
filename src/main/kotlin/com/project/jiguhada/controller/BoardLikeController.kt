@@ -51,7 +51,7 @@ class BoardLikeController(
             null, 1L -> 0
             else -> page.absoluteValue - 1
         }
-        val response = boardLikeService.readBoardLikes(boardId, PageRequest.of(currentPage.toInt(), 5))
+        val response = boardLikeService.readBoardLikes(boardId, PageRequest.of(currentPage.toInt(), 10))
         return ResponseEntity(response, HttpStatus.OK)
     }
 }

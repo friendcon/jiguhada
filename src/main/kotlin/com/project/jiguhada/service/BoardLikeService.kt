@@ -69,7 +69,7 @@ class BoardLikeService(
     ): BoardLikeList {
         val response = boardLikeRepository.findBoardLikeByBoardId(boardId, page)
         val totalCount = response.size.toLong()
-        val totalPage = when(totalCount%5) {
+        val totalPage = when(totalCount%10) {
             0L -> totalCount/page.pageSize
             else -> totalCount/page.pageSize + 1
         }
