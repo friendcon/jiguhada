@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 interface BoardLikeRepository: JpaRepository<BoardLike, Long>, BoardLikeSupport {
     fun findByBoard_Id(boardId: Long): List<BoardLike>
     fun findByBoard_IdAndUserEntity_Id(boardId: Long, userId: Long): BoardLike
+    fun countByBoard_Id(boardId: Long): Long
 }

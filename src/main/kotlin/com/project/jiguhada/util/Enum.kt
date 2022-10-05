@@ -105,14 +105,12 @@ enum class CHALLENGE_IS_SUCCESS {
 
 enum class CHALLENGE_ORDER_TYPE {
     RECENTYL,
-    POPULAR,
-    BEFORE,
-    INPROGRESS,
-    END
+    POPULAR
 }
 
-enum class CHALLEGE_SEARCH_TYPE {
+enum class CHALLENGE_SEARCH_TYPE {
     TITLE,
     CONTENT,
     TAG
 }
+
