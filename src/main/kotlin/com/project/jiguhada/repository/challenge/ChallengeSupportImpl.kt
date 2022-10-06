@@ -1,8 +1,6 @@
 package com.project.jiguhada.repository.challenge
 
 
-import com.project.jiguhada.controller.dto.challenge.ChallengeListItem
-import com.project.jiguhada.controller.dto.challenge.QChallengeListItem
 import com.project.jiguhada.domain.challenge.Challenge
 import com.project.jiguhada.domain.challenge.QChallenge.challenge
 import com.project.jiguhada.util.CHALLENGE_CATEGORY
@@ -17,47 +15,51 @@ import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 
-data class ChallengeSupportImplRepository(
+data class ChallengeSupportImpl(
     private val queryFactory: JPAQueryFactory,
     private val tagRepository: TagRepository
-): QuerydslRepositorySupport(Challenge::class.java), ChallengeSupportRepository {
-    override fun findChallengeList(
+): QuerydslRepositorySupport(Challenge::class.java), ChallengeSupport {
+
+    override fun findChallengeListsCount(
         query: String?,
         searchType: CHALLENGE_SEARCH_TYPE?,
-        order: CHALLENGE_ORDER_TYPE?,
+        challengeOrder: CHALLENGE_ORDER_TYPE?,
         category: CHALLENGE_CATEGORY?,
         status: CHALLENGE_STATUS?,
         page: Pageable
-    ): List<ChallengeListItem> {
-        return queryFactory.select(QChallengeListItem(
-            challenge.id,
-            challenge.title,
-            challenge.challengeDetails,
-            challenge.challengeImg,
-            null,
-            challenge.currrentParticipantsCount,
-            challenge.participantsCount,
-            challenge.challengeStartDate,
-            challenge.challengePeroid,
-            challenge.challengeEndDate,
-            challenge.challengeStatus,
-            challenge.achievementRate
-        ))
-            .from(challenge)
+    ): List<Challenge> {
+        return queryFactory.selectFrom(challenge)
             .where(
-                isquerySearchExist(query, searchType),
+                isSearchExist(query, searchType),
+                checkChallengeStatus(status),
+                checkChallengeCategory(category)
+            )
+            .fetch()
+    }
+
+    override fun findChallengeLists(
+        query: String?,
+        searchType: CHALLENGE_SEARCH_TYPE?,
+        challengeOrder: CHALLENGE_ORDER_TYPE?,
+        category: CHALLENGE_CATEGORY?,
+        status: CHALLENGE_STATUS?,
+        page: Pageable
+    ): List<Challenge> {
+        return queryFactory.selectFrom(challenge)
+            .where(
+                isSearchExist(query, searchType),
                 checkChallengeStatus(status),
                 checkChallengeCategory(category)
             )
             .orderBy(
-                getOrderSpecifier(order)
+                getOrderSpecifier(challengeOrder)
             )
             .offset(page.offset)
             .limit(page.pageSize.toLong())
             .fetch()
     }
 
-    private fun isquerySearchExist(query: String?, searchType: CHALLENGE_SEARCH_TYPE?): BooleanExpression? {
+    private fun isSearchExist(query: String?, searchType: CHALLENGE_SEARCH_TYPE?): BooleanExpression? {
         if(StringUtils.isNullOrEmpty(query)) {
             return null
         }

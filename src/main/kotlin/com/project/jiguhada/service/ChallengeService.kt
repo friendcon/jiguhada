@@ -1,8 +1,6 @@
 package com.project.jiguhada.service
 
-import com.project.jiguhada.controller.dto.challenge.ChallengeCreateRequest
-import com.project.jiguhada.controller.dto.challenge.ChallengeCreateResponse
-import com.project.jiguhada.controller.dto.challenge.ChallengeJoinRequest
+import com.project.jiguhada.controller.dto.challenge.*
 import com.project.jiguhada.controller.dto.user.ImgUrlResponseDto
 import com.project.jiguhada.domain.challenge.Challenge
 import com.project.jiguhada.domain.challenge.ChallengeTag
@@ -15,9 +13,8 @@ import com.project.jiguhada.repository.challenge.ChallengeRepository
 import com.project.jiguhada.repository.challenge.TagRepository
 import com.project.jiguhada.repository.challenge.UserChallengeRepository
 import com.project.jiguhada.repository.user.UserEntityRepository
-import com.project.jiguhada.util.CHALLENGE_PERIOD
-import com.project.jiguhada.util.CHALLENGE_STATUS
-import com.project.jiguhada.util.SecurityUtil
+import com.project.jiguhada.util.*
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
@@ -92,6 +89,37 @@ class ChallengeService(
     @Transactional
     fun readChallenge(challengeId: Long): ChallengeCreateResponse {
         return challengeRepository.findById(challengeId).get().toChallengeCreateResponse()
+    }
+
+    @Transactional
+    fun readChallengeList(
+        query: String?,
+        searchType: CHALLENGE_SEARCH_TYPE?,
+        orderType: CHALLENGE_ORDER_TYPE?,
+        category: CHALLENGE_CATEGORY?,
+        status: CHALLENGE_STATUS?,
+        page: Pageable
+    ): ChallengeListResponse {
+        val totalCount = challengeRepository.findChallengeListsCount(query, searchType, orderType, category, status, page).size
+        val totalPage = when (totalCount % 20) {
+            0 -> totalCount / 20
+            else -> totalCount / 20 + 1
+        }
+
+        val currentPage = page.pageNumber.toLong().toLong()
+
+        val response = challengeRepository.findChallengeLists(query, searchType, orderType, category, status, page)
+
+        val entityToResponse = response.map { it.toChallengeListItemResponse() }
+
+
+
+        return ChallengeListResponse(
+            totalPage = totalPage.toLong(),
+            totalChallengeCount = totalCount.toLong(),
+            currentPage = currentPage + 1,
+            challengeList = entityToResponse
+        )
     }
 
     fun ChallengeCreateRequest.toEntity(): Challenge {

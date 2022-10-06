@@ -1,6 +1,7 @@
 package com.project.jiguhada.domain.challenge
 
 import com.project.jiguhada.controller.dto.challenge.ChallengeCreateResponse
+import com.project.jiguhada.controller.dto.challenge.ChallengeListItem
 import com.project.jiguhada.domain.base.BaseEntity
 import com.project.jiguhada.domain.user.UserEntity
 import com.project.jiguhada.util.AUTH_AVAILABLE_TIME_TYPE
@@ -57,6 +58,22 @@ data class Challenge(
         return this
     }
 
+    fun toChallengeListItemResponse(): ChallengeListItem {
+        return ChallengeListItem(
+            challengeId = id!!,
+            challengeTitle = title,
+            challengeDetails = challengeDetails,
+            challengeImgUrl = challengeImg,
+            currentParticipantsCount = currrentParticipantsCount,
+            participantsCount = participantsCount,
+            challengeTagList = challengeTags.map { it.tag.challengeTagName },
+            challengeStartDate = challengeStartDate,
+            challengePeroid = challengePeroid,
+            challengeEndDate = challengeEndDate,
+            challengeStatus = challengeStatus,
+            achievementRate = achievementRate
+        )
+    }
     fun toChallengeCreateResponse(): ChallengeCreateResponse {
         return ChallengeCreateResponse(
             challengeId = id!!,
