@@ -7,5 +7,6 @@ data class BoardLikeItem @QueryProjection constructor(
     val userId: Long,
     val username: String,
     val nickname: String,
-    val userImgUrl: String
+    val userImgUrl: String,
+    val userInfoPublic: String
 )

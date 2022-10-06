@@ -2,6 +2,7 @@ package com.project.jiguhada.domain.user
 
 import com.project.jiguhada.controller.dto.user.ReadUserInfoResponseDto
 import com.project.jiguhada.domain.BaseEntity
+import com.project.jiguhada.util.IS_USER_INFO_PUBLIC
 import com.project.jiguhada.util.ROLE
 import com.project.jiguhada.util.SocialType
 import org.hibernate.Hibernate
@@ -12,6 +13,8 @@ data class UserEntity(
     val username: String,
     var nickname: String,
     var password: String,
+    @Enumerated(EnumType.STRING)
+    var isUserInfoPublic: IS_USER_INFO_PUBLIC,
     var userImageUrl: String,
     @Enumerated(EnumType.STRING)
     var socialType: SocialType,
@@ -63,9 +66,8 @@ data class UserEntity(
 
     override fun hashCode(): Int = javaClass.hashCode()
     override fun toString(): String {
-        return "UserEntity(username='$username', nickname='$nickname', password='$password', userImageUrl='$userImageUrl', socialType=$socialType)"
+        return "UserEntity(username='$username', nickname='$nickname', password='$password', isUserInfoPublic=$isUserInfoPublic, userImageUrl='$userImageUrl', socialType=$socialType, roles=$roles)"
     }
-
 
 
 }

@@ -17,14 +17,14 @@ import javax.servlet.http.HttpServletRequest
 import kotlin.math.abs
 
 @RestController
-@Tag(name = "사용자 마이페이지 API")
+@Tag(name = "사용자 작성글 확인 API")
 @RequestMapping("/api/v1/mypage")
 class MyPageController(
     private val mypageService: MypageService,
     private val jwtAuthenticationProvider: JwtAuthenticationProvider
 ) {
     @GetMapping("/board")
-    @Operation(summary = "user 작성글 조회")
+    @Operation(summary = "사용자 작성글 조회")
     fun getBoards(
         @RequestParam(required = false, value = "page") page: Long?,
         httprequest: HttpServletRequest
@@ -38,7 +38,7 @@ class MyPageController(
     }
 
     @GetMapping("/comment")
-    @Operation(summary = "user 작성댓글 조회")
+    @Operation(summary = "사용자 작성댓글 조회")
     fun getComments(
         @RequestParam(required = false, value = "page") page: Long?,
         httprequest: HttpServletRequest

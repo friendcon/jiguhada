@@ -8,6 +8,10 @@ enum class ROLE {
     ROLE_USER, ROLE_ADMIN
 }
 
+enum class IS_USER_INFO_PUBLIC {
+    PUBLIC,
+    PRIVATE
+}
 enum class BOARD_CATEGORY{
     ENVIRONMENT,
     FREE,
