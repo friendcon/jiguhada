@@ -112,14 +112,24 @@ class ChallengeService(
 
         val entityToResponse = response.map { it.toChallengeListItemResponse() }
 
-
-
         return ChallengeListResponse(
             totalPage = totalPage.toLong(),
             totalChallengeCount = totalCount.toLong(),
             currentPage = currentPage + 1,
             challengeList = entityToResponse
         )
+    }
+
+    /**
+     * 챌린지 스케줄 변경\
+     */
+    @Transactional
+    fun updateChallengeStatusStart() {
+        val localDateTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(0,0,0,0))
+        val challengeList = challengeRepository.findChallengeByChallengeStartDate(localDateTime)
+        challengeList.map {
+            it.updateChallengeStatus(CHALLENGE_STATUS.INPROGRESS)
+        }
     }
 
     fun ChallengeCreateRequest.toEntity(): Challenge {

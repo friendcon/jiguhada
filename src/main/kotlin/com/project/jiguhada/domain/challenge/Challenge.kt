@@ -49,12 +49,17 @@ data class Challenge(
     val authHoliday: Boolean, // 공휴일 인증 여부
     val isOfficial: Boolean, // 공식 챌린지 여부
     @Enumerated(EnumType.STRING)
-    val challengeStatus: CHALLENGE_STATUS, // 챌린지 상태 (시작 전, 진행중, 종료)
+    var challengeStatus: CHALLENGE_STATUS, // 챌린지 상태 (시작 전, 진행중, 종료)
     @Column(precision = 5, scale = 2)
     val achievementRate: BigDecimal // 챌린지 전체 달성률
 ): BaseEntity() {
     fun updateParticipantsCount(): Challenge {
         currrentParticipantsCount++
+        return this
+    }
+
+    fun updateChallengeStatus(challengeStatus: CHALLENGE_STATUS): Challenge {
+        this.challengeStatus = challengeStatus
         return this
     }
 
