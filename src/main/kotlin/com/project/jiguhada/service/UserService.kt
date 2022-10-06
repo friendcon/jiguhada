@@ -43,13 +43,14 @@ class UserService(
 
     @Transactional
     fun readUserInfo(accesstoken: String, username: String): ReadUserInfoResponseDto? {
+        val response = userEntityRepository.findByUsername(username).get().toReadUserInfoResponse()
 
-        val usernameFromToken = jwtAuthenticationProvider.getIdFromTokenClaims(resolveToken(accesstoken)!!)
-
-        if(SecurityUtil.currentUsername.equals(usernameFromToken)) {
-            return userEntityRepository.findByUsername(usernameFromToken).get().toReadUserInfoResponse()
+        if(SecurityUtil.currentUsername.equals(username)) {
+            return response
+        } else if(response.userInfoPublic.toString().equals("PRIVATE")) {
+            throw UserInfoIsPrivateException("회원 정보가 비공개 상태입니다.")
         }
-        return null
+        return response
     }
 
     @Transactional

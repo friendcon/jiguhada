@@ -32,7 +32,8 @@ data class UserEntity(
             username = this.username,
             nickname = this.nickname,
             imgUrl = this.userImageUrl,
-            socialType =  this.socialType
+            socialType =  this.socialType,
+            userInfoPublic = isUserInfoPublic
         )
     }
 

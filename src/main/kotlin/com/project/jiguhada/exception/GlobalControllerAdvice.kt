@@ -127,4 +127,9 @@ class GlobalControllerAdv0ice {
     fun challengeJoinEndException(e:ChallengeJoinEndException): ResponseEntity<ErrorResponseDto> {
         return ResponseEntity(ErrorResponseDto(ERRORCODE.CHALLENGE_CLOSE, e.message), HttpStatus.BAD_REQUEST)
     }
+
+    @ExceptionHandler(UserInfoIsPrivateException::class)
+    fun userInfoIsPrivateException(e: UserInfoIsPrivateException): ResponseEntity<ErrorResponseDto> {
+        return ResponseEntity(ErrorResponseDto(ERRORCODE.USER_INFO_PRIVATE, e.message), HttpStatus.UNAUTHORIZED)
+    }
 }
