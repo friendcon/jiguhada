@@ -45,9 +45,9 @@ class UserService(
     fun readUserInfo(accesstoken: String, username: String): ReadUserInfoResponseDto? {
         val response = userEntityRepository.findByUsername(username).get().toReadUserInfoResponse()
 
-        if(SecurityUtil.currentUsername.equals(username)) {
+        if(SecurityUtil.currentUsername == username) {
             return response
-        } else if(response.userInfoPublic.toString().equals("PRIVATE")) {
+        } else if(response.userInfoPublic.toString() == "PRIVATE") {
             throw UserInfoIsPrivateException("회원 정보가 비공개 상태입니다.")
         }
         return response

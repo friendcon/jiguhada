@@ -54,6 +54,7 @@ class UserController(
         val response = userService.readUserInfo(accessToken, username) ?: return ResponseEntity(HttpStatus.BAD_REQUEST)
         return ResponseEntity.ok().body(response)
     }
+
     @PutMapping("/updateNickname")
     @Operation(summary = "닉네임 수정")
     fun updateNickname(@RequestBody request: UserNicknameRequestDto, httprequest: HttpServletRequest): ResponseEntity<CommonResponseDto> {
