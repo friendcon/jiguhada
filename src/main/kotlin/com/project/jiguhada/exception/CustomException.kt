@@ -17,3 +17,8 @@ class UserAlreadyChallengeMemberException(override val message: String): Runtime
 
 class ChallengeJoinCountException(override val message: String): RuntimeException()
 class ChallengeJoinEndException(override val message: String): RuntimeException()
+
+class ChallengeException(override val message: String): RuntimeException()
+class CantAuthException(override val message: String): RuntimeException()
+
+class AlreadyAuthException(override val message: String): RuntimeException()

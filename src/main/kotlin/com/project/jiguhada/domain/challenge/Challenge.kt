@@ -51,7 +51,7 @@ data class Challenge(
     @Enumerated(EnumType.STRING)
     var challengeStatus: CHALLENGE_STATUS, // 챌린지 상태 (시작 전, 진행중, 종료)
     @Column(precision = 5, scale = 2)
-    val achievementRate: BigDecimal // 챌린지 전체 달성률
+    var achievementRate: BigDecimal // 챌린지 전체 달성률
 ): BaseEntity() {
     fun updateParticipantsCount(): Challenge {
         currrentParticipantsCount++
@@ -60,6 +60,11 @@ data class Challenge(
 
     fun updateChallengeStatus(challengeStatus: CHALLENGE_STATUS): Challenge {
         this.challengeStatus = challengeStatus
+        return this
+    }
+
+    fun updateChallengeAchievementRate(value: BigDecimal): Challenge {
+        this.achievementRate = value
         return this
     }
 

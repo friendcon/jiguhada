@@ -16,10 +16,15 @@ data class UserChallenge(
     val userEntity: UserEntity, // 회원 id
     @ManyToOne
     @JoinColumn(name = "challenge_id")
-    val challenge: Challenge,
+    val challenge: Challenge, // 참여중인 챌린지
     @Column(precision = 5, scale = 2)
-    val achievementRate: BigDecimal // 회원의 챌린지 달성률
+    var achievementRate: BigDecimal // 회원의 챌린지 달성률
 ): BaseEntity() {
+
+    fun updateAchievementRate(achievementRate: BigDecimal): UserChallenge {
+        this.achievementRate = achievementRate
+        return this
+    }
     override fun toString(): String {
         return "UserChallenge(userEntity=$userEntity, challenge=$challenge, achievementRate=$achievementRate)"
     }

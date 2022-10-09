@@ -121,7 +121,7 @@ class ChallengeService(
     }
 
     /**
-     * 챌린지 스케줄 변경\
+     * 챌린지 스케줄 변경
      */
     @Transactional
     fun updateChallengeStatusStart() {
@@ -131,6 +131,10 @@ class ChallengeService(
             it.updateChallengeStatus(CHALLENGE_STATUS.INPROGRESS)
         }
     }
+
+    /**
+     * 챌린지 시작시 유저 인증 value 생성, 유저 챌린지 달성률 0으로 update
+     */
 
     fun ChallengeCreateRequest.toEntity(): Challenge {
         val user = userEntityRepository.findByUsername(SecurityUtil.currentUsername).get()
