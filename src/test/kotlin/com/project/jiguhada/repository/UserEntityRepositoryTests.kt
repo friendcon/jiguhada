@@ -4,6 +4,7 @@ import com.project.jiguhada.domain.user.Role
 import com.project.jiguhada.domain.user.UserEntity
 import com.project.jiguhada.repository.user.RoleRepository
 import com.project.jiguhada.repository.user.UserEntityRepository
+import com.project.jiguhada.util.IS_USER_INFO_PUBLIC
 import com.project.jiguhada.util.ROLE
 import com.project.jiguhada.util.SocialType
 import org.assertj.core.api.Assertions
@@ -36,6 +37,7 @@ class UserEntityRepositoryTests(
             password = "hello11",
             userImageUrl = "imgUrl",
             socialType = SocialType.GENERAL,
+            isUserInfoPublic = IS_USER_INFO_PUBLIC.PRIVATE,
             roles = mutableSetOf(Role(ROLE.ROLE_USER))
         )
 
@@ -58,11 +60,12 @@ class UserEntityRepositoryTests(
 
     @Test
     @DisplayName("회원가입")
-    fun UserEntityRepositoryTests() {
+    fun userEntityRepositoryTests() {
         val user = UserEntity(
             "hozumi",
             "hozumi",
             "hozumi",
+            IS_USER_INFO_PUBLIC.PRIVATE,
             "hozumi",
             SocialType.GENERAL,
             roles = mutableSetOf(Role(ROLE.ROLE_USER))
@@ -70,6 +73,7 @@ class UserEntityRepositoryTests(
 
         userEntityRepository.save(user)
 
+        println(user.toString())
         Assertions.assertThat(user.roles).contains(Role(ROLE.ROLE_USER))
     }
 

@@ -141,5 +141,9 @@ class GlobalControllerAdv0ice {
     @ExceptionHandler(AlreadyAuthException::class)
     fun alreadyAuthException(e: AlreadyAuthException): ResponseEntity<ErrorResponseDto> {
         return ResponseEntity(ErrorResponseDto(ERRORCODE.ALREADY_AUTH_CHALLENGE, e.message), HttpStatus.BAD_REQUEST)
+
+    @ExceptionHandler(UserInfoIsPrivateException::class)
+    fun userInfoIsPrivateException(e: UserInfoIsPrivateException): ResponseEntity<ErrorResponseDto> {
+        return ResponseEntity(ErrorResponseDto(ERRORCODE.USER_INFO_PRIVATE, e.message), HttpStatus.UNAUTHORIZED)
     }
 }

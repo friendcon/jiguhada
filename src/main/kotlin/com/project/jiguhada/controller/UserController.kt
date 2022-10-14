@@ -48,12 +48,13 @@ class UserController(
         return ResponseEntity.ok(userService.signUp(reqeust))
     }
 
-    @GetMapping("/info/{id}")
+    @GetMapping("/info/{username}")
     @Operation(summary = "회원정보조회")
-    fun readUserInfo(@PathVariable("id") id: Long, @RequestHeader("Authorization") accessToken: String): ResponseEntity<ReadUserInfoResponseDto> {
-        val response = userService.readUserInfo(accessToken, id) ?: return ResponseEntity(HttpStatus.BAD_REQUEST)
+    fun readUserInfo(@PathVariable("username") username: String, @RequestHeader("Authorization") accessToken: String): ResponseEntity<ReadUserInfoResponseDto> {
+        val response = userService.readUserInfo(accessToken, username) ?: return ResponseEntity(HttpStatus.BAD_REQUEST)
         return ResponseEntity.ok().body(response)
     }
+
     @PutMapping("/updateNickname")
     @Operation(summary = "닉네임 수정")
     fun updateNickname(@RequestBody request: UserNicknameRequestDto, httprequest: HttpServletRequest): ResponseEntity<CommonResponseDto> {

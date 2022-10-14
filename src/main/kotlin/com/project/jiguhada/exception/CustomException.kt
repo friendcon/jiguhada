@@ -1,5 +1,7 @@
 package com.project.jiguhada.exception
 
+import com.fasterxml.jackson.databind.RuntimeJsonMappingException
+
 class UsernameNotFoundException(override val message: String) : RuntimeException()
 class UserNicknameDuplicateException(override val message: String): RuntimeException()
 class UserIdDuplicateException(override val message: String): RuntimeException()
@@ -22,3 +24,4 @@ class ChallengeException(override val message: String): RuntimeException()
 class CantAuthException(override val message: String): RuntimeException()
 
 class AlreadyAuthException(override val message: String): RuntimeException()
+class UserInfoIsPrivateException(override val message: String): RuntimeException()

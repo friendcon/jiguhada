@@ -61,6 +61,7 @@ data class Board(
             userEntity.username,
             userEntity.id!!,
             userEntity.userImageUrl,
+            userEntity.isUserInfoPublic,
             userEntity.nickname,
             boardCommentsList.size.toLong(),
             boardLikes.size.toLong(),

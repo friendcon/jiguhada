@@ -9,6 +9,7 @@ import com.project.jiguhada.exception.*
 import com.project.jiguhada.jwt.JwtAuthenticationProvider
 import com.project.jiguhada.jwt.JwtUserDetails
 import com.project.jiguhada.repository.user.UserEntityRepository
+import com.project.jiguhada.util.IS_USER_INFO_PUBLIC
 import com.project.jiguhada.util.ROLE
 import com.project.jiguhada.util.SecurityUtil
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -41,18 +42,15 @@ class UserService(
     }
 
     @Transactional
-    fun readUserInfo(accesstoken: String, userid: Long): ReadUserInfoResponseDto? {
+    fun readUserInfo(accesstoken: String, username: String): ReadUserInfoResponseDto? {
+        val response = userEntityRepository.findByUsername(username).get().toReadUserInfoResponse()
 
-        val usernameFromToken = jwtAuthenticationProvider.getIdFromTokenClaims(resolveToken(accesstoken)!!)
-
-        if(SecurityUtil.currentUsername.equals(usernameFromToken)) {
-            val userresponse = userEntityRepository.findByUsername(usernameFromToken).get()
-            if(userid != userresponse.id) {
-                throw UnauthorizedRequestException("권한이 없는 요청입니다.")
-            }
-            return userEntityRepository.findByUsername(usernameFromToken).get().toReadUserInfoResponse()
+        if(SecurityUtil.currentUsername == username) {
+            return response
+        } else if(response.userInfoPublic.toString() == "PRIVATE") {
+            throw UserInfoIsPrivateException("회원 정보가 비공개 상태입니다.")
         }
-        return null
+        return response
     }
 
     @Transactional
@@ -144,6 +142,7 @@ class UserService(
             username,
             nickname,
             passwordEncoder.encode(password),
+            IS_USER_INFO_PUBLIC.PRIVATE,
             userImageUrl,
             socialType,
             roles = mutableSetOf(Role(ROLE.ROLE_USER))

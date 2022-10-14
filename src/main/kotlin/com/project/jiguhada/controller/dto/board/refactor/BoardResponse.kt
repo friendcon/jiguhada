@@ -1,5 +1,6 @@
 package com.project.jiguhada.controller.dto.board.refactor
 
+import com.project.jiguhada.util.IS_USER_INFO_PUBLIC
 import java.time.LocalDateTime
 
 data class BoardResponse(
@@ -11,6 +12,7 @@ data class BoardResponse(
     val username: String,
     val userId: Long,
     val userImgUrl: String,
+    val userInfoPublic: IS_USER_INFO_PUBLIC,
     val nickname: String,
     val commentCount: Long,
     val likeCount: Long,

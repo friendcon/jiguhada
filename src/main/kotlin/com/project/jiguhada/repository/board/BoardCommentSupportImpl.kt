@@ -23,6 +23,7 @@ class BoardCommentSupportImpl(
             boardComment1.userEntity.nickname,
             boardComment1.userEntity.id,
             boardComment1.userEntity.userImageUrl,
+            boardComment1.userEntity.isUserInfoPublic,
             boardComment1.createdDate,
             boardComment1.lastModifiedDate
         ))
@@ -50,6 +51,7 @@ class BoardCommentSupportImpl(
             boardComment1.userEntity.nickname,
             boardComment1.userEntity.id,
             boardComment1.userEntity.userImageUrl,
+            boardComment1.userEntity.isUserInfoPublic,
             boardComment1.createdDate,
             boardComment1.lastModifiedDate
         ))

@@ -43,6 +43,7 @@ data class BoardComment(
             nickname = userEntity.nickname,
             userId = userEntity.id,
             userImg = userEntity.userImageUrl,
+            userInfoPublic = userEntity.isUserInfoPublic,
             commentCreateDate = createdDate,
             commentUpdateDate = lastModifiedDate
         )

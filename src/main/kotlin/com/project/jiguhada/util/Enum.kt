@@ -8,6 +8,10 @@ enum class ROLE {
     ROLE_USER, ROLE_ADMIN
 }
 
+enum class IS_USER_INFO_PUBLIC {
+    PUBLIC,
+    PRIVATE
+}
 enum class BOARD_CATEGORY{
     ENVIRONMENT,
     FREE,
@@ -46,6 +50,7 @@ enum class ERRORCODE {
     CHALLENGE_CLOSE,
     CANT_AUTH_CHALLENGE,
     ALREADY_AUTH_CHALLENGE
+    USER_INFO_PRIVATE
 }
 
 enum class BOARD_SEARCH_TYPE {
