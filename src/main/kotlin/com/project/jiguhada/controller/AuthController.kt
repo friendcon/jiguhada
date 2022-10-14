@@ -1,7 +1,7 @@
 package com.project.jiguhada.controller
 
-import com.project.jiguhada.controller.dto.user.LoginRequestDto
 import com.project.jiguhada.controller.dto.TokenDto
+import com.project.jiguhada.controller.dto.user.LoginRequestDto
 import com.project.jiguhada.jwt.JwtAuthenticationProvider
 import com.project.jiguhada.service.AuthService
 import io.swagger.v3.oas.annotations.Operation
@@ -23,7 +23,7 @@ class AuthController(
     @PostMapping("/login")
     @Operation(summary = "로그인")
     fun authorize(@RequestBody loginRequest: LoginRequestDto): ResponseEntity<TokenDto> {
-        var tokenDto: TokenDto? = authService.login(loginRequest)
+        val tokenDto: TokenDto? = authService.login(loginRequest)
         if(tokenDto == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(tokenDto)
         }

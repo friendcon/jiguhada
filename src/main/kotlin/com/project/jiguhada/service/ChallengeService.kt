@@ -112,8 +112,6 @@ class ChallengeService(
 
         val entityToResponse = response.map { it.toChallengeListItemResponse() }
 
-
-
         return ChallengeListResponse(
             totalPage = totalPage.toLong(),
             totalChallengeCount = totalCount.toLong(),
@@ -121,6 +119,22 @@ class ChallengeService(
             challengeList = entityToResponse
         )
     }
+
+    /**
+     * 챌린지 스케줄 변경
+     */
+    @Transactional
+    fun updateChallengeStatusStart() {
+        val localDateTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(0,0,0,0))
+        val challengeList = challengeRepository.findChallengeByChallengeStartDate(localDateTime)
+        challengeList.map {
+            it.updateChallengeStatus(CHALLENGE_STATUS.INPROGRESS)
+        }
+    }
+
+    /**
+     * 챌린지 시작시 유저 인증 value 생성, 유저 챌린지 달성률 0으로 update
+     */
 
     fun ChallengeCreateRequest.toEntity(): Challenge {
         val user = userEntityRepository.findByUsername(SecurityUtil.currentUsername).get()

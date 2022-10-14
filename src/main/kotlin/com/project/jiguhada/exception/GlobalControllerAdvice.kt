@@ -128,6 +128,20 @@ class GlobalControllerAdv0ice {
         return ResponseEntity(ErrorResponseDto(ERRORCODE.CHALLENGE_CLOSE, e.message), HttpStatus.BAD_REQUEST)
     }
 
+    @ExceptionHandler(ChallengeException::class)
+    fun challengeException(e: ChallengeException): ResponseEntity<ErrorResponseDto> {
+        return ResponseEntity(ErrorResponseDto(ERRORCODE.CHALLENGE_CLOSE, e.message), HttpStatus.BAD_REQUEST)
+    }
+
+    @ExceptionHandler(CantAuthException::class)
+    fun cantAuthException(e: CantAuthException): ResponseEntity<ErrorResponseDto> {
+        return ResponseEntity(ErrorResponseDto(ERRORCODE.CANT_AUTH_CHALLENGE, e.message), HttpStatus.BAD_REQUEST)
+    }
+
+    @ExceptionHandler(AlreadyAuthException::class)
+    fun alreadyAuthException(e: AlreadyAuthException): ResponseEntity<ErrorResponseDto> {
+        return ResponseEntity(ErrorResponseDto(ERRORCODE.ALREADY_AUTH_CHALLENGE, e.message), HttpStatus.BAD_REQUEST)
+
     @ExceptionHandler(UserInfoIsPrivateException::class)
     fun userInfoIsPrivateException(e: UserInfoIsPrivateException): ResponseEntity<ErrorResponseDto> {
         return ResponseEntity(ErrorResponseDto(ERRORCODE.USER_INFO_PRIVATE, e.message), HttpStatus.UNAUTHORIZED)
