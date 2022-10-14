@@ -10,7 +10,7 @@ import java.time.LocalDate
  * 인증 실패하면 다시 인증할 수 있음
  * 인증 대기중이라면 이미
  */
-class ChallengeAuthSupporyImpl(
+class ChallengeAuthSupportImpl(
     private val queryFactory: JPAQueryFactory
 ): ChallengeAuthSupport {
     // 해당 날짜의 인증 내역 찾기
