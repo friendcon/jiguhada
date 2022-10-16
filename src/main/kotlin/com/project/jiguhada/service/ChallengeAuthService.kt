@@ -1,6 +1,7 @@
 package com.project.jiguhada.service
 
 import com.project.jiguhada.controller.dto.CommonResponseDto
+import com.project.jiguhada.controller.dto.challenge.ChallengeAuthListResponse
 import com.project.jiguhada.controller.dto.challenge.ChallengeAuthRequest
 import com.project.jiguhada.domain.challenge.Challenge
 import com.project.jiguhada.domain.challenge.ChallengeAuth
@@ -14,6 +15,7 @@ import com.project.jiguhada.repository.challenge.ChallengeRepository
 import com.project.jiguhada.repository.challenge.UserChallengeRepository
 import com.project.jiguhada.repository.user.UserEntityRepository
 import com.project.jiguhada.util.*
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -38,7 +40,7 @@ class ChallengeAuthService(
      * - 달성률은 인증이 승인될 때 변경해야한다
      */
     @Transactional
-    fun createChallengeAuth(challengeAuthRequest: ChallengeAuthRequest) {
+    fun createChallengeAuth(challengeAuthRequest: ChallengeAuthRequest): ChallengeAuthListResponse{
         val today = LocalDate.now()
         val user = userEntityRepository.findByUsername(SecurityUtil.currentUsername).get()
         val challenge = challengeRepository.findById(challengeAuthRequest.challengeId).get()
@@ -59,12 +61,28 @@ class ChallengeAuthService(
         // 실패한 인증 내역이 있다면 인증을 해야함
         val challengeAuth = challengeAuthRequest.toEntity(user)
         challengeAuthRepository.save(challengeAuth)
+
+        return readChallengeAuthList(challengeAuthRequest.challengeId, PageRequest.of(0, 10))
     }
 
     // 챌린지 인증 리스트 내림차순으로 정렬
     @Transactional
-    fun readChallengeAuthList(challengeId: Long, pageable: Pageable) {
+    fun readChallengeAuthList(challengeId: Long, pageable: Pageable): ChallengeAuthListResponse {
+        val totalAuthCount = challengeAuthRepository.countByChallenge_Id(challengeId)
+        val currentPage = pageable.pageNumber + 1
+        val totalPage = when(totalAuthCount % 10) {
+           0L -> totalAuthCount/10
+           else -> totalAuthCount/10 + 1
+        }
+
         val response = challengeAuthRepository.findChallengeAuthList(challengeId, pageable).map { it.toAuthItemResponse() }
+
+        return ChallengeAuthListResponse(
+            totalCount = totalAuthCount,
+            totalPage = totalPage,
+            currentPage = currentPage.toLong(),
+            challengeAuthList = response
+        )
     }
 
     /**

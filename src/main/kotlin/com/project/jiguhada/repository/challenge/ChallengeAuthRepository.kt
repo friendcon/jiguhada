@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface ChallengeAuthRepository: ChallengeAuthSupport, JpaRepository<ChallengeAuth, Long> {
     fun countByUserEntity_IdAndChallenge_IdAndAndAuthIsApprove(userId: Long, challengeId: Long, authStatus: CHALLENGE_AUTH_STATUS): Long
+    fun countByChallenge_Id(challengeId: Long): Long
 }
