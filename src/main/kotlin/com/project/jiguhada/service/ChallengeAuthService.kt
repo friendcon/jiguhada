@@ -3,6 +3,7 @@ package com.project.jiguhada.service
 import com.project.jiguhada.controller.dto.CommonResponseDto
 import com.project.jiguhada.controller.dto.challenge.ChallengeAuthListResponse
 import com.project.jiguhada.controller.dto.challenge.ChallengeAuthRequest
+import com.project.jiguhada.controller.dto.user.ImgUrlResponseDto
 import com.project.jiguhada.domain.challenge.Challenge
 import com.project.jiguhada.domain.challenge.ChallengeAuth
 import com.project.jiguhada.domain.user.UserEntity
@@ -19,11 +20,13 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.multipart.MultipartFile
 import java.math.BigDecimal
 import java.time.LocalDate
 
 @Service
 class ChallengeAuthService(
+    private val s3Service: AwsS3Service,
     private val userEntityRepository: UserEntityRepository,
     private val userChallengeRepository: UserChallengeRepository,
     private val challengeRepository: ChallengeRepository,
@@ -63,6 +66,13 @@ class ChallengeAuthService(
         challengeAuthRepository.save(challengeAuth)
 
         return readChallengeAuthList(challengeAuthRequest.challengeId, PageRequest.of(0, 10))
+    }
+
+    // 챌린지 인증 사진 첨부
+    @Transactional
+    fun createChallengeAuthImg(multipartFile: MultipartFile): ImgUrlResponseDto {
+        val response = s3Service.uploadImgToDir(multipartFile, "challenge-auth-image")
+        return ImgUrlResponseDto(response)
     }
 
     // 챌린지 인증 리스트 내림차순으로 정렬

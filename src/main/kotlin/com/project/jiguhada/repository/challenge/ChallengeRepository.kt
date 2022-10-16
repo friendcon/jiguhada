@@ -6,4 +6,5 @@ import java.time.LocalDateTime
 
 interface ChallengeRepository: ChallengeSupport, JpaRepository<Challenge, Long> {
     fun findChallengeByChallengeStartDate(localDateTime: LocalDateTime): List<Challenge>
+    fun findChallengeByChallengeEndDate(localDateTime: LocalDateTime): List<Challenge>
 }

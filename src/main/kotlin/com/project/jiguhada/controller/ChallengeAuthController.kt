@@ -3,13 +3,16 @@ package com.project.jiguhada.controller
 import com.project.jiguhada.controller.dto.CommonResponseDto
 import com.project.jiguhada.controller.dto.challenge.ChallengeAuthListResponse
 import com.project.jiguhada.controller.dto.challenge.ChallengeAuthRequest
+import com.project.jiguhada.controller.dto.user.ImgUrlResponseDto
 import com.project.jiguhada.service.ChallengeAuthService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 import kotlin.math.absoluteValue
 
 @RestController
@@ -34,6 +37,15 @@ class ChallengeAuthController(
     fun createChallengeAuth(@RequestBody challengeAuthRequest: ChallengeAuthRequest): ResponseEntity<ChallengeAuthListResponse>{
         challengeAuthService.createChallengeAuth(challengeAuthRequest)
         return ResponseEntity(HttpStatus.OK)
+    }
+
+    @PostMapping("/uploadAuthImg", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    @Operation(summary = "챌린지 인증 이미지 첨부")
+    fun createChallengeAuthImg(
+        @RequestParam("imgFile") multipartFile: MultipartFile
+    ): ResponseEntity<ImgUrlResponseDto> {
+        val response = challengeAuthService.createChallengeAuthImg(multipartFile)
+        return ResponseEntity(response, HttpStatus.OK)
     }
 
     @PutMapping("/approve/{challengeAuthId}")

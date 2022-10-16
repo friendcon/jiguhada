@@ -121,7 +121,7 @@ class ChallengeService(
     }
 
     /**
-     * 챌린지 스케줄 변경
+     * 챌린지 상태 변경 : BEFORE -> INPROGRESS
      */
     @Transactional
     fun updateChallengeStatusStart() {
@@ -129,6 +129,18 @@ class ChallengeService(
         val challengeList = challengeRepository.findChallengeByChallengeStartDate(localDateTime)
         challengeList.map {
             it.updateChallengeStatus(CHALLENGE_STATUS.INPROGRESS)
+        }
+    }
+
+    /**
+     * 챌린지 상태 변경 : INPROGRESS -> END
+     */
+    @Transactional
+    fun updateChallengeStatusEnd() {
+        val localDateTime = LocalDateTime.of(LocalDate.now().minusDays(1L), LocalTime.of(23, 59, 59))
+        val challengeList = challengeRepository.findChallengeByChallengeEndDate(localDateTime)
+        challengeList.map {
+            it.updateChallengeStatus(CHALLENGE_STATUS.END)
         }
     }
 

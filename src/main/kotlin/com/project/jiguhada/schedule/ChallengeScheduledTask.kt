@@ -19,6 +19,7 @@ class ChallengeScheduledTask(
 
     @Scheduled(cron = "0 0 0 1/1 * ?")
     fun updateChallengeStatus() {
-        challengeService.updateChallengeStatusStart()
+        challengeService.updateChallengeStatusStart() // 챌린지 상태 변경 (BEFORE -> INPROGRESS)
+        challengeService.updateChallengeStatusEnd() // 챌린지 상태 변경 (INPROGRESS -> END)
     }
 }
