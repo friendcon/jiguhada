@@ -4,6 +4,7 @@ import com.project.jiguhada.domain.challenge.ChallengeAuth
 import com.project.jiguhada.domain.challenge.QChallengeAuth.challengeAuth
 import com.project.jiguhada.util.CHALLENGE_AUTH_STATUS
 import com.querydsl.jpa.impl.JPAQueryFactory
+import org.springframework.data.domain.Pageable
 import java.time.LocalDate
 
 /**
@@ -32,5 +33,15 @@ class ChallengeAuthSupportImpl(
                 challengeAuth.authStatus.eq(CHALLENGE_AUTH_STATUS.WAIT)
             )
             .fetchOne()
+    }
+
+    override fun findChallengeAuthList(challengeId: Long, pageable: Pageable): List<ChallengeAuth> {
+        return queryFactory.selectFrom(challengeAuth)
+            .where(
+                challengeAuth.challenge.id.eq(challengeId)
+            )
+            .offset(pageable.offset)
+            .limit(pageable.pageSize.toLong())
+            .fetch()
     }
 }

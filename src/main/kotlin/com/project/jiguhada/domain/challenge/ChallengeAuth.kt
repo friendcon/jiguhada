@@ -1,5 +1,6 @@
 package com.project.jiguhada.domain.challenge
 
+import com.project.jiguhada.controller.dto.challenge.ChallengeAuthItem
 import com.project.jiguhada.domain.base.BaseEntity
 import com.project.jiguhada.domain.user.UserEntity
 import com.project.jiguhada.util.CHALLENGE_AUTH_IS_APPROVE
@@ -40,6 +41,18 @@ data class ChallengeAuth(
         return this
     }
 
+    fun toAuthItemResponse(): ChallengeAuthItem {
+        return ChallengeAuthItem(
+            challengeAuthId = id!!,
+            userId = userEntity.id!!,
+            username = userEntity.username,
+            nickname = userEntity.nickname,
+            userProfileImgUrl = userEntity.userImageUrl,
+            authContent = content,
+            authImgUrl = authImgUrl,
+            authIsApprove = authIsApprove
+        )
+    }
     override fun toString(): String {
         return "ChallengeAuth(challenge=$challenge, userEntity=$userEntity, authDate=$authDate, authImgUrl='$authImgUrl', content='$content', authStatus=$authStatus)"
     }

@@ -1,5 +1,6 @@
 package com.project.jiguhada.controller.dto.challenge
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import com.project.jiguhada.util.*
 import java.time.LocalDate
 import java.time.LocalTime
@@ -22,8 +23,10 @@ data class ChallengeCreateRequest(
     val authFrequency: AUTH_FREQUENCY, // 인증빈도
     val authCountPerDay: Long, // 하루 인증 횟수
     val authAvailableTimeType: AUTH_AVAILABLE_TIME_TYPE, // 인증 가능 시간 타입 (24시간, 지정한 시간)
+    @JsonFormat(pattern = "HH:mm:ss")
     val authAvailableStartTime: LocalTime, // 인증 가능 시작 시간
+    @JsonFormat(pattern = "HH:mm:ss")
     val authAvailableEndTime: LocalTime, // 인증 가능 종료 시간
-    val authHoliday: Boolean // 공휴일 인증 여부 true : 공휴일에도 인증 false : 공휴일에는 인증
+    // val authHoliday: Boolean // 공휴일 인증 여부 true : 공휴일에도 인증 false : 공휴일에는 인증
 ) {
 }

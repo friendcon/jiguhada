@@ -161,7 +161,7 @@ class ChallengeService(
             authAvailableTimeType = authAvailableTimeType,
             authAvailableStartTime = authAvailableStartTime,
             authAvailableEndTime = authAvailableEndTime,
-            authHoliday = authHoliday,
+            // authHoliday = authHoliday,
             isOfficial = false,
             challengeStatus = CHALLENGE_STATUS.BEFORE,
             achievementRate = BigDecimal.valueOf(0.00)

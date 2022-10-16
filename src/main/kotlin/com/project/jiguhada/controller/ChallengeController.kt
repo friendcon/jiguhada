@@ -1,4 +1,4 @@
-package com.project.jiguhada.controller.dto
+package com.project.jiguhada.controller
 
 import com.project.jiguhada.controller.dto.challenge.ChallengeCreateRequest
 import com.project.jiguhada.controller.dto.challenge.ChallengeCreateResponse

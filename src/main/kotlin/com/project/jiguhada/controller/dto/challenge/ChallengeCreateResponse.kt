@@ -30,7 +30,7 @@ data class ChallengeCreateResponse(
     val authAvailableTimeType: AUTH_AVAILABLE_TIME_TYPE, // 인증 가능 시간 타입 (24시간, 지정한 시간)
     val authAvailableStartTime: LocalTime, // 인증 가능 시작 시간
     val authAvailableEndTime: LocalTime, // 인증 가능 종료 시간
-    val authHoliday: Boolean, // 공휴일 인증 여부
+   //  val authHoliday: Boolean, // 공휴일 인증 여부
     val isOfficial: Boolean, // 공식 챌린지 여부
     val challengeStatus: CHALLENGE_STATUS, // 챌린지 상태
     val achievementRate: BigDecimal // 챌린지 달성률

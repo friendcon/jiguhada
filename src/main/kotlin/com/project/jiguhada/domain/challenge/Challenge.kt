@@ -46,7 +46,7 @@ data class Challenge(
     val authAvailableTimeType: AUTH_AVAILABLE_TIME_TYPE, // 인증 가능 시간 타입
     val authAvailableStartTime: LocalTime, // 인증 가능 시작 시간
     val authAvailableEndTime: LocalTime, // 인증 가능 종료 시간
-    val authHoliday: Boolean, // 공휴일 인증 여부
+    // val authHoliday: Boolean, // 공휴일 인증 여부
     val isOfficial: Boolean, // 공식 챌린지 여부
     @Enumerated(EnumType.STRING)
     var challengeStatus: CHALLENGE_STATUS, // 챌린지 상태 (시작 전, 진행중, 종료)
@@ -110,7 +110,7 @@ data class Challenge(
             authAvailableTimeType = authAvailableTimeType,
             authAvailableStartTime = authAvailableStartTime,
             authAvailableEndTime = authAvailableEndTime,
-            authHoliday = authHoliday,
+            // authHoliday = authHoliday,
             isOfficial = isOfficial,
             challengeStatus = challengeStatus,
             achievementRate = achievementRate
@@ -127,7 +127,7 @@ data class Challenge(
 
     override fun hashCode(): Int = javaClass.hashCode()
     override fun toString(): String {
-        return "Challenge(challengeTags=$challengeTags, title='$title', challengeDetails='$challengeDetails', challengeImg='$challengeImg', challengeAddDetails='$challengeAddDetails', challengeAddImg='$challengeAddImg', userEntity=$userEntity, participantsCount=$participantsCount, currrentParticipantsCount=$currrentParticipantsCount, authMethodContent='$authMethodContent', authMethodImgUrl=$authMethodImgUrl, authMethodFailImg='$authMethodFailImg', challengeStartDate=$challengeStartDate, challengePeroid=$challengePeroid, challengeEndDate=$challengeEndDate, authFrequency=$authFrequency, authCountPerDay=$authCountPerDay, authAvailableTimeType=$authAvailableTimeType, authAvailableStartTime=$authAvailableStartTime, authAvailableEndTime=$authAvailableEndTime, authHoliday=$authHoliday, isOfficial=$isOfficial, challengeStatus=$challengeStatus, achievementRate=$achievementRate)"
+        return "Challenge(challengeCategory=$challengeCategory, challengeTags=$challengeTags, title='$title', challengeDetails='$challengeDetails', challengeImg='$challengeImg', challengeAddDetails='$challengeAddDetails', challengeAddImg='$challengeAddImg', userEntity=$userEntity, participantsCount=$participantsCount, currrentParticipantsCount=$currrentParticipantsCount, authMethodContent='$authMethodContent', authMethodImgUrl=$authMethodImgUrl, authMethodFailImg='$authMethodFailImg', challengeStartDate=$challengeStartDate, challengePeroid=$challengePeroid, challengeEndDate=$challengeEndDate, authFrequency=$authFrequency, authCountPerDay=$authCountPerDay, authAvailableTimeType=$authAvailableTimeType, authAvailableStartTime=$authAvailableStartTime, authAvailableEndTime=$authAvailableEndTime, isOfficial=$isOfficial, challengeStatus=$challengeStatus, achievementRate=$achievementRate)"
     }
 
 

@@ -14,6 +14,7 @@ import com.project.jiguhada.repository.challenge.ChallengeRepository
 import com.project.jiguhada.repository.challenge.UserChallengeRepository
 import com.project.jiguhada.repository.user.UserEntityRepository
 import com.project.jiguhada.util.*
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
@@ -60,9 +61,10 @@ class ChallengeAuthService(
         challengeAuthRepository.save(challengeAuth)
     }
 
+    // 챌린지 인증 리스트 내림차순으로 정렬
     @Transactional
-    fun readChallengeAuthList() {
-
+    fun readChallengeAuthList(challengeId: Long, pageable: Pageable) {
+        val response = challengeAuthRepository.findChallengeAuthList(challengeId, pageable).map { it.toAuthItemResponse() }
     }
 
     /**

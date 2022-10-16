@@ -84,13 +84,27 @@ enum class AUTH_AVAILABLE_TIME_TYPE {
 }
 
 enum class CHALLENGE_TAG {
-    ZERO_WASTE,
-    VEGAN,
-    LIFESTYLE,
-    TUMBLER,
-    RECYCLING,
-    ENVIRONMENT_DAY,
-    ETC
+    ZEROWASTE, // 제로웨이스트
+    ZEROENERGE, // 제로에너지
+    PLOGGING, // 쓰레기 줍기
+    TUMBLER, // 텀블러 들고다니기
+    RECYCLING, // 재활용
+    VEGAN, // 비건
+    VEGANRECIPE, // 비건 레시피
+    VEGANBEAUTY, // 비건 화장품
+    VEGANFASHION, // 비건 패션
+    PESCOVEGAN, // 페스코 비건 (해산물, 유제품 허용하는 비건)
+    FLEXITERIANVEGAN, // 육식을 가끔하는 비건 (챌린지 기간동안 비건)
+    ETC, // 기타
+    LIFESTYLE, // 생활습관
+    ENVIRONMENT_DAY, // 환경의 날
+    EARTH_DAY, // 지구의 날
+    PLANT_DAY, // 식목일
+    WATER_DAY, // 물의 날
+    SEA_DAY, // 바다의 날
+    BUY_NOTHING_DAY, // 아무것도 사지 않는 날
+    VEGAN_DAY, // 비건의 날
+    ENERGE_DAY // 에너지의 날
 }
 
 enum class CHALLENGE_CATEGORY {
