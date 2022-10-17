@@ -38,6 +38,7 @@ class ChallengeService(
     @Transactional
     fun createChallenge(challengeCreateRequest: ChallengeCreateRequest): ChallengeCreateResponse {
         val challenge = challengeRepository.save(challengeCreateRequest.toEntity())
+        println(challenge.toString())
 
         val user = userEntityRepository.findByUsername(SecurityUtil.currentUsername)
         val userChallenge = UserChallenge(
@@ -48,7 +49,7 @@ class ChallengeService(
 
         userChallengeRepository.save(userChallenge)
 
-        return challenge.toChallengeCreateResponse()
+        return challengeRepository.findById(challenge.id!!).get().toChallengeCreateResponse()
     }
 
     @Transactional
@@ -173,7 +174,6 @@ class ChallengeService(
             authAvailableTimeType = authAvailableTimeType,
             authAvailableStartTime = authAvailableStartTime,
             authAvailableEndTime = authAvailableEndTime,
-            // authHoliday = authHoliday,
             isOfficial = false,
             challengeStatus = CHALLENGE_STATUS.BEFORE,
             achievementRate = BigDecimal.valueOf(0.00)
