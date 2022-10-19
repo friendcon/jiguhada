@@ -84,7 +84,7 @@ enum class AUTH_AVAILABLE_TIME_TYPE {
 }
 
 enum class CHALLENGE_TAG {
-    ZEROWASTE, // 제로웨이스트
+    ZERO_WASTE, // 제로웨이스트
     ZEROENERGE, // 제로에너지
     PLOGGING, // 쓰레기 줍기
     TUMBLER, // 텀블러 들고다니기
