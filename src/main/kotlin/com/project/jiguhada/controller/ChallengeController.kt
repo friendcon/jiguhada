@@ -1,15 +1,9 @@
 package com.project.jiguhada.controller
 
-import com.project.jiguhada.controller.dto.challenge.ChallengeCreateRequest
-import com.project.jiguhada.controller.dto.challenge.ChallengeCreateResponse
-import com.project.jiguhada.controller.dto.challenge.ChallengeJoinRequest
-import com.project.jiguhada.controller.dto.challenge.ChallengeListResponse
+import com.project.jiguhada.controller.dto.challenge.*
 import com.project.jiguhada.controller.dto.user.ImgUrlResponseDto
 import com.project.jiguhada.service.ChallengeService
-import com.project.jiguhada.util.CHALLENGE_CATEGORY
-import com.project.jiguhada.util.CHALLENGE_ORDER_TYPE
-import com.project.jiguhada.util.CHALLENGE_SEARCH_TYPE
-import com.project.jiguhada.util.CHALLENGE_STATUS
+import com.project.jiguhada.util.*
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.data.domain.PageRequest
@@ -55,13 +49,14 @@ class ChallengeController(
         @RequestParam("searchType") searchType: CHALLENGE_SEARCH_TYPE?,
         @RequestParam("orderType") orderType: CHALLENGE_ORDER_TYPE?,
         @RequestParam("category") category: CHALLENGE_CATEGORY?,
-        @RequestParam("status") status: CHALLENGE_STATUS?
+        @RequestParam("status") status: CHALLENGE_STATUS?,
+        @RequestBody tagList: List<ChallengeTagRequest>?
     ): ResponseEntity<ChallengeListResponse> {
         val page = when(page) {
             null, 0L, 1L -> 0
             else -> page.absoluteValue - 1
         }
-        val response = challengeService.readChallengeList(query, searchType, orderType, category, status, PageRequest.of(page.toInt(), 20))
+        val response = challengeService.readChallengeList(query, searchType, orderType, category, status, tagList?.map { it.tagname }, PageRequest.of(page.toInt(), 20))
         return ResponseEntity(response, HttpStatus.OK)
     }
 

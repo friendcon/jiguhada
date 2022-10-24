@@ -125,7 +125,7 @@ enum class CHALLENGE_IS_SUCCESS {
 }
 
 enum class CHALLENGE_ORDER_TYPE {
-    RECENTYL,
+    RECENTLY,
     POPULAR
 }
 

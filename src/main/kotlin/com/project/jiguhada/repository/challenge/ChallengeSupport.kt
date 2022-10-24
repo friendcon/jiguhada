@@ -1,10 +1,7 @@
 package com.project.jiguhada.repository.challenge
 
 import com.project.jiguhada.domain.challenge.Challenge
-import com.project.jiguhada.util.CHALLENGE_CATEGORY
-import com.project.jiguhada.util.CHALLENGE_ORDER_TYPE
-import com.project.jiguhada.util.CHALLENGE_SEARCH_TYPE
-import com.project.jiguhada.util.CHALLENGE_STATUS
+import com.project.jiguhada.util.*
 import org.springframework.data.domain.Pageable
 
 interface ChallengeSupport {
@@ -14,6 +11,7 @@ interface ChallengeSupport {
         challengeOrder: CHALLENGE_ORDER_TYPE?,
         category: CHALLENGE_CATEGORY?,
         status: CHALLENGE_STATUS?,
+        tagList: List<CHALLENGE_TAG>?,
         page: Pageable
     ): List<Challenge>
 
@@ -23,6 +21,7 @@ interface ChallengeSupport {
         challengeOrder: CHALLENGE_ORDER_TYPE?,
         category: CHALLENGE_CATEGORY?,
         status: CHALLENGE_STATUS?,
+        tagList: List<CHALLENGE_TAG>?,
         page: Pageable
     ): List<Challenge>
 }

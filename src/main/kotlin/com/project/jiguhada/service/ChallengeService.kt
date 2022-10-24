@@ -99,17 +99,18 @@ class ChallengeService(
         orderType: CHALLENGE_ORDER_TYPE?,
         category: CHALLENGE_CATEGORY?,
         status: CHALLENGE_STATUS?,
+        tagList: List<CHALLENGE_TAG>?,
         page: Pageable
     ): ChallengeListResponse {
-        val totalCount = challengeRepository.findChallengeListsCount(query, searchType, orderType, category, status, page).size
-        val totalPage = when (totalCount % 20) {
+        val totalCount = challengeRepository.findChallengeListsCount(query, searchType, orderType, category, status, tagList, page)?.size
+        val totalPage = when (totalCount!! % 20) {
             0 -> totalCount / 20
             else -> totalCount / 20 + 1
         }
 
         val currentPage = page.pageNumber.toLong().toLong()
 
-        val response = challengeRepository.findChallengeLists(query, searchType, orderType, category, status, page)
+        val response = challengeRepository.findChallengeLists(query, searchType, orderType, category, status, tagList, page)
 
         val entityToResponse = response.map { it.toChallengeListItemResponse() }
 
