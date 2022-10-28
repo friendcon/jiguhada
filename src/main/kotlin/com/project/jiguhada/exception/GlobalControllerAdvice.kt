@@ -64,6 +64,10 @@ class GlobalControllerAdv0ice {
         return ResponseEntity(ErrorResponseDto(ERRORCODE.NOW_PASSWORD_NOTMATCH, e.message), HttpStatus.BAD_REQUEST)
     }
 
+    @ExceptionHandler(ClientBadRequest::class)
+    fun clientBadRequest(e: ClientBadRequest): ResponseEntity<ErrorResponseDto> {
+        return ResponseEntity(ErrorResponseDto(ERRORCODE.OVER_REQUEST, e.message), HttpStatus.BAD_REQUEST)
+    }
     @ExceptionHandler(UserNowPasswordNotMatchException::class)
     fun userNowPasswordNotMatchException(e: UserNowPasswordNotMatchException): ResponseEntity<ErrorResponseDto> {
         return ResponseEntity(ErrorResponseDto(ERRORCODE.NOW_PASSWORD_NOTMATCH, e.message), HttpStatus.BAD_REQUEST)

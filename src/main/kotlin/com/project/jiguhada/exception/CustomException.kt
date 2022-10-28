@@ -2,6 +2,7 @@ package com.project.jiguhada.exception
 
 import com.fasterxml.jackson.databind.RuntimeJsonMappingException
 
+class ClientBadRequest(override val message: String): RuntimeException()
 class UsernameNotFoundException(override val message: String) : RuntimeException()
 class UserNicknameDuplicateException(override val message: String): RuntimeException()
 class UserIdDuplicateException(override val message: String): RuntimeException()

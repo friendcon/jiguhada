@@ -2,6 +2,7 @@ package com.project.jiguhada.controller
 
 import com.project.jiguhada.controller.dto.challenge.*
 import com.project.jiguhada.controller.dto.user.ImgUrlResponseDto
+import com.project.jiguhada.exception.ClientBadRequest
 import com.project.jiguhada.service.ChallengeService
 import com.project.jiguhada.util.*
 import io.swagger.v3.oas.annotations.Operation
@@ -52,6 +53,9 @@ class ChallengeController(
         @RequestParam("status") status: CHALLENGE_STATUS?,
         @RequestParam("tagList") tagList: List<CHALLENGE_TAG>?
     ): ResponseEntity<ChallengeListResponse> {
+        if(tagList?.size!! > 3) {
+            throw ClientBadRequest("태그는 최대 3개까지 선택할 수 있습니다.")
+        }
         val page = when(page) {
             null, 0L, 1L -> 0
             else -> page.absoluteValue - 1
