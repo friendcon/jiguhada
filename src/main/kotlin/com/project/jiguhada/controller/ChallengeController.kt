@@ -53,7 +53,7 @@ class ChallengeController(
         @RequestParam("status") status: CHALLENGE_STATUS?,
         @RequestParam("tagList") tagList: List<CHALLENGE_TAG>?
     ): ResponseEntity<ChallengeListResponse> {
-        if(tagList?.size!! > 3) {
+        if(tagList?.size!! > 3 && tagList != null) {
             throw ClientBadRequest("태그는 최대 3개까지 선택할 수 있습니다.")
         }
         val page = when(page) {
