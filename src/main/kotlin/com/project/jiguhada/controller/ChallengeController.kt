@@ -50,13 +50,13 @@ class ChallengeController(
         @RequestParam("orderType") orderType: CHALLENGE_ORDER_TYPE?,
         @RequestParam("category") category: CHALLENGE_CATEGORY?,
         @RequestParam("status") status: CHALLENGE_STATUS?,
-        @RequestBody tagList: List<ChallengeTagRequest>?
+        @RequestParam("tagList") tagList: List<CHALLENGE_TAG>?
     ): ResponseEntity<ChallengeListResponse> {
         val page = when(page) {
             null, 0L, 1L -> 0
             else -> page.absoluteValue - 1
         }
-        val response = challengeService.readChallengeList(query, searchType, orderType, category, status, tagList?.map { it.tagname }, PageRequest.of(page.toInt(), 20))
+        val response = challengeService.readChallengeList(query, searchType, orderType, category, status, tagList, PageRequest.of(page.toInt(), 20))
         return ResponseEntity(response, HttpStatus.OK)
     }
 
