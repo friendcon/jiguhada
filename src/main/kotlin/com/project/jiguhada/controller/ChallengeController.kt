@@ -45,23 +45,28 @@ class ChallengeController(
     @GetMapping("/list")
     @Operation(summary = "챌린지 리스트 조회")
     fun readChallengeList(
-        @RequestParam("page") page: Long?,
-        @RequestParam("query") query: String?,
-        @RequestParam("searchType") searchType: CHALLENGE_SEARCH_TYPE?,
-        @RequestParam("orderType") orderType: CHALLENGE_ORDER_TYPE?,
-        @RequestParam("category") category: CHALLENGE_CATEGORY?,
-        @RequestParam("status") status: CHALLENGE_STATUS?,
-        @RequestParam("tagList") tagList: List<CHALLENGE_TAG>?
+        @RequestParam(required = false, value = "page") page: Long?,
+        @RequestParam(required = false, value = "query") query: String?,
+        @RequestParam(required = false, value = "searchType") searchType: CHALLENGE_SEARCH_TYPE?,
+        @RequestParam(required = false, value = "orderType") orderType: CHALLENGE_ORDER_TYPE?,
+        @RequestParam(required = false, value = "category") category: CHALLENGE_CATEGORY?,
+        @RequestParam(required = false, value = "status") status: CHALLENGE_STATUS?,
+        @RequestParam(required = false, value = "tagList") tagList: List<CHALLENGE_TAG>?
     ): ResponseEntity<ChallengeListResponse> {
-        if(tagList?.size!! > 3 && tagList != null) {
-            throw ClientBadRequest("태그는 최대 3개까지 선택할 수 있습니다.")
+        try {
+            if(tagList?.size!! > 3) {
+                throw ClientBadRequest("태그는 최대 3개까지 선택할 수 있습니다.")
+            }
+        } catch (nullException: NullPointerException) {
+
+        } finally {
+            val page = when(page) {
+                null, 0L, 1L -> 0
+                else -> page.absoluteValue - 1
+            }
+            val response = challengeService.readChallengeList(query, searchType, orderType, category, status, tagList, PageRequest.of(page.toInt(), 20))
+            return ResponseEntity(response, HttpStatus.OK)
         }
-        val page = when(page) {
-            null, 0L, 1L -> 0
-            else -> page.absoluteValue - 1
-        }
-        val response = challengeService.readChallengeList(query, searchType, orderType, category, status, tagList, PageRequest.of(page.toInt(), 20))
-        return ResponseEntity(response, HttpStatus.OK)
     }
 
     @PostMapping("/join")
