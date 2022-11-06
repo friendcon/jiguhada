@@ -10,7 +10,7 @@ data class ChallengeCreateResponse(
     val challengeId: Long,
     val challengeTag: List<String>,
     val challengeTitle: String,
-    val challengeDetails: String,
+    // val challengeDetails: String,
     val challengeImg: String, // 챌린지 대표 이미지
     val challengeAddDetails: String, // 챌린지 추가 설명
     val challengeAddImgs: String, // 챌린지 추가 ㅇ미ㅣ지

@@ -109,7 +109,7 @@ data class ChallengeSupportImpl(
 
         return when(category) {
             null -> null
-            else -> challenge.challengeStatus.stringValue().eq(category.toString())
+            else -> challenge.challengeCategory.categoryName.eq(category)
         }
     }
 

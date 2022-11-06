@@ -89,7 +89,7 @@ data class Challenge(
             challengeId = id!!,
             challengeTag = challengeTags.map { it.tag.challengeTagName.toString() },
             challengeTitle = title,
-            challengeDetails = challengeDetails,
+            // challengeDetails = challengeDetails,
             challengeCategory = challengeCategory.categoryName,
             challengeImg = challengeImg,
             challengeAddDetails = challengeAddDetails,
