@@ -1,5 +1,6 @@
 package com.project.jiguhada.controller.dto.challenge
 
+import com.project.jiguhada.util.AUTH_FREQUENCY
 import com.project.jiguhada.util.CHALLENGE_PERIOD
 import com.project.jiguhada.util.CHALLENGE_STATUS
 import com.project.jiguhada.util.CHALLENGE_TAG
@@ -19,5 +20,6 @@ data class ChallengeListItem @QueryProjection constructor(
     val challengePeroid: CHALLENGE_PERIOD,
     val challengeEndDate: LocalDateTime,
     val challengeStatus: CHALLENGE_STATUS,
+    val authFrequency: AUTH_FREQUENCY,
     val achievementRate: BigDecimal
 )

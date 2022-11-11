@@ -81,6 +81,7 @@ data class Challenge(
             challengePeroid = challengePeroid,
             challengeEndDate = challengeEndDate,
             challengeStatus = challengeStatus,
+            authFrequency = authFrequency,
             achievementRate = achievementRate
         )
     }
