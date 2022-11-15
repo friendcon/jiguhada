@@ -34,7 +34,7 @@ class BoardCommentSupportImpl(
                 boardComment1.board.id.eq(boardId)
                     .and(boardComment1.boardComment.id.isNull)
             )
-            .orderBy(OrderSpecifier(Order.DESC, boardComment1.lastModifiedDate))
+            .orderBy(OrderSpecifier(Order.DESC, boardComment1.createdDate))
             .offset(page.offset)
             .limit(page.pageSize.toLong())
             .fetch()

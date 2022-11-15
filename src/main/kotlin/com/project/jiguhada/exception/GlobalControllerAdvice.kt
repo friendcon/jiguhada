@@ -11,6 +11,7 @@ import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import java.util.NoSuchElementException
 
 
 // restcontroller 에서 발생하는 exception 여기서 처리
@@ -29,6 +30,11 @@ class GlobalControllerAdv0ice {
     @ExceptionHandler(SecurityException::class)
     fun securityException(e: SecurityException): ResponseEntity<ErrorResponseDto> {
         return ResponseEntity(ErrorResponseDto(ERRORCODE.INCORRECT_JWT_SIGNATURE, "잘못된 JWT 서명입니다"), HttpStatus.UNAUTHORIZED)
+    }
+
+    @ExceptionHandler(NoSuchElementException::class)
+    fun noSuchElementException(e: NoSuchElementException): ResponseEntity<ErrorResponseDto> {
+        return ResponseEntity(ErrorResponseDto(ERRORCODE.BAD_REQUEST, "잘못된 요청입니다."), HttpStatus.BAD_REQUEST)
     }
 
     @ExceptionHandler(MalformedJwtException::class)
