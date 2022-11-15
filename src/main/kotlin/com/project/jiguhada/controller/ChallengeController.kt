@@ -42,6 +42,13 @@ class ChallengeController(
         return ResponseEntity(response, HttpStatus.OK)
     }
 
+    @GetMapping("/isJoin")
+    @Operation(summary = "챌린지 참여 여부 조회")
+    fun checkJoinChallenge(@RequestParam("userid") userId: Long, @RequestParam("challengeid") challengeId: Long): ResponseEntity<ChallengeJoinResponse> {
+        val response = challengeService.isChallegeJoin(challengeId, userId)
+        return ResponseEntity(response, HttpStatus.OK)
+    }
+
     @GetMapping("/list")
     @Operation(summary = "챌린지 리스트 조회")
     fun readChallengeList(

@@ -148,3 +148,8 @@ enum class CHALLENGE_AUTH_IS_APPROVE {
     REFUSE
 }
 
+enum class CHALLENTE_IS_JOIN {
+    JOIN,
+    NOTJOIN
+}
+

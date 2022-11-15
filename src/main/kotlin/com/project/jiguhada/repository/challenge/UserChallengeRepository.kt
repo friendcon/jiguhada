@@ -8,4 +8,6 @@ interface UserChallengeRepository: JpaRepository<UserChallenge, Long> {
     fun findByUserEntity_IdAndChallenge_Id(userId: Long, chalengeID: Long): UserChallenge
 
     fun findByChallenge_Id(challengeId: Long): List<UserChallenge>
+
+    fun existsByUserEntityIdAndChallengeId(userId: Long, challengeId: Long): Boolean
 }

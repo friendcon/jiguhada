@@ -92,6 +92,35 @@ class ChallengeService(
         return challengeRepository.findById(challengeId).get().toChallengeCreateResponse()
     }
 
+    // 챌린지 참여 여부 조회
+    fun isChallegeJoin(challengeId: Long, userId: Long) : ChallengeJoinResponse {
+        val response = userChallengeRepository.existsByUserEntityIdAndChallengeId(userId, challengeId)
+        if(response) {
+            val challengeMasterId = challengeRepository.findById(challengeId).get().userEntity.id
+            if(challengeMasterId == userId) {
+                return ChallengeJoinResponse(
+                    challengeId = challengeId,
+                    userId = userId,
+                    joinStatus = CHALLENTE_IS_JOIN.JOIN,
+                    isChallengeMaster = true
+                )
+            } else {
+                return ChallengeJoinResponse(
+                    challengeId = challengeId,
+                    userId = userId,
+                    joinStatus = CHALLENTE_IS_JOIN.JOIN,
+                    isChallengeMaster = false
+                )
+            }
+        } else {
+            return ChallengeJoinResponse(
+                challengeId = challengeId,
+                userId = userId,
+                joinStatus = CHALLENTE_IS_JOIN.NOTJOIN,
+                isChallengeMaster = false
+            )
+        }
+    }
     @Transactional
     fun readChallengeList(
         query: String?,
