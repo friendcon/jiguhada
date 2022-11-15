@@ -11,9 +11,9 @@ data class ChallengeCreateResponse(
     val challengeTag: List<String>,
     val challengeTitle: String,
     // val challengeDetails: String,
-    val challengeImg: String, // 챌린지 대표 이미지
-    val challengeAddDetails: String, // 챌린지 추가 설명
-    val challengeAddImgs: String, // 챌린지 추가 ㅇ미ㅣ지
+    val challengeImg: String?, // 챌린지 대표 이미지
+    val challengeAddDetails: String?, // 챌린지 추가 설명
+    val challengeAddImgs: String?, // 챌린지 추가 ㅇ미ㅣ지
     val challengeManagerId: Long, // user id
     val challengeManagerName: String, // user 닉네임
     val challengeManagerImgUrl: String, // user img url
@@ -21,7 +21,7 @@ data class ChallengeCreateResponse(
     val currrentParticipantsCount: Long, // 현재 참가자 수
     val authMethodContent: String, // 인증방법 설명
     val authMethodImgUrl: String?, // 인증 성공 이미지
-    val authMethodFailImgUrl: String, // 인증 실패 이미지
+    val authMethodFailImgUrl: String?, // 인증 실패 이미지
     val challengeStartDate: LocalDateTime, // 챌린지 시작일
     val challengePeroid: CHALLENGE_PERIOD, // 챌린지 기간
     val challengeEndDate: LocalDateTime, // 챌린지 종료일
