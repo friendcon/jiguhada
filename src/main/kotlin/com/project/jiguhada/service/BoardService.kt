@@ -5,6 +5,7 @@ import com.project.jiguhada.controller.dto.board.*
 import com.project.jiguhada.controller.dto.board.refactor.BoardResponse
 import com.project.jiguhada.controller.dto.user.ImgUrlResponseDto
 import com.project.jiguhada.domain.board.Board
+import com.project.jiguhada.domain.board.BoardCommentLike
 import com.project.jiguhada.domain.board.BoardImg
 import com.project.jiguhada.exception.LimitFileCountException
 import com.project.jiguhada.exception.RequestBoardIdNotMatched
@@ -27,6 +28,7 @@ class BoardService(
     private val userEntityRepository: UserEntityRepository,
     private val boardCategoryRepository: BoardCategoryRepository,
     private val boardImgRepository: BoardImgRepository,
+    private val boardCommentLikeRepository: BoardCommentLikeRepository,
     private val jwtAuthenticationProvider: JwtAuthenticationProvider
 ) {
     @Transactional

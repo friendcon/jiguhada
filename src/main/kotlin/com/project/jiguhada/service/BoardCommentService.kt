@@ -51,7 +51,7 @@ class BoardCommentService(
             0L -> totalCount/10
             else -> totalCount/10 + 1
         }
-        val comments = boardCommentRepository.findTop5ByBoardCommentNullOrderByCreatedDateDesc().map { it.toBoardCommentItem() }
+        val comments = boardCommentRepository.findTop5ByBoardIdOrderByCreatedDateDesc(commentRequestDto.boardId).map { it.toBoardCommentItem() }
         val commentList = BoardCommentList(
             totalCommentCount = totalCount,
             currentPage = 1,

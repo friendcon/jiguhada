@@ -25,7 +25,10 @@ data class BoardComment(
     val boardComment: BoardComment? = null, // 댓글인지
     @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "board_comment_id")
-    val boardComments: MutableList<BoardComment> = mutableListOf() // 대댓글
+    val boardComments: MutableList<BoardComment> = mutableListOf(), // 대댓글
+    @OneToMany(orphanRemoval = true)
+    @JoinColumn(name = "board_comment_id")
+    val boardCommentLikes: MutableList<BoardCommentLike> = mutableListOf()
 ): BaseEntity() {
     fun updateComment(commentUpdateRequestDto: CommentUpdateRequestDto): BoardComment {
         content = commentUpdateRequestDto.content
@@ -33,6 +36,8 @@ data class BoardComment(
     }
 
     fun toBoardCommentItem(): BoardCommentItem {
+        println("여기" + boardCommentLikes.filter { it.isLike == 0L }.size.toLong())
+        val boardFalseCount = boardCommentLikes.filter { it.isLike == 1L }.size.toLong()
         return BoardCommentItem(
             boardId = board.id!!,
             boardTitle = board.title,
@@ -45,7 +50,8 @@ data class BoardComment(
             userImg = userEntity.userImageUrl,
             userInfoPublic = userEntity.isUserInfoPublic,
             commentCreateDate = createdDate,
-            commentUpdateDate = lastModifiedDate
+            commentUpdateDate = lastModifiedDate,
+            likeCount = boardCommentLikes.size.toLong() - boardFalseCount// 댓글 좋아요 개수
         )
     }
 

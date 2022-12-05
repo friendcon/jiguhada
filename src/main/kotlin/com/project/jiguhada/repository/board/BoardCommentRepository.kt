@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface BoardCommentRepository: JpaRepository<BoardComment, Long>, BoardCommentSupport {
     fun findTop5ByBoardCommentNullOrderByCreatedDateDesc(): List<BoardComment>
+    fun findTop5ByBoardIdOrderByCreatedDateDesc(boardId: Long): List<BoardComment>
     fun countByUserEntityId(userId: Long): Long
     fun countByBoard_Id(boardId: Long): Long
 }

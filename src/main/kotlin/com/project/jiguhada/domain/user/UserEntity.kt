@@ -2,6 +2,7 @@ package com.project.jiguhada.domain.user
 
 import com.project.jiguhada.controller.dto.user.ReadUserInfoResponseDto
 import com.project.jiguhada.domain.BaseEntity
+import com.project.jiguhada.domain.board.BoardCommentLike
 import com.project.jiguhada.util.IS_USER_INFO_PUBLIC
 import com.project.jiguhada.util.ROLE
 import com.project.jiguhada.util.SocialType
@@ -27,6 +28,8 @@ data class UserEntity(
     var roles: MutableSet<Role> = mutableSetOf(),
     var isenabled: Boolean
 ): BaseEntity() {
+    @OneToMany(mappedBy = "userEntity", orphanRemoval = true)
+    open var boardCommentLikes: MutableList<BoardCommentLike> = mutableListOf()
 
     fun toReadUserInfoResponse(): ReadUserInfoResponseDto {
         return ReadUserInfoResponseDto(

@@ -1,5 +1,6 @@
 package com.project.jiguhada.controller.dto.boardcomment
 
+import com.project.jiguhada.domain.board.BoardCommentLike
 import com.project.jiguhada.util.BOARD_CATEGORY
 import com.project.jiguhada.util.IS_USER_INFO_PUBLIC
 import com.querydsl.core.annotations.QueryProjection
@@ -16,6 +17,7 @@ data class BoardCommentItem @QueryProjection constructor(
     val userId: Long?,
     val userImg: String?,
     val userInfoPublic: IS_USER_INFO_PUBLIC,
+    val likeCount: Long, // 댓글 좋아요 수
     val commentCreateDate: LocalDateTime,
     val commentUpdateDate: LocalDateTime
 )

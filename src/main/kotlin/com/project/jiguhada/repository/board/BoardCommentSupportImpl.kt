@@ -24,6 +24,7 @@ class BoardCommentSupportImpl(
             boardComment1.userEntity.id,
             boardComment1.userEntity.userImageUrl,
             boardComment1.userEntity.isUserInfoPublic,
+            boardComment1.boardCommentLikes.size().longValue(),
             boardComment1.createdDate,
             boardComment1.lastModifiedDate
         ))
@@ -32,7 +33,7 @@ class BoardCommentSupportImpl(
             .on(boardComment1.board.id.eq(board.id))
             .where(
                 boardComment1.board.id.eq(boardId)
-                    .and(boardComment1.boardComment.id.isNull)
+                    //.and(boardComment1.boardComment.id.isNull)
             )
             .orderBy(OrderSpecifier(Order.DESC, boardComment1.createdDate))
             .offset(page.offset)
@@ -52,6 +53,7 @@ class BoardCommentSupportImpl(
             boardComment1.userEntity.id,
             boardComment1.userEntity.userImageUrl,
             boardComment1.userEntity.isUserInfoPublic,
+            boardComment1.boardCommentLikes.size().longValue(),
             boardComment1.createdDate,
             boardComment1.lastModifiedDate
         ))
