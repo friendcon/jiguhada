@@ -26,6 +26,21 @@ data class ChallengeSupportImpl(
                 else -> return challenge.challengeTags.any().tag.eq(tagRepository.findByChallengeTagName(tag))
             }
         }*/
+
+    override fun findChallengeMainList(
+        status: CHALLENGE_STATUS?,
+        page: Pageable
+    ): List<Challenge> {
+        return queryFactory.selectFrom(challenge)
+            .where(
+                checkChallengeStatus(status)
+            )
+            .orderBy(OrderSpecifier(Order.DESC, challenge.createdDate))
+            .offset(page.offset)
+            .limit(page.pageSize.toLong())
+            .fetch()
+    }
+
     override fun findChallengeListsCount(
         query: String?,
         searchType: CHALLENGE_SEARCH_TYPE?,

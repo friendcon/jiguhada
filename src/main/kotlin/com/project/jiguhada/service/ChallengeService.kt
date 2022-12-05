@@ -137,12 +137,36 @@ class ChallengeService(
             else -> totalCount / 20 + 1
         }
 
-        val currentPage = page.pageNumber.toLong().toLong()
+        val currentPage = page.pageNumber.toLong()
 
         val response = challengeRepository.findChallengeLists(query, searchType, orderType, category, status, tagList, page)
 
         val entityToResponse = response.map { it.toChallengeListItemResponse() }
 
+        return ChallengeListResponse(
+            totalPage = totalPage.toLong(),
+            totalChallengeCount = totalCount.toLong(),
+            currentPage = currentPage + 1,
+            challengeList = entityToResponse
+        )
+    }
+
+
+    @Transactional
+    fun readChallengeListMain(
+        status: CHALLENGE_STATUS?,
+        page: Pageable
+    ): ChallengeListResponse {
+        val totalCount = challengeRepository.findChallengeMainList(status, page).size
+        val totalPage = when (totalCount!! % 4) {
+            0 -> totalCount / 4
+            else -> totalCount / 4 + 1
+        }
+        val currentPage = page.pageNumber.toLong()
+
+        val response = challengeRepository.findChallengeMainList(status, page)
+        response.forEach { println(it.toString()) }
+        val entityToResponse = response.map { it.toChallengeListItemResponse() }
         return ChallengeListResponse(
             totalPage = totalPage.toLong(),
             totalChallengeCount = totalCount.toLong(),

@@ -2,6 +2,7 @@ package com.project.jiguhada.repository
 
 import com.project.jiguhada.domain.user.Role
 import com.project.jiguhada.domain.user.UserEntity
+import com.project.jiguhada.repository.challenge.ChallengeRepository
 import com.project.jiguhada.repository.user.RoleRepository
 import com.project.jiguhada.repository.user.UserEntityRepository
 import com.project.jiguhada.util.IS_USER_INFO_PUBLIC
@@ -13,12 +14,14 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.data.domain.PageRequest
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.test.context.ActiveProfiles
 
 @SpringBootTest
 @ActiveProfiles("dev")
 class UserEntityRepositoryTests(
+    @Autowired private val challengeRepository: ChallengeRepository,
     @Autowired private val userEntityRepository: UserEntityRepository,
     @Autowired private val roleRepository: RoleRepository,
     @Autowired private val passwordEncoder: PasswordEncoder
@@ -38,7 +41,8 @@ class UserEntityRepositoryTests(
             userImageUrl = "imgUrl",
             socialType = SocialType.GENERAL,
             isUserInfoPublic = IS_USER_INFO_PUBLIC.PRIVATE,
-            roles = mutableSetOf(Role(ROLE.ROLE_USER))
+            roles = mutableSetOf(Role(ROLE.ROLE_USER)),
+            isenabled = true
         )
 
         userEntityRepository.save(userEntity)
@@ -59,6 +63,13 @@ class UserEntityRepositoryTests(
     }
 
     @Test
+    @DisplayName("")
+    fun test() {
+        val response = challengeRepository.findChallengeMainList(null, PageRequest.of(0, 4));
+        println(response)
+    }
+
+    @Test
     @DisplayName("회원가입")
     fun userEntityRepositoryTests() {
         val user = UserEntity(
@@ -68,7 +79,8 @@ class UserEntityRepositoryTests(
             IS_USER_INFO_PUBLIC.PRIVATE,
             "hozumi",
             SocialType.GENERAL,
-            roles = mutableSetOf(Role(ROLE.ROLE_USER))
+            roles = mutableSetOf(Role(ROLE.ROLE_USER)),
+            isenabled = true
         )
 
         userEntityRepository.save(user)

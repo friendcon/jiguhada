@@ -24,7 +24,8 @@ data class UserEntity(
         joinColumns = [JoinColumn(name = "user_entity_id")],
         inverseJoinColumns = [JoinColumn(name = "roles_role_name")]
     )
-    var roles: MutableSet<Role> = mutableSetOf()
+    var roles: MutableSet<Role> = mutableSetOf(),
+    var isenabled: Boolean
 ): BaseEntity() {
 
     fun toReadUserInfoResponse(): ReadUserInfoResponseDto {

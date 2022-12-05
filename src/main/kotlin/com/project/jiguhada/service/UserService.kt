@@ -145,7 +145,8 @@ class UserService(
             IS_USER_INFO_PUBLIC.PRIVATE,
             userImageUrl,
             socialType,
-            roles = mutableSetOf(Role(ROLE.ROLE_USER))
+            roles = mutableSetOf(Role(ROLE.ROLE_USER)),
+            isenabled = true
         )
     }
 

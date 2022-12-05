@@ -130,6 +130,4 @@ data class Challenge(
     override fun toString(): String {
         return "Challenge(challengeCategory=$challengeCategory, challengeTags=$challengeTags, title='$title', challengeDetails='$challengeDetails', challengeImg='$challengeImg', challengeAddDetails='$challengeAddDetails', challengeAddImg='$challengeAddImg', userEntity=$userEntity, participantsCount=$participantsCount, currrentParticipantsCount=$currrentParticipantsCount, authMethodContent='$authMethodContent', authMethodImgUrl=$authMethodImgUrl, authMethodFailImg='$authMethodFailImg', challengeStartDate=$challengeStartDate, challengePeroid=$challengePeroid, challengeEndDate=$challengeEndDate, authFrequency=$authFrequency, authCountPerDay=$authCountPerDay, authAvailableTimeType=$authAvailableTimeType, authAvailableStartTime=$authAvailableStartTime, authAvailableEndTime=$authAvailableEndTime, isOfficial=$isOfficial, challengeStatus=$challengeStatus, achievementRate=$achievementRate)"
     }
-
-
 }

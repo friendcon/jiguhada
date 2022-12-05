@@ -49,6 +49,27 @@ class ChallengeController(
         return ResponseEntity(response, HttpStatus.OK)
     }
 
+    /**
+     * 챌린지 리스트 조회랑 합쳐보기..
+     */
+    @GetMapping("/mainChallengeList")
+    @Operation(summary = "챌린지 메인 목록 조회")
+    fun readChallengeMainList(
+        @RequestParam(required = false, value = "page") page: Long?,
+        @RequestParam(required = false, value = "status") status: CHALLENGE_STATUS?,
+        ): ResponseEntity<ChallengeListResponse> {
+        // println(status.toString())
+        val response = challengeService.readChallengeListMain(status, PageRequest.of(page?.toInt()?:0, 4));
+
+        try {
+            println("ff")
+        } catch (e: NullPointerException) {
+            println("hello")
+        }
+        return ResponseEntity(response, HttpStatus.OK)
+    }
+
+    // 메인목록이랑.. 챌린지리스트 합쳐야할까..
     @GetMapping("/list")
     @Operation(summary = "챌린지 리스트 조회")
     fun readChallengeList(
