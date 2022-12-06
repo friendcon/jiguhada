@@ -4,14 +4,13 @@ import com.project.jiguhada.controller.dto.boardcomment.BoardCommentLikeItem
 import com.project.jiguhada.domain.base.BaseEntity
 import com.project.jiguhada.domain.user.UserEntity
 import org.hibernate.Hibernate
-import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 
 @Entity
 data class BoardCommentLike(
-    var isLike: Long, // 0 좋아요 1 좋아요 취소
+    var whetherHeart: Long, // 0 좋아요 1 좋아요 취소
     @ManyToOne
     @JoinColumn(name = "board_id")
     val board: Board,
@@ -24,12 +23,12 @@ data class BoardCommentLike(
 ): BaseEntity() {
 
     fun createLike(): BoardCommentLike {
-        this.isLike = 0L
+        this.whetherHeart = 0L
         return this
     }
 
     fun deleteLike(): BoardCommentLike {
-        this.isLike = 1L
+        this.whetherHeart = 1L
         return this
     }
 
@@ -45,7 +44,7 @@ data class BoardCommentLike(
     }
 
     override fun toString(): String {
-        return "BoardCommentLike(isLike=$isLike, board=$board, userEntity=$userEntity)"
+        return "BoardCommentLike(isLike=$whetherHeart, board=$board, userEntity=$userEntity)"
     }
 
     override fun equals(other: Any?): Boolean {

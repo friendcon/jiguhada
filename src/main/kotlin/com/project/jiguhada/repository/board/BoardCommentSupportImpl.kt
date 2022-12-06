@@ -24,7 +24,7 @@ class BoardCommentSupportImpl(
             boardComment1.userEntity.id,
             boardComment1.userEntity.userImageUrl,
             boardComment1.userEntity.isUserInfoPublic,
-            boardComment1.boardCommentLikes.size().longValue(),
+            boardComment1.likeCount,
             boardComment1.createdDate,
             boardComment1.lastModifiedDate
         ))
@@ -53,7 +53,7 @@ class BoardCommentSupportImpl(
             boardComment1.userEntity.id,
             boardComment1.userEntity.userImageUrl,
             boardComment1.userEntity.isUserInfoPublic,
-            boardComment1.boardCommentLikes.size().longValue(),
+            boardComment1.likeCount,
             boardComment1.createdDate,
             boardComment1.lastModifiedDate
         ))

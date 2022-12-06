@@ -3,8 +3,7 @@ package com.project.jiguhada.controller
 import com.project.jiguhada.controller.dto.board.BoardLikeResponseDto
 import com.project.jiguhada.controller.dto.board.refactor.BoardLikeItem
 import com.project.jiguhada.controller.dto.board.refactor.BoardLikeList
-import com.project.jiguhada.controller.dto.boardcomment.BoardCommentItem
-import com.project.jiguhada.controller.dto.boardcomment.BoardCommentLikeItem
+import com.project.jiguhada.controller.dto.boardcomment.CommentLikeCount
 import com.project.jiguhada.jwt.JwtAuthenticationProvider
 import com.project.jiguhada.repository.user.UserEntityRepository
 import com.project.jiguhada.service.BoardLikeService
@@ -66,7 +65,7 @@ class BoardLikeController(
     fun createBoardComment(
         @PathVariable("boardId") boardId: Long,
         @RequestParam("commentId") commentId: Long
-    ): ResponseEntity<List<BoardCommentItem>> {
+    ): ResponseEntity<CommentLikeCount> {
         val user = userEntityRepository.findByUsername(SecurityUtil.currentUsername).get()
         val response = boardLikeService.createBoardCommentLike(boardId, user.id!!, commentId)
         return ResponseEntity(response, HttpStatus.OK)
@@ -77,7 +76,7 @@ class BoardLikeController(
     fun deleteBoardCommentLike(
         @PathVariable("boardId") boardId: Long,
         @RequestParam("commentId") commentId: Long
-    ): ResponseEntity<List<BoardCommentLikeItem>> {
+    ): ResponseEntity<CommentLikeCount> {
         val user = SecurityUtil.currentUsername
         val response = boardLikeService.deleteCommentLike(commentId, boardId, user)
         return ResponseEntity(response, HttpStatus.OK)

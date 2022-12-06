@@ -6,6 +6,7 @@ import com.project.jiguhada.controller.dto.boardcomment.CommentUpdateResponseDto
 import com.project.jiguhada.domain.BaseEntity
 import com.project.jiguhada.domain.user.UserEntity
 import org.hibernate.Hibernate
+import org.hibernate.annotations.ColumnDefault
 import javax.persistence.Entity
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
@@ -20,6 +21,8 @@ data class BoardComment(
     @JoinColumn(name = "user_entity_id")
     val userEntity: UserEntity,
     var content: String,
+    @ColumnDefault("0")
+    var likeCount: Long,
     @ManyToOne
     @JoinColumn(name = "board_comment_id")
     val boardComment: BoardComment? = null, // 댓글인지
@@ -30,14 +33,21 @@ data class BoardComment(
     @JoinColumn(name = "board_comment_id")
     val boardCommentLikes: MutableList<BoardCommentLike> = mutableListOf()
 ): BaseEntity() {
+    fun addCommentLikeCount(): BoardComment {
+        this.likeCount = likeCount + 1
+        println(likeCount)
+        return this
+    }
+    fun deleteCommentLikeCount(): BoardComment {
+        this.likeCount = likeCount - 1
+        return this
+    }
     fun updateComment(commentUpdateRequestDto: CommentUpdateRequestDto): BoardComment {
         content = commentUpdateRequestDto.content
         return this
     }
 
     fun toBoardCommentItem(): BoardCommentItem {
-        println("여기" + boardCommentLikes.filter { it.isLike == 0L }.size.toLong())
-        val boardFalseCount = boardCommentLikes.filter { it.isLike == 1L }.size.toLong()
         return BoardCommentItem(
             boardId = board.id!!,
             boardTitle = board.title,
@@ -51,7 +61,7 @@ data class BoardComment(
             userInfoPublic = userEntity.isUserInfoPublic,
             commentCreateDate = createdDate,
             commentUpdateDate = lastModifiedDate,
-            likeCount = boardCommentLikes.size.toLong() - boardFalseCount// 댓글 좋아요 개수
+            likeCount = likeCount
         )
     }
 

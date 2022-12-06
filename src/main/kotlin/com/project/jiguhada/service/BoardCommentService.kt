@@ -4,6 +4,7 @@ import com.project.jiguhada.controller.dto.boardcomment.*
 import com.project.jiguhada.domain.board.BoardComment
 import com.project.jiguhada.exception.RequestBoardIdNotMatched
 import com.project.jiguhada.jwt.JwtAuthenticationProvider
+import com.project.jiguhada.repository.board.BoardCommentLikeRepository
 import com.project.jiguhada.repository.board.BoardCommentRepository
 import com.project.jiguhada.repository.board.BoardRepository
 import com.project.jiguhada.repository.user.UserEntityRepository
@@ -18,6 +19,7 @@ class BoardCommentService(
     private val boardRepository: BoardRepository,
     private val userEntityRepository: UserEntityRepository,
     private val boardCommentRepository: BoardCommentRepository,
+    private val boardCommentLikeRepository: BoardCommentLikeRepository,
     private val jwtAuthenticationProvider: JwtAuthenticationProvider
 ) {
 
@@ -146,10 +148,12 @@ class BoardCommentService(
     fun CommentRequestDto.toEntity(username: String): BoardComment {
         val board = boardRepository.findById(boardId).get()
         val user = userEntityRepository.findByUsername(username).get()
+        val likeCount = boardCommentLikeRepository.findByWhetherHeartAndBoardId(boardId, 0)
         return BoardComment(
             board = board,
             userEntity = user,
-            content = content
+            content = content,
+            likeCount = 0
         )
     }
 
@@ -157,11 +161,13 @@ class BoardCommentService(
         val board = boardRepository.findById(boardId).get()
         val user = userEntityRepository.findByUsername(username).get()
         val parentComment = boardCommentRepository.findById(parentCommentId).get()
+
         return BoardComment(
             board = board,
             userEntity = user,
             content = content,
-            boardComment = parentComment
+            boardComment = parentComment,
+            likeCount = 5
         )
     }
 }
