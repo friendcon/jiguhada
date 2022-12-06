@@ -29,7 +29,7 @@ class AuthControllerTests(
     @Autowired private val userService: UserService,
     @Autowired private val roleRepository: RoleRepository
 ) {
-    @BeforeEach
+    /*@BeforeEach
     fun setUp() {
         val role = Role(ROLE.ROLE_USER)
         roleRepository.save(role)
@@ -42,9 +42,9 @@ class AuthControllerTests(
             SocialType.GENERAL
         )
         userService.signUp(request)
-    }
+    }*/
 
-    @Test
+    /*@Test
     @DisplayName("로그인 테스트")
     fun idPassword() {
         val userid = "project0903"
@@ -62,5 +62,5 @@ class AuthControllerTests(
             .content(objectMapper.writeValueAsString(map))
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk)
-    }
+    }*/
 }
