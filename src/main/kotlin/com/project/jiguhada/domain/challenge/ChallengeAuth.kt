@@ -41,6 +41,24 @@ data class ChallengeAuth(
         return this
     }
 
+    fun changeAuthStatusSuccess(): ChallengeAuth {
+        this.authStatus = CHALLENGE_AUTH_STATUS.SUCCESS
+        return this
+    }
+
+    fun ChallengeAuth.toChallengeAuthItem(): ChallengeAuthItem {
+        return ChallengeAuthItem(
+            challengeAuthId = id!!,
+            userId = userEntity.id!!,
+            username = userEntity.username,
+            nickname = userEntity.nickname,
+            userProfileImgUrl = userEntity.userImageUrl,
+            authContent = content,
+            authImgUrl = authImgUrl,
+            authIsApprove = authIsApprove
+        )
+    }
+
     fun toAuthItemResponse(): ChallengeAuthItem {
         return ChallengeAuthItem(
             challengeAuthId = id!!,

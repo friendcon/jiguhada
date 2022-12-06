@@ -1,6 +1,7 @@
 package com.project.jiguhada.controller
 
 import com.project.jiguhada.controller.dto.CommonResponseDto
+import com.project.jiguhada.controller.dto.challenge.ChallengeAuthItem
 import com.project.jiguhada.controller.dto.challenge.ChallengeAuthListResponse
 import com.project.jiguhada.controller.dto.challenge.ChallengeAuthRequest
 import com.project.jiguhada.controller.dto.user.ImgUrlResponseDto
@@ -34,9 +35,9 @@ class ChallengeAuthController(
     }
     @PostMapping("/create")
     @Operation(summary = "챌린지 인증 댓글 생성")
-    fun createChallengeAuth(@RequestBody challengeAuthRequest: ChallengeAuthRequest): ResponseEntity<ChallengeAuthListResponse>{
-        challengeAuthService.createChallengeAuth(challengeAuthRequest)
-        return ResponseEntity(HttpStatus.OK)
+    fun createChallengeAuth(@RequestBody challengeAuthRequest: ChallengeAuthRequest): ResponseEntity<ChallengeAuthItem>{
+        val response = challengeAuthService.createChallengeAuth(challengeAuthRequest)
+        return ResponseEntity(response, HttpStatus.OK)
     }
 
     @PostMapping("/uploadAuthImg", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])

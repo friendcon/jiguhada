@@ -1,6 +1,7 @@
 package com.project.jiguhada.service
 
 import com.project.jiguhada.controller.dto.CommonResponseDto
+import com.project.jiguhada.controller.dto.challenge.ChallengeAuthItem
 import com.project.jiguhada.controller.dto.challenge.ChallengeAuthListResponse
 import com.project.jiguhada.controller.dto.challenge.ChallengeAuthRequest
 import com.project.jiguhada.controller.dto.user.ImgUrlResponseDto
@@ -16,12 +17,12 @@ import com.project.jiguhada.repository.challenge.ChallengeRepository
 import com.project.jiguhada.repository.challenge.UserChallengeRepository
 import com.project.jiguhada.repository.user.UserEntityRepository
 import com.project.jiguhada.util.*
-import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 import java.math.BigDecimal
+import java.math.RoundingMode
 import java.time.LocalDate
 
 @Service
@@ -41,9 +42,10 @@ class ChallengeAuthService(
      * 0.2 오늘이 챌린지 인증 날짜에 해당하는지.. 확인 ? -> 인증해야할 날짜가 아니라면 인증글을 못올리도록 해야한다
      * 1. 인증 정보 저장
      * - 달성률은 인증이 승인될 때 변경해야한다
+     * 응답값은
      */
     @Transactional
-    fun createChallengeAuth(challengeAuthRequest: ChallengeAuthRequest): ChallengeAuthListResponse{
+    fun createChallengeAuth(challengeAuthRequest: ChallengeAuthRequest): ChallengeAuthItem {
         val today = LocalDate.now()
         val user = userEntityRepository.findByUsername(SecurityUtil.currentUsername).get()
         val challenge = challengeRepository.findById(challengeAuthRequest.challengeId).get()
@@ -64,9 +66,9 @@ class ChallengeAuthService(
 
         // 실패한 인증 내역이 있다면 인증을 해야함
         val challengeAuth = challengeAuthRequest.toEntity(user)
-        challengeAuthRepository.save(challengeAuth)
+        val createResponse = challengeAuthRepository.save(challengeAuth)
 
-        return readChallengeAuthList(challengeAuthRequest.challengeId, PageRequest.of(0, 10))
+        return createResponse.toAuthItemResponse()
     }
 
     // 챌린지 인증 사진 첨부
@@ -119,18 +121,19 @@ class ChallengeAuthService(
      */
     @Transactional
     fun approveChallengeAuth(challengeAuthId: Long): CommonResponseDto {
-        val challenge = challengeRepository.findById(challengeAuthId).get()
-        val challengeOwner = challenge.userEntity.username
         val challengeAuth = challengeAuthRepository.findById(challengeAuthId).get() // 승인할 인증
+        println("챌린지 인증내용 : ${challengeAuth.id} ${challengeAuth.content}")
+        val challenge = challengeAuth.challenge
+        val challengeOwner = challengeAuth.challenge.userEntity.username
 
         // 1. 인증 승인 요청 user 비교
-        if(challengeOwner != SecurityUtil.currentUsername) {
+        if(!challengeOwner.equals(SecurityUtil.currentUsername)) {
             throw UnauthorizedRequestException("권한이 없는 요청입니다")
         }
 
         // 2. 인증 승인 상태 변경
-        challengeAuth.approveChallengeAuth()
-        challengeAuth.updateAuthStatus(CHALLENGE_AUTH_STATUS.SUCCESS)
+        challengeAuth.approveChallengeAuth() // 승인
+        challengeAuth.changeAuthStatusSuccess() // 인증상태
 
         // 3. 개인 챌린지 달성률 변경
         calcChallengeAchieveRate(challengeAuth.userEntity.id!!, challenge)
@@ -156,12 +159,15 @@ class ChallengeAuthService(
     fun calcChallengeAchieveRate(userId: Long, challenge: Challenge) {
         // 전체 인증 수
         val challengeAuthListCount = challengeAuthRepository
-            .countByUserEntity_IdAndChallenge_IdAndAndAuthIsApprove(userId, challenge.id!!, CHALLENGE_AUTH_STATUS.SUCCESS).toBigDecimal()
+            .countByUserEntity_IdAndChallenge_IdAndAuthStatus(
+                userId, challenge.id!!, CHALLENGE_AUTH_STATUS.SUCCESS
+            ).toBigDecimal()
 
         // 현재 인증 수
-        val challengeTotalAuthCount = (getChallengeAuthFrequencyValue(challenge.authFrequency)*getChallengePeriodValue(challenge.challengePeroid)).toBigDecimal()
+        val challengeTotalAuthCount: BigDecimal = (getChallengeAuthFrequencyValue(challenge.authFrequency)*getChallengePeriodValue(challenge.challengePeroid)).toBigDecimal()
+        println("userId: ${userId} challengeId: ${challenge.id!!}")
         val userChallenge = userChallengeRepository.findByUserEntity_IdAndChallenge_Id(userId, challenge.id!!)
-        val achieveRate = challengeAuthListCount.divide(challengeTotalAuthCount).multiply(BigDecimal.valueOf(100L)).setScale(2)
+        val achieveRate = challengeAuthListCount.divide(challengeTotalAuthCount, 2, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100L))
         userChallenge.updateAchievementRate(achieveRate) // 업데이트
     }
 
