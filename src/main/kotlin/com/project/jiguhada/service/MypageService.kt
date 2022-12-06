@@ -1,13 +1,16 @@
 package com.project.jiguhada.service
 
+import com.project.jiguhada.controller.dto.CommonResponseDto
 import com.project.jiguhada.controller.dto.board.BoardListResponse
 import com.project.jiguhada.controller.dto.boardcomment.BoardCommentList
 import com.project.jiguhada.repository.board.BoardCommentRepository
 import com.project.jiguhada.repository.board.BoardRepository
 import com.project.jiguhada.repository.user.UserEntityRepository
+import com.project.jiguhada.util.IS_USER_INFO_PUBLIC
 import com.project.jiguhada.util.SecurityUtil
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.util.StringUtils
 
 @Service
@@ -16,6 +19,18 @@ class MypageService(
     private val boardCommentRepository: BoardCommentRepository,
     private val userEntityRepository: UserEntityRepository
 ) {
+    @Transactional
+    fun setUserInfoPublic(
+        userId: Long,
+        isUserInfoPublic: IS_USER_INFO_PUBLIC
+    ): CommonResponseDto {
+        val user = userEntityRepository.findById(userId).get()
+        user.updateIsUserInfoPublic(isUserInfoPublic)
+        return CommonResponseDto(
+            200,
+            "업데이트 성공"
+        )
+    }
     fun getUserBoards(page: Pageable, token: String): BoardListResponse {
         val userId = userEntityRepository.findByUsername(SecurityUtil.currentUsername).get().id
         val list = boardRepository.findBoardListByUserId(userId!!, page)

@@ -4,8 +4,12 @@ import com.project.jiguhada.controller.dto.CommonResponseDto
 import com.project.jiguhada.controller.dto.TokenDto
 import com.project.jiguhada.controller.dto.user.*
 import com.project.jiguhada.jwt.JwtAuthenticationProvider
+import com.project.jiguhada.repository.user.UserEntityRepository
 import com.project.jiguhada.service.AwsS3Service
+import com.project.jiguhada.service.MypageService
 import com.project.jiguhada.service.UserService
+import com.project.jiguhada.util.IS_USER_INFO_PUBLIC
+import com.project.jiguhada.util.SecurityUtil
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
@@ -22,6 +26,8 @@ import javax.validation.Valid
 @RequestMapping("/api/v1/user")
 class UserController(
     private val userService: UserService,
+    private val userEntityRepository: UserEntityRepository,
+    private val mypageService: MypageService,
     private val awsS3Service: AwsS3Service,
     private val jwtAuthenticationProvider: JwtAuthenticationProvider
 ) {
@@ -60,6 +66,16 @@ class UserController(
     fun updateNickname(@RequestBody request: UserNicknameRequestDto, httprequest: HttpServletRequest): ResponseEntity<CommonResponseDto> {
         val response = userService.updateUserNickname(request.nickname, jwtAuthenticationProvider.getTokenFromHeader(httprequest))
         return ResponseEntity.ok().body(response)
+    }
+
+    @PutMapping("/updateUserInfoPublic")
+    fun updateUserInfoIsPublic(
+        @RequestParam("isPublic") isUserInfoPublic: IS_USER_INFO_PUBLIC
+    ): ResponseEntity<CommonResponseDto> {
+        val user = userEntityRepository.findByUsername(SecurityUtil.currentUsername).get()
+
+        val response = mypageService.setUserInfoPublic(user.id!!, isUserInfoPublic)
+        return ResponseEntity(response, HttpStatus.OK)
     }
     @PostMapping("/updatePassword")
     @Operation(summary = "비밀번호 변경")
