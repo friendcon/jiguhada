@@ -50,14 +50,15 @@ class ChallengeAuthService(
         val challengeEndDate = challenge.challengeEndDate.toLocalDate()
         val challengeParticipateList = userChallengeRepository.findByChallengeId(challengeAuthRequest.challengeId).map { it.userEntity.username }
         val challengeAuthType = challenge.authFrequency
+        val auth = challengeAuthRepository.findSuccessAuthByDateAndUserId(today, user.id!!)
 
         if(!challengeParticipateList.contains(SecurityUtil.currentUsername)) {
             throw UnauthorizedRequestException("챌린지 인증 권한이 없습니다")
         } else if(today.isAfter(challengeEndDate)) {
             throw ChallengeException("종료된 챌린지 입니다")
-        } else if(challengeAuthRepository.findSuccessAuthByDateAndUserId(today, user.id!!) != null) {
+        } else if(auth != null && auth.authStatus == CHALLENGE_AUTH_STATUS.SUCCESS) {
             throw CantAuthException("이미 인증을 한 챌린지 입니다")
-        } else if(challengeAuthRepository.findWaitAuthByDateAndUserId(today, user.id!!) != null) {
+        } else if(auth != null && auth.authStatus == CHALLENGE_AUTH_STATUS.WAIT) {
             throw AlreadyAuthException("승인 대기중인 인증 내역이 있습니다")
         }
 
