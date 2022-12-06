@@ -104,12 +104,15 @@ class UserService(
         throw UsernameNotFoundException("해당 사용자가 존재하지 않습니다")
     }
 
+    @Transactional
     fun singOutUser(requestDto: PasswordRequestDto, token: String): CommonResponseDto {
         val username = SecurityUtil.currentUsername
         val user = userEntityRepository.findByUsername(username).get()
         if(passwordEncoder.matches(requestDto.password, user.password)) {
             val userDetails = jwtUserDetailsService.loadUserByUsername(username) as JwtUserDetails
             userDetails.changeDisabled()
+            val user = userEntityRepository.findByUsername(username).get()
+            user.isenabled = false
             return CommonResponseDto(200, "회원탈퇴가 완료되었습니다.")
         } else {
             throw UserNowPasswordNotMatchException("비밀번호가 일치하지 않습니다.")
