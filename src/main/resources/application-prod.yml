@@ -4,6 +4,8 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: wlrn2022!
+    hikari:
+      maximum-pool-size: 20
 
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
@@ -15,3 +17,4 @@ spring:
         show_sql: true
     defer-datasource-initialization: true
     open-in-view: false
+
