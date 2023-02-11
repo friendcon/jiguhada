@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://jiguhada-database.cm6solhgg2g0.ap-northeast-2.rds.amazonaws.com:3306/jiguhada
+    url: jdbc:mysql://jiguhada.cow5csvaolbm.ap-northeast-2.rds.amazonaws.com:3306/jiguhada
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
+    username: jiguhada
     password: wlrn2022!
     hikari:
       maximum-pool-size: 20

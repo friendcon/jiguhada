@@ -9,6 +9,7 @@ import com.project.jiguhada.util.AUTH_FREQUENCY
 import com.project.jiguhada.util.CHALLENGE_PERIOD
 import com.project.jiguhada.util.CHALLENGE_STATUS
 import org.hibernate.Hibernate
+import org.hibernate.annotations.BatchSize
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -19,7 +20,7 @@ data class Challenge(
     @ManyToOne
     @JoinColumn(name = "challenge_category_category_name")
     val challengeCategory: ChallengeCategory, // 챌린지 카테고리
-    @OneToMany(orphanRemoval = true, cascade = [CascadeType.PERSIST])
+    @OneToMany(orphanRemoval = true, cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY)
     @JoinColumn(name = "challenge_ID")
     val challengeTags: List<ChallengeTag> = mutableListOf(), // 챌린지 태그
     val title: String, // 챌린지 제목

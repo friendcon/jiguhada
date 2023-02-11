@@ -55,12 +55,6 @@ data class ChallengeSupportImpl(
                 isSearchExist(query, searchType),
                 checkChallengeStatus(status),
                 checkChallengeCategory(category),
-                /*challenge.challengeTags.any().tag.`in`(
-                    JPAExpressions.selectFrom(tag)
-                        .where(
-                            tag.challengeTagName.`in`(tagList)
-                        )
-                )*/
                 isExistTag(tagList, challenge)
             )
             .fetch()

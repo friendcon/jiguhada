@@ -5,13 +5,12 @@ spring:
 cloud:
   aws:
     s3:
-      bucket: jiguhada-user-img
+      bucket: jiguhada-img
     credentials:
-      access-key: AKIASXBNAYK3XXYKDMGP
-      secret-key: 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
+      access-key: AKIAW7M6ELCAPYOKAMUV
+      secret-key: 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
     region:
       static: ap-northeast-2
-      auto: false
     stack:
       auto: false
 
