@@ -9,7 +9,6 @@ import com.project.jiguhada.util.AUTH_FREQUENCY
 import com.project.jiguhada.util.CHALLENGE_PERIOD
 import com.project.jiguhada.util.CHALLENGE_STATUS
 import org.hibernate.Hibernate
-import org.hibernate.annotations.BatchSize
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.time.LocalTime
